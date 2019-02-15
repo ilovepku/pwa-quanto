@@ -1,11 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
   DatePicker
 } from "material-ui-pickers";
+
+const styles = {
+  grid: {
+    width: "60%"
+  }
+};
 
 class Pickers extends React.Component {
   state = {
@@ -17,11 +25,12 @@ class Pickers extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     const { selectedDate } = this.state;
 
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container justify="space-around">
+        <Grid container className={classes.grid} justify="space-around">
           <DatePicker
             margin="normal"
             label="Date picker"
@@ -40,4 +49,8 @@ class Pickers extends React.Component {
   }
 }
 
-export default Pickers;
+Pickers.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Pickers);
