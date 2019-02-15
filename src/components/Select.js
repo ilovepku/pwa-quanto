@@ -17,39 +17,36 @@ const styles = theme => ({
   }
 });
 
-class Select extends React.Component {
-  state = {
-    age: ""
-  };
-
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink htmlFor="age-native-label-placeholder">
-            Age
-          </InputLabel>
-          <NativeSelect
-            value={this.state.age}
-            onChange={this.handleChange("age")}
-            input={<Input name="age" id="age-native-label-placeholder" />}
-          >
-            <option value="">None</option>
-            <option value={10}>Ten</option>
-            <option value={20}>Twenty</option>
-            <option value={30}>Thirty</option>
-          </NativeSelect>
-        </FormControl>
-      </div>
-    );
-  }
-}
+const Select = ({ classes, label, items, handleChange }) => {
+  const list = items.length ? (
+    items.map(item => {
+      return (
+        <option value={item.name} key={item.name}>
+          {item.name}
+        </option>
+      );
+    })
+  ) : (
+    <option value="-">-</option>
+  );
+  return (
+    <div className={classes.root}>
+      <FormControl className={classes.formControl}>
+        <InputLabel shrink htmlFor="activity-native-label-placeholder">
+          {label}
+        </InputLabel>
+        <NativeSelect
+          onChange={event => handleChange(event.target.value)}
+          input={
+            <Input name="activity" id="activity-native-label-placeholder" />
+          }
+        >
+          {list}
+        </NativeSelect>
+      </FormControl>
+    </div>
+  );
+};
 
 Select.propTypes = {
   classes: PropTypes.object.isRequired
