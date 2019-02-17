@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Pickers from "./components/Pickers";
 import Select from "./components/Select";
+import FloatingActionButtons from "./components/FloatingActionButtons";
 
-const activities = [
+const activityList = [
   { name: "Work" },
   { name: "Reading", parent: "Work" },
   { name: "Meetings", parent: "Work" },
@@ -34,22 +35,32 @@ const activities = [
   { name: "TV" }
 ];
 
-const details = activities.filter(item => item.parent === activities[0].name); // ignoring 0 length
+const detailList = activityList.filter(
+  item => item.parent === activityList[0].name
+); // ignoring 0 length
 
 class App extends Component {
   state = {
-    activities,
-    details,
-    activity: activities[0].name, // ignoring 0 length
-    detail: details[0].name // ignoring 0 length
+    activityList,
+    detailList,
+    date: new Date(),
+    activity: activityList[0].name, // ignoring 0 length
+    detail: detailList[0].name, // ignoring 0 length
+    history: []
+  };
+
+  handleDateChange = date => {
+    this.setState({ date });
   };
 
   handleActivityChange = value => {
-    let details = this.state.activities.filter(item => item.parent === value);
+    let detailList = this.state.activityList.filter(
+      item => item.parent === value
+    );
     this.setState({
       activity: value,
-      details,
-      detail: details.length ? details[0].name : "-"
+      detailList,
+      detail: detailList.length ? detailList[0].name : "-"
     });
   };
 
@@ -57,22 +68,37 @@ class App extends Component {
     this.setState({ detail: value });
   };
 
+  handleHistoryChange = () => {
+    this.setState({
+      history: [
+        ...this.state.history,
+        {
+          date: this.state.date,
+          activity: this.state.activity,
+          detail: this.state.detail
+        }
+      ]
+    });
+  };
+
   render() {
     return (
       <div>
         <h1>PWA Quanto</h1>
-        Started: <Pickers />
+        Started:
+        <Pickers date={this.state.date} handleChange={this.handleDateChange} />
         Elapsed: X hrs X mins
         <Select
           label="Activity"
-          items={this.state.activities.filter(item => !item.parent)}
+          items={this.state.activityList.filter(item => !item.parent)}
           handleChange={this.handleActivityChange}
         />
         <Select
           label="Detail"
-          items={this.state.details}
+          items={this.state.detailList}
           handleChange={this.handleDetailChange}
         />
+        <FloatingActionButtons handleChange={this.handleHistoryChange} />
       </div>
     );
   }
