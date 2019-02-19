@@ -85,15 +85,9 @@ const initialStateHistory = {
 export const setHistoryReducer = (state = initialStateHistory, action = {}) => {
   switch (action.type) {
     case ADD_TO_HISTORY:
+      console.log(action.payload);
       return {
-        history: [
-          ...state.history,
-          {
-            datetime: action.payload.datetime,
-            activity: action.payload.activity,
-            detail: action.payload.detail
-          }
-        ]
+        history: [...state.history, action.payload]
       };
     default:
       return state;
