@@ -1,9 +1,35 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Pickers from "./components/Pickers";
 import Select from "./components/Select";
 import FloatingActionButtons from "./components/FloatingActionButtons";
 
-const activityList = [
+import {
+  setActivityDatetime,
+  setActivityCategory,
+  setActivityDetail,
+  setActivityHistory
+} from "./actions";
+
+const mapStateToProps = state => {
+  return {
+    datetime: state.setActivityReducer.datetime,
+    category: state.setActivityReducer.category,
+    detail: state.setActivityReducer.detail,
+    history: state.setHistoryReducer.history
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onActivityDatetimeChange: value => dispatch(setActivityDatetime(value)),
+    onActivityCategoryChange: value => dispatch(setActivityCategory(value)),
+    onActivityDetailChange: value => dispatch(setActivityDetail(value)),
+    onHistoryChange: value => dispatch(setActivityHistory(value))
+  };
+};
+
+/* const activityList = [
   { name: "Work" },
   { name: "Reading", parent: "Work" },
   { name: "Meetings", parent: "Work" },
@@ -33,23 +59,23 @@ const activityList = [
   { name: "Magazines", parent: "Read" },
   { name: "Internet", parent: "Read" },
   { name: "TV" }
-];
+]; */
 
-const detailList = activityList.filter(
+/* const detailList = activityList.filter(
   item => item.parent === activityList[0].name
-); // ignoring 0 length
+); // ignoring 0 length */
 
 class App extends Component {
-  state = {
+  /* state = {
     activityList,
     detailList,
     date: new Date(),
     activity: activityList[0].name, // ignoring 0 length
     detail: detailList[0].name, // ignoring 0 length
     history: []
-  };
+  }; */
 
-  handleDateChange = date => {
+/*   handleDateChange = date => {
     this.setState({ date });
   };
 
@@ -73,35 +99,38 @@ class App extends Component {
       history: [
         ...this.state.history,
         {
-          date: this.state.date,
+          date: this.state.datetime,
           activity: this.state.activity,
           detail: this.state.detail
         }
       ]
     });
-  };
+  }; */
 
   render() {
     return (
       <div>
         <h1>PWA Quanto</h1>
         Started:
-        <Pickers date={this.state.date} handleChange={this.handleDateChange} />
+        <Pickers datetime={this.props.datetime} handleChange={this.props.onActivityDatetimeChange} />
         Elapsed: X hrs X mins
-        <Select
+        {/* <Select
           label="Activity"
-          items={this.state.activityList.filter(item => !item.parent)}
-          handleChange={this.handleActivityChange}
+          items={this.props.activityList.filter(item => !item.parent)}
+          handleChange={this.props.handleActivityChange}
         />
         <Select
           label="Detail"
-          items={this.state.detailList}
-          handleChange={this.handleDetailChange}
+          items={this.props.detailList}
+          handleChange={this.props.handleDetailChange}
         />
-        <FloatingActionButtons handleChange={this.handleHistoryChange} />
+        <FloatingActionButtons handleChange={this.handleHistoryChange} /> */}
       </div>
     );
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

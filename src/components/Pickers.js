@@ -15,20 +15,20 @@ const styles = {
   }
 };
 
-function Pickers({ classes, date, handleChange }) {
+function Pickers({ classes, datetime, handleChange }) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container className={classes.grid} justify="space-around">
         <DatePicker
           margin="normal"
           label="Date picker"
-          value={date}
+          value={datetime}
           onChange={handleChange}
         />
         <TimePicker
           margin="normal"
           label="Time picker"
-          value={date}
+          value={datetime}
           onChange={handleChange}
         />
       </Grid>
