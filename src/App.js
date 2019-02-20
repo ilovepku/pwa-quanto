@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Pickers from "./components/Pickers";
-import Select from "./components/Select";
+import SelectActivity from "./components/SelectActivity";
 import FloatingActionButtons from "./components/FloatingActionButtons";
 
-import { setActivityCategory, setActivityDetail } from "./actions";
+import { setActivityDetail } from "./actions";
 
 const mapStateToProps = state => {
   return {
@@ -17,8 +17,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onActivityCategoryChange: value => dispatch(setActivityCategory(value)),
+  return {    
     onActivityDetailChange: value => dispatch(setActivityDetail(value))
   };
 };
@@ -42,16 +41,12 @@ class App extends Component {
         Started:
         <Pickers />
         Elapsed: X hrs X mins
-        <Select
-          label="Activity"
-          items={this.props.activityList.filter(item => !item.parent)}
-          handleChange={this.props.onActivityCategoryChange}
-        />
-        <Select
+        <SelectActivity />
+        {/* <Select
           label="Detail"
           items={this.props.detailList}
           handleChange={this.props.onActivityDetailChange}
-        />
+        /> */}
         <FloatingActionButtons />
       </div>
     );
