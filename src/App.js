@@ -7,8 +7,7 @@ import FloatingActionButtons from "./components/FloatingActionButtons";
 import {
   setActivityDatetime,
   setActivityCategory,
-  setActivityDetail,
-  setActivityHistory
+  setActivityDetail
 } from "./actions";
 
 const mapStateToProps = state => {
@@ -17,8 +16,7 @@ const mapStateToProps = state => {
     detailList: state.setActivityListReducer.detailList,
     datetime: state.setActivityReducer.datetime,
     category: state.setActivityReducer.category,
-    detail: state.setActivityReducer.detail,
-    history: state.setHistoryReducer.history
+    detail: state.setActivityReducer.detail
   };
 };
 
@@ -26,8 +24,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onActivityDatetimeChange: value => dispatch(setActivityDatetime(value)),
     onActivityCategoryChange: value => dispatch(setActivityCategory(value)),
-    onActivityDetailChange: value => dispatch(setActivityDetail(value)),
-    onHistoryChange: value => dispatch(setActivityHistory(value))
+    onActivityDetailChange: value => dispatch(setActivityDetail(value))
   };
 };
 
@@ -40,19 +37,6 @@ class App extends Component {
       activity: value,
       detailList,
       detail: detailList.length ? detailList[0].name : "-"
-    });
-  };
-
-  handleHistoryChange = () => {
-    this.setState({
-      history: [
-        ...this.state.history,
-        {
-          date: this.state.datetime,
-          activity: this.state.activity,
-          detail: this.state.detail
-        }
-      ]
     });
   }; */
 
@@ -76,7 +60,7 @@ class App extends Component {
           items={this.props.detailList}
           handleChange={this.props.onActivityDetailChange}
         />
-        <FloatingActionButtons handleChange={this.props.onHistoryChange} />
+        <FloatingActionButtons />
       </div>
     );
   }
