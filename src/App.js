@@ -4,11 +4,7 @@ import Pickers from "./components/Pickers";
 import Select from "./components/Select";
 import FloatingActionButtons from "./components/FloatingActionButtons";
 
-import {
-  setActivityDatetime,
-  setActivityCategory,
-  setActivityDetail
-} from "./actions";
+import { setActivityCategory, setActivityDetail } from "./actions";
 
 const mapStateToProps = state => {
   return {
@@ -22,7 +18,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onActivityDatetimeChange: value => dispatch(setActivityDatetime(value)),
     onActivityCategoryChange: value => dispatch(setActivityCategory(value)),
     onActivityDetailChange: value => dispatch(setActivityDetail(value))
   };
@@ -45,10 +40,7 @@ class App extends Component {
       <div>
         <h1>PWA Quanto</h1>
         Started:
-        <Pickers
-          datetime={this.props.datetime}
-          handleChange={this.props.onActivityDatetimeChange}
-        />
+        <Pickers />
         Elapsed: X hrs X mins
         <Select
           label="Activity"

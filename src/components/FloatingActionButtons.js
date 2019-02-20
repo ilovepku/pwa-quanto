@@ -7,6 +7,15 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { setActivityHistory } from "../actions";
 
+const styles = theme => ({
+  fab: {
+    margin: theme.spacing.unit
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit
+  }
+});
+
 const mapStateToProps = state => {
   return {
     datetime: state.setActivityReducer.datetime,
@@ -20,15 +29,6 @@ const mapDispatchToProps = dispatch => {
     setActivityHistory: value => dispatch(setActivityHistory(value))
   };
 };
-
-const styles = theme => ({
-  fab: {
-    margin: theme.spacing.unit
-  },
-  extendedIcon: {
-    marginRight: theme.spacing.unit
-  }
-});
 
 function FloatingActionButtons({
   classes,
