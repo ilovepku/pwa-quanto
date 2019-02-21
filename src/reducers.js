@@ -5,7 +5,7 @@ import {
   ADD_TO_HISTORY
 } from "./constants.js";
 
-const initialStateActivityList = [
+const initialStateActivityNameList = [
   { name: "Work" },
   { name: "Reading", parent: "Work" },
   { name: "Meetings", parent: "Work" },
@@ -24,7 +24,9 @@ const initialStateActivityList = [
   { name: "Dinner", parent: "Eat" },
   { name: "Snack", parent: "Eat" },
   { name: "Commute" },
+  { name: "-", parent: "Commute" },
   { name: "Housework" },
+  { name: "-", parent: "Housework" },
   { name: "Exercise" },
   { name: "Sports", parent: "Exercise" },
   { name: "Aerobic", parent: "Exercise" },
@@ -34,12 +36,13 @@ const initialStateActivityList = [
   { name: "Newspapers", parent: "Read" },
   { name: "Magazines", parent: "Read" },
   { name: "Internet", parent: "Read" },
-  { name: "TV" }
+  { name: "TV" },
+  { name: "-", parent: "TV" }
 ];
 
 export const setActivityListReducer = (
   state = {
-    activityList: initialStateActivityList
+    activityList: initialStateActivityNameList
   },
   action = {}
 ) => state;
@@ -55,10 +58,8 @@ export const setActivityReducer = (
   action = {}
 ) => {
   switch (action.type) {
-    case SET_ACTIVITY_DATETIME:
-      return { ...state, datetime: action.payload };
     case SET_ACTIVITY_CATEGORY:
-      const detailList = initialStateActivityList.filter(
+      const detailList = initialStateActivityNameList.filter(
         item => item.parent === action.payload
       );
       return {
@@ -74,15 +75,33 @@ export const setActivityReducer = (
 };
 
 const initialStateHistory = {
-  history: []
+  activityNameList: initialStateActivityNameList,
+  history: [{ datetime: new Date(), activity: "Work", detail: "Reading" }]
 };
 
 export const setHistoryReducer = (state = initialStateHistory, action = {}) => {
   switch (action.type) {
     case ADD_TO_HISTORY:
+      const activity = state.activityNameList.filter(item => !item.parent)[0]
+        .name;
+      const detail = state.activityNameList.filter(
+        item => item.parent === activity
+      )[0].name;
+      return {
+        ...state,
+        history: [...state.history, { datetime: new Date(), activity, detail }]
+      };
+    case SET_ACTIVITY_DATETIME:
       console.log(action.payload);
       return {
-        history: [...state.history, action.payload]
+        ...state,
+        history: state.history.map((item, index) => {
+          if (index !== action.payload.index) return item;
+          return {
+            ...item,
+            datetime: action.payload.datetime
+          };
+        })
       };
     default:
       return state;

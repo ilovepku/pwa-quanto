@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import Pickers from "./components/Pickers";
 import SelectActivity from "./components/SelectActivity";
 import SelectDetail from "./components/SelectDetail";
 import FloatingActionButtons from "./components/FloatingActionButtons";
+import CurrentActivity from "./components/CurrentActivity";
+import History from "./components/History";
 
 class App extends Component {
 
@@ -10,12 +11,12 @@ class App extends Component {
     return (
       <div>
         <h1>PWA Quanto</h1>
-        Started:
-        <Pickers />
         Elapsed: X hrs X mins
         <SelectActivity />
         <SelectDetail />
         <FloatingActionButtons />
+        <CurrentActivity />
+        <History />
       </div>
     );
   }

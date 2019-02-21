@@ -20,7 +20,6 @@ export const setActivityDetail = payload => ({
   payload
 });
 
-export const setActivityHistory = payload => ({
-  type: ADD_TO_HISTORY,
-  payload
+export const setActivityHistory = () => ({
+  type: ADD_TO_HISTORY
 });

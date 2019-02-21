@@ -38,10 +38,13 @@ function FloatingActionButtons({
   setActivityHistory
 }) {
   return (
-    <Fab color="primary" aria-label="Add" className={classes.fab}>
-      <AddIcon
-        onClick={() => setActivityHistory({ datetime, category, detail })}
-      />
+    <Fab
+      color="primary"
+      aria-label="Add"
+      className={classes.fab}
+      onClick={() => setActivityHistory({ datetime, category, detail })}
+    >
+      <AddIcon />
     </Fab>
   );
 }
