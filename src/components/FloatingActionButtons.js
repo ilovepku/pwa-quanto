@@ -18,9 +18,9 @@ const styles = theme => ({
 
 const mapStateToProps = state => {
   return {
-    datetime: state.setActivityReducer.datetime,
-    category: state.setActivityReducer.category,
-    detail: state.setActivityReducer.detail
+    datetime: state.datetime,
+    category: state.category,
+    detail: state.detail
   };
 };
 

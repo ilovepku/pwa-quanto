@@ -1,21 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
+import { createStore } from "redux";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import {
-  setActivityListReducer,
-  setActivityReducer,
-  setHistoryReducer
-} from "./reducers";
+import { rootReducer } from "./reducers";
 
-const rootReducer = combineReducers({
-  setActivityListReducer,
-  setActivityReducer,
-  setHistoryReducer
-});
 const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

@@ -1,7 +1,6 @@
 import {
   SET_ACTIVITY_DATETIME,
-  SET_ACTIVITY_CATEGORY,
-  SET_ACTIVITY_DETAIL,
+  SET_ACTIVITY,
   ADD_TO_HISTORY
 } from "./constants.js";
 
@@ -10,13 +9,8 @@ export const setActivityDatetime = payload => ({
   payload
 });
 
-export const setActivityCategory = payload => ({
-  type: SET_ACTIVITY_CATEGORY,
-  payload
-});
-
-export const setActivityDetail = payload => ({
-  type: SET_ACTIVITY_DETAIL,
+export const setActivity = payload => ({
+  type: SET_ACTIVITY,
   payload
 });
 

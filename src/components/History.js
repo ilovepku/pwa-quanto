@@ -21,7 +21,7 @@ const styles = theme => ({
 
 const mapStateToProps = state => {
   return {
-    history: state.setHistoryReducer.history
+    history: state.history
   };
 };
 
@@ -31,7 +31,7 @@ function History({ classes, history }) {
         <TableRow key={idx}>
           <TableCell>
             {item.datetime.toLocaleDateString("en-US", {
-              month: "2-digit",
+              month: "numeric",
               day: "numeric"
             })}
           </TableCell>
