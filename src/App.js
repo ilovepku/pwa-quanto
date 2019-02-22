@@ -9,9 +9,8 @@ class App extends Component {
     return (
       <div>
         <h1>PWA Quanto</h1>
-        Elapsed: X hrs X mins
-        <FloatingActionButtons />
-        <CurrentActivity />
+        <CurrentActivity />        
+        <FloatingActionButtons />        
         <History />
       </div>
     );

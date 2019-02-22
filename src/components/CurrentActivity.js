@@ -1,21 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
 import Picker from "./Picker";
-import SelectActivity from "./SelectActivity";
-import SelectDetail from "./SelectDetail";
-import FloatingActionButtons from "./FloatingActionButtons";
+import Select from "./Select";
 
 const mapStateToProps = state => {
-  return {
-    activityNameList: state.setHistoryReducer.activityNameList,
-    history: state.setHistoryReducer.history
+  return {    
+    history: state.history
   };
 };
 
 function CurrentActivity({ activityNameList, history }) {
   const index = history.length - 1;
   const { datetime, activity, detail } = history[index];
-  return <Picker datetime={datetime} index={index} />;
+  return (
+    <div>
+      <Picker datetime={datetime} index={index} /> 
+      <p>Elapsed: X hrs X mins</p>
+      <Select activity={activity} detail={detail} index={index} />
+    </div>
+  );
 }
 
 export default connect(mapStateToProps)(CurrentActivity);
