@@ -2,8 +2,12 @@ import {
   SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
   SET_DETAIL,
-  ADD_TO_HISTORY
+  ADD_TO_HISTORY,
+  UPDATE_STATE
 } from "./constants.js";
+import CacheManager from "./cache";
+
+const cache = new CacheManager();
 
 const initialStateActivityNameList = [
   { name: "Reading", parent: "Work" },
@@ -38,6 +42,7 @@ const initialStateHistory = {
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
+  let newState;
   switch (action.type) {
     case ADD_TO_HISTORY:
       const defaultActivity = [
@@ -46,7 +51,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       const defaultDetail = state.activityNameList.filter(
         item => item.parent === defaultActivity
       )[0].name;
-      return {
+      newState = {
         ...state,
         history: [
           ...state.history,
@@ -57,8 +62,10 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         ]
       };
+      cache.writeData("state", newState);
+      return newState;
     case SET_ACTIVITY_DATETIME:
-      return {
+      newState = {
         ...state,
         history: state.history.map((item, index) => {
           if (index !== action.payload.index) return item;
@@ -68,11 +75,13 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
+      cache.writeData("state", newState);
+      return newState;
     case SET_ACTIVITY:
       const detail = state.activityNameList.filter(
         item => item.parent === action.payload.activity
       )[0].name;
-      return {
+      newState = {
         ...state,
         history: state.history.map((item, index) => {
           if (index !== action.payload.index) return item;
@@ -83,8 +92,10 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
+      cache.writeData("state", newState);
+      return newState;
     case SET_DETAIL:
-      return {
+      newState = {
         ...state,
         history: state.history.map((item, index) => {
           if (index !== action.payload.index) return item;
@@ -94,6 +105,10 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
+      cache.writeData("state", newState);
+      return newState;
+    case UPDATE_STATE:
+      return action.payload;
     default:
       return state;
   }

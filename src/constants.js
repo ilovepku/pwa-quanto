@@ -2,3 +2,4 @@ export const SET_ACTIVITY_DATETIME = "SET_ACTIVITY_DATETIME";
 export const SET_ACTIVITY = "SET_ACTIVITY";
 export const SET_DETAIL = "SET_DETAIL";
 export const ADD_TO_HISTORY = "ADD_TO_HISTORY";
+export const UPDATE_STATE = "UPDATE_STATE";
