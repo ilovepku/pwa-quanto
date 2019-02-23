@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import FloatingActionButtons from "./components/FloatingActionButtons";
-import CurrentActivity from "./components/CurrentActivity";
+// import CurrentActivity from "./components/CurrentActivity";
 import History from "./components/History";
 
 import { updateState } from "./actions";
@@ -34,8 +34,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>PWA Quanto</h1>
-        <CurrentActivity />
+        {/* <CurrentActivity /> */}
         <FloatingActionButtons />
         <History />
       </div>

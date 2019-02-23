@@ -14,7 +14,7 @@ function ActivityDetails({ history, index }) {
   return (
     <div>
       <Picker datetime={datetime} index={index} /> 
-      <p>Elapsed: X hrs X mins</p>
+      {/* <p>Elapsed: X hrs X mins</p> */}
       <Select activity={activity} detail={detail} index={index} />
     </div>
   );
