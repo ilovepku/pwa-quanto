@@ -26,6 +26,7 @@ class App extends Component {
     cache.readData("state").then(oldState => {
       if (!oldState) {
         cache.writeData("state", this.props.state);
+        return;
       }
       this.props.updateState(oldState);
     });
