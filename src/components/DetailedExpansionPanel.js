@@ -100,6 +100,162 @@ function DetailedExpansionPanel(props) {
           </Button>
         </ExpansionPanelActions>
       </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>
+              2019/02/24 14:00
+            </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>
+              Exercise: Strength
+            </Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <div className={classes.column}>
+            <DateTimePicker />
+          </div>
+          <div className={classes.column}>
+            <NativeSelects />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Delete
+            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Split
+            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            className={classes.button}
+          >
+            Save
+            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>
+              2019/02/24 14:00
+            </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>
+              Exercise: Strength
+            </Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <div className={classes.column}>
+            <DateTimePicker />
+          </div>
+          <div className={classes.column}>
+            <NativeSelects />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Delete
+            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Split
+            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            className={classes.button}
+          >
+            Save
+            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>
+              2019/02/24 14:00
+            </Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>
+              Exercise: Strength
+            </Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
+          <div className={classes.column}>
+            <DateTimePicker />
+          </div>
+          <div className={classes.column}>
+            <NativeSelects />
+          </div>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Delete
+            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            className={classes.button}
+          >
+            Split
+            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            className={classes.button}
+          >
+            Save
+            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
     </div>
   );
 }

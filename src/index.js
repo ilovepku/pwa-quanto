@@ -7,14 +7,16 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 // import { rootReducer } from "./reducers";
 
-import Views from "./components/Views";
+import HistoryView from "./components/HistoryView";
+// import CurrentActivityView from "./components/CurrentActivityView";
 
 /* const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ); */
 
-ReactDOM.render(<Views />, document.getElementById("root"));
+// ReactDOM.render(<CurrentActivityView />, document.getElementById("root"));
+ReactDOM.render(<HistoryView />, document.getElementById("root"));
 
 /* ReactDOM.render(
   <Provider store={store}>

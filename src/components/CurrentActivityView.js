@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import DetailedExpansionPanel from "./DetailedExpansionPanel";
 import BottomAppBar from "./BottomAppBar";
+import CurrentActivityCard from "./CurrentActivityCard";
 
-class Views extends Component {
+class CurrentActivityView extends Component {
   render() {
     return (
       <div>
-        <DetailedExpansionPanel />
+        <CurrentActivityCard />
         <BottomAppBar />
       </div>
     );
   }
 }
 
-export default Views;
+export default CurrentActivityView;
