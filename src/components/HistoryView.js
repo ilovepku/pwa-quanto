@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => {
 class HistoryView extends Component {
   componentWillMount = () => {
     cache.readData("state").then(oldState => {
-      if (!oldState) {
+      if (!oldState.history) {
         cache.writeData("state", {
           ...this.props.state,
           history: [
