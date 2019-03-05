@@ -19,11 +19,11 @@ const mapStateToProps = state => {
 function HistoryPanels(props) {
   const { classes, history } = props;
   const panels = history.length
-    ? history.slice(0).reverse().map((item, index) => (
+    ? history.map((item, index) => (
         <DetailedExpansionPanel key={index} index={index} item={item} />
       ))
     : null;
-  return <div className={classes.root}>{panels}</div>;
+  return <div className={classes.root}>{panels.slice().reverse()}</div>;
 }
 
 HistoryPanels.propTypes = {
