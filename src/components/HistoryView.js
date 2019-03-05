@@ -24,12 +24,7 @@ class HistoryView extends Component {
   componentWillMount = () => {
     cache.readData("state").then(oldState => {
       if (!oldState) {
-        cache.writeData("state", {
-          ...this.props.state,
-          history: [
-            { datetime: new Date(), activity: "Work", detail: "Reading" }
-          ]
-        });
+        cache.writeData("state", this.props.state);
         return;
       }
       this.props.updateState(oldState);

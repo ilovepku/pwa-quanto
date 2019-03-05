@@ -39,7 +39,7 @@ const initialStateActivityNameList = [
 
 const initialStateHistory = {
   activityNameList: initialStateActivityNameList,
-  history: []
+  history: [{ datetime: new Date(), activity: "Work", detail: "Reading" }]
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
