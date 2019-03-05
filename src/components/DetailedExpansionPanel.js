@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import classNames from 'classnames';
+import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -16,10 +17,9 @@ import Divider from "@material-ui/core/Divider";
 import DateTimePicker from "./DateTimePicker";
 import NativeSelects from "./NativeSelects";
 
+import { saveActivity } from "../actions";
+
 const styles = theme => ({
-  root: {
-    width: "100%"
-  },
   heading: {
     fontSize: theme.typography.pxToRem(15)
   },
@@ -40,33 +40,93 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit
   },
   iconSmall: {
-    fontSize: 20,
+    fontSize: 20
   }
 });
 
-function DetailedExpansionPanel(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
+const mapStateToProps = state => {
+  return {
+    activityNameList: state.activityNameList
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    saveActivity: payload => dispatch(saveActivity(payload))
+  };
+};
+
+class DetailedExpansionPanel extends Component {
+  state = {
+    datetime: this.props.item.datetime,
+    activity: this.props.item.activity,
+    detail: this.props.item.detail
+  };
+
+  handleDateChange = date => {
+    this.setState({ datetime: date });
+  };
+
+  handleActivityChange = event => {
+    this.setState({
+      activity: event.target.value,
+      detail: this.props.activityNameList.filter(
+        item => item.parent === event.target.value
+      )[0].name
+    });
+  };
+
+  handleDetailChange = event => {
+    this.setState({ detail: event.target.value });
+  };
+
+  render() {
+    const { classes, activityNameList, saveActivity, index } = this.props;
+    const { datetime, activity, detail } = this.state;
+
+    const activityList = [
+      ...new Set(activityNameList.map(item => item.parent))
+    ];
+    const detailList = activityNameList.filter(
+      item => item.parent === activity
+    );
+
+    return (
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<CreateIcon />}>
           <div className={classes.column}>
             <Typography className={classes.heading}>
-              2019/02/24 14:00
+              {this.props.item.datetime.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric"
+              })}
             </Typography>
           </div>
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
-              Exercise: Strength
+              {this.props.item.activity}: {this.props.item.detail}
             </Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
           <div className={classes.column}>
-            <DateTimePicker />
+            <DateTimePicker
+              datetime={datetime}
+              handleDateChange={this.handleDateChange}
+            />
           </div>
           <div className={classes.column}>
-            <NativeSelects />
+            <NativeSelects
+              activityList={activityList}
+              detailList={detailList}
+              activity={activity}
+              detail={detail}
+              handleActivityChange={this.handleActivityChange}
+              handleDetailChange={this.handleDetailChange}
+            />
           </div>
         </ExpansionPanelDetails>
         <Divider />
@@ -78,7 +138,9 @@ function DetailedExpansionPanel(props) {
             className={classes.button}
           >
             Delete
-            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+            <DeleteIcon
+              className={classNames(classes.rightIcon, classes.iconSmall)}
+            />
           </Button>
           <Button
             variant="outlined"
@@ -87,181 +149,35 @@ function DetailedExpansionPanel(props) {
             className={classes.button}
           >
             Split
-            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+            <CallSplitIcon
+              className={classNames(classes.rightIcon, classes.iconSmall)}
+            />
           </Button>
           <Button
             variant="outlined"
             size="small"
             color="primary"
             className={classes.button}
+            onClick={() => saveActivity({ datetime, activity, detail, index })}
           >
             Save
-            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+            <SaveIcon
+              className={classNames(classes.rightIcon, classes.iconSmall)}
+            />
           </Button>
         </ExpansionPanelActions>
       </ExpansionPanel>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>
-              2019/02/24 14:00
-            </Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              Exercise: Strength
-            </Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column}>
-            <DateTimePicker />
-          </div>
-          <div className={classes.column}>
-            <NativeSelects />
-          </div>
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Delete
-            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Split
-            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            className={classes.button}
-          >
-            Save
-            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>
-              2019/02/24 14:00
-            </Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              Exercise: Strength
-            </Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column}>
-            <DateTimePicker />
-          </div>
-          <div className={classes.column}>
-            <NativeSelects />
-          </div>
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Delete
-            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Split
-            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            className={classes.button}
-          >
-            Save
-            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<CreateIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>
-              2019/02/24 14:00
-            </Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              Exercise: Strength
-            </Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column}>
-            <DateTimePicker />
-          </div>
-          <div className={classes.column}>
-            <NativeSelects />
-          </div>
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Delete
-            <DeleteIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            className={classes.button}
-          >
-            Split
-            <CallSplitIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            className={classes.button}
-          >
-            Save
-            <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
-          </Button>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-    </div>
-  );
+    );
+  }
 }
 
 DetailedExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DetailedExpansionPanel);
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DetailedExpansionPanel)
+);

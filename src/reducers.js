@@ -2,6 +2,7 @@ import {
   SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
   SET_DETAIL,
+  SAVE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
 } from "./constants.js";
@@ -38,7 +39,7 @@ const initialStateActivityNameList = [
 
 const initialStateHistory = {
   activityNameList: initialStateActivityNameList,
-  history: [{ datetime: new Date(), activity: "Work", detail: "Reading" }]
+  history: []
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
@@ -101,6 +102,21 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           if (index !== action.payload.index) return item;
           return {
             ...item,
+            detail: action.payload.detail
+          };
+        })
+      };
+      cache.writeData("state", newState);
+      return newState;
+    case SAVE_ACTIVITY:
+      newState = {
+        ...state,
+        history: state.history.map((item, index) => {
+          if (index !== action.payload.index) return item;
+          return {
+            ...item,
+            datetime: action.payload.datetime,
+            activity: action.payload.activity,
             detail: action.payload.detail
           };
         })

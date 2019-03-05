@@ -16,27 +16,18 @@ const styles = theme => ({
 });
 
 class DateTimePicker extends PureComponent {
-  state = {
-    selectedDate: new Date()
-  };
-
-  handleDateChange = date => {
-    this.setState({ selectedDate: date });
-  };
-
   render() {
-    const { selectedDate } = this.state;
-    const { classes } = this.props;
+    const { classes, datetime, handleDateChange } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.picker}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               label="Started Date"
-              value={selectedDate}
+              value={datetime}
               format="yyyy/MM/dd"
               views={["year", "month", "day"]}
-              onChange={this.handleDateChange}
+              onChange={handleDateChange}
             />
           </MuiPickersUtilsProvider>
         </div>
@@ -46,8 +37,8 @@ class DateTimePicker extends PureComponent {
               clearable
               ampm={false}
               label="Started Time"
-              value={selectedDate}
-              onChange={this.handleDateChange}
+              value={datetime}
+              onChange={handleDateChange}
             />
           </MuiPickersUtilsProvider>
         </div>

@@ -2,6 +2,7 @@ import {
   SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
   SET_DETAIL,
+  SAVE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
 } from "./constants.js";
@@ -15,12 +16,18 @@ export const setActivity = payload => ({
   type: SET_ACTIVITY,
   payload
 });
+
 export const setDetail = payload => ({
   type: SET_DETAIL,
   payload
 });
 
-export const setActivityHistory = () => ({
+export const saveActivity = payload => ({
+  type: SAVE_ACTIVITY,
+  payload
+});
+
+export const addToHistory = () => ({
   type: ADD_TO_HISTORY
 });
 

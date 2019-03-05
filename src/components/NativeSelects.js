@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -17,18 +18,38 @@ const styles = theme => ({
   }
 });
 
+const mapStateToProps = state => {
+  return {
+    activityNameList: state.activityNameList
+  };
+};
+
 class NativeSelects extends React.Component {
-  state = {
-    activity: "Exercise",
-    detail: "Strength"
-  };
-
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      activityList,
+      detailList,
+      activity,
+      detail,
+      handleActivityChange,
+      handleDetailChange
+    } = this.props;
+
+    const activityListItems = activityList.map(item => {
+      return (
+        <option value={item} key={item}>
+          {item}
+        </option>
+      );
+    });
+    const detailListItems = detailList.map(item => {
+      return (
+        <option value={item.name} key={item.name}>
+          {item.name}
+        </option>
+      );
+    });
 
     return (
       <div className={classes.root}>
@@ -37,16 +58,13 @@ class NativeSelects extends React.Component {
             Activity
           </InputLabel>
           <NativeSelect
-            value={this.state.activity}
-            onChange={this.handleChange("activity")}
+            value={activity}
+            onChange={handleActivityChange}
             input={
               <Input name="activity" id="activity-native-label-placeholder" />
             }
           >
-            <option value="">None</option>
-            <option value="Exercise">Exercise</option>
-            <option value={20}>Twenty</option>
-            <option value={30}>Thirty</option>
+            {activityListItems}
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
@@ -54,14 +72,11 @@ class NativeSelects extends React.Component {
             Detail
           </InputLabel>
           <NativeSelect
-            value={this.state.detail}
-            onChange={this.handleChange("detail")}
+            value={detail}
+            onChange={handleDetailChange}
             input={<Input name="detail" id="detail-native-label-placeholder" />}
           >
-            <option value="">None</option>
-            <option value="Strength">Strength</option>
-            <option value={20}>Twenty</option>
-            <option value={30}>Thirty</option>
+            {detailListItems}
           </NativeSelect>
         </FormControl>
       </div>
@@ -73,4 +88,4 @@ NativeSelects.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(NativeSelects);
+export default withStyles(styles)(connect(mapStateToProps)(NativeSelects));
