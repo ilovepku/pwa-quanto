@@ -10,7 +10,7 @@ import CacheManager from "./cache";
 
 const cache = new CacheManager();
 
-const initialStateActivityNameList = [
+/* const initialStateActivityNameList = [
   { name: "Reading", parent: "Work" },
   { name: "Meetings", parent: "Work" },
   { name: "Email", parent: "Work" },
@@ -35,11 +35,59 @@ const initialStateActivityNameList = [
   { name: "Magazines", parent: "Read" },
   { name: "Internet", parent: "Read" },
   { name: "-", parent: "TV" }
+]; */
+
+const initialStateActivityNameList = [
+  { name: "-", parent: "Eat" },
+  { name: "Cook", parent: "Eat" },
+  { name: "Meal", parent: "Eat" },
+  { name: "Snack", parent: "Exercise" },
+  { name: "Aerobic", parent: "Exercise" },
+  { name: "Strength", parent: "Exercise" },
+  { name: "-", parent: "Fun" },
+  { name: "Game", parent: "Fun" },
+  { name: "Movie", parent: "Fun" },
+  { name: "Music", parent: "Fun" },
+  { name: "Read", parent: "Fun" },
+  { name: "Surfing", parent: "Fun" },
+  { name: "Tourism", parent: "Fun" },
+  { name: "TV", parent: "Fun" },
+  { name: "-", parent: "Life" },
+  { name: "Beauty", parent: "Life" },
+  { name: "Groceries", parent: "Life" },
+  { name: "Health", parent: "Life" },
+  { name: "Housework", parent: "Life" },
+  { name: "Hygiene", parent: "Life" },
+  { name: "Potty", parent: "Life" },
+  { name: "Shop", parent: "Life" },
+  { name: "-", parent: "Social" },
+  { name: "Friend", parent: "Social" },
+  { name: "Partner", parent: "Social" },
+  { name: "Relative", parent: "Social" },
+  { name: "-", parent: "Study" },
+  { name: "Coding", parent: "Study" },
+  { name: "Language", parent: "Study" },
+  { name: "-", parent: "Sleep" },
+  { name: "Nap", parent: "Sleep" },
+  { name: "Night", parent: "Sleep" },
+  { name: "-", parent: "Transport" },
+  { name: "Drive", parent: "Transport" },
+  { name: "Intercity", parent: "Transport" },
+  { name: "Public", parent: "Transport" },
+  { name: "Taxi", parent: "Transport" },
+  { name: "Walk", parent: "Transport" },
+  { name: "-", parent: "Work" },
+  { name: "Coding", parent: "Work" },
+  { name: "Contact", parent: "Work" },
+  { name: "Discuss", parent: "Work" },
+  { name: "Job hunting", parent: "Work" },
+  { name: "Meetings", parent: "Work" },
+  { name: "Research", parent: "Work" }
 ];
 
 const initialStateHistory = {
   activityNameList: initialStateActivityNameList,
-  history: [{ datetime: new Date(), activity: "Work", detail: "Reading" }]
+  history: [{ datetime: new Date(), activity: "Work", detail: "-" }]
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
