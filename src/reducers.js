@@ -3,6 +3,7 @@ import {
   SET_ACTIVITY,
   SET_DETAIL,
   SAVE_ACTIVITY,
+  SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
@@ -42,7 +43,7 @@ const initialStateActivityNameList = [
   { name: "-", parent: "Eat" },
   { name: "Cook", parent: "Eat" },
   { name: "Meal", parent: "Eat" },
-  { name: "Snack", parent: "Exercise" },
+  { name: "-", parent: "Exercise" },
   { name: "Aerobic", parent: "Exercise" },
   { name: "Strength", parent: "Exercise" },
   { name: "-", parent: "Fun" },
@@ -172,12 +173,25 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
+    case SPLIT_ACTIVITY:
+      newState = {
+        ...state,
+        history: [
+          ...state.history.slice(0, action.payload.index + 1),
+          {
+            datetime: action.payload.datetime,
+            activity: action.payload.activity,
+            detail: action.payload.detail
+          },
+          ...state.history.slice(action.payload.index + 1)
+        ]
+      };
+      cache.writeData("state", newState);
+      return newState;
     case DELETE_ACTIVITY:
       newState = {
         ...state,
-        history: state.history.filter(
-          (item, index) => index !== action.payload
-        )
+        history: state.history.filter((item, index) => index !== action.payload)
       };
       cache.writeData("state", newState);
       return newState;

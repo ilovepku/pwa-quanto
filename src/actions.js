@@ -3,6 +3,7 @@ import {
   SET_ACTIVITY,
   SET_DETAIL,
   SAVE_ACTIVITY,
+  SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
@@ -25,6 +26,11 @@ export const setDetail = payload => ({
 
 export const saveActivity = payload => ({
   type: SAVE_ACTIVITY,
+  payload
+});
+
+export const splitActivity = payload => ({
+  type: SPLIT_ACTIVITY,
   payload
 });
 
