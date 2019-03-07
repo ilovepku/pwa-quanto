@@ -3,6 +3,7 @@ import {
   SET_ACTIVITY,
   SET_DETAIL,
   SAVE_ACTIVITY,
+  DELETE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
 } from "./constants.js";
@@ -168,6 +169,15 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
             detail: action.payload.detail
           };
         })
+      };
+      cache.writeData("state", newState);
+      return newState;
+    case DELETE_ACTIVITY:
+      newState = {
+        ...state,
+        history: state.history.filter(
+          (item, index) => index !== action.payload
+        )
       };
       cache.writeData("state", newState);
       return newState;

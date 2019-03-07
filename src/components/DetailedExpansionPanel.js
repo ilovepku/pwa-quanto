@@ -17,7 +17,7 @@ import Divider from "@material-ui/core/Divider";
 import DateTimePicker from "./DateTimePicker";
 import NativeSelects from "./NativeSelects";
 
-import { saveActivity } from "../actions";
+import { saveActivity, deleteActivity } from "../actions";
 
 const styles = theme => ({
   heading: {
@@ -52,7 +52,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveActivity: payload => dispatch(saveActivity(payload))
+    saveActivity: payload => dispatch(saveActivity(payload)),
+    deleteActivity: payload => dispatch(deleteActivity(payload))
   };
 };
 
@@ -81,7 +82,7 @@ class DetailedExpansionPanel extends Component {
   };
 
   render() {
-    const { classes, activityNameList, saveActivity, index } = this.props;
+    const { classes, activityNameList, saveActivity, deleteActivity, index } = this.props;
     const { datetime, activity, detail } = this.state;
 
     const activityList = [
@@ -136,6 +137,7 @@ class DetailedExpansionPanel extends Component {
             size="small"
             color="secondary"
             className={classes.button}
+            onClick={() => deleteActivity(index)}
           >
             Delete
             <DeleteIcon

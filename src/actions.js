@@ -3,6 +3,7 @@ import {
   SET_ACTIVITY,
   SET_DETAIL,
   SAVE_ACTIVITY,
+  DELETE_ACTIVITY,
   ADD_TO_HISTORY,
   UPDATE_STATE
 } from "./constants.js";
@@ -24,6 +25,11 @@ export const setDetail = payload => ({
 
 export const saveActivity = payload => ({
   type: SAVE_ACTIVITY,
+  payload
+});
+
+export const deleteActivity = payload => ({
+  type: DELETE_ACTIVITY,
   payload
 });
 
