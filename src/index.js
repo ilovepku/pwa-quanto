@@ -7,9 +7,6 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { rootReducer } from "./reducers";
 
-import HistoryView from "./components/HistoryView";
-// import CurrentActivityView from "./components/CurrentActivityView";
-
 const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -17,7 +14,6 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    {/* <HistoryView /> */}
     <App />
   </Provider>,
   document.getElementById("root")
