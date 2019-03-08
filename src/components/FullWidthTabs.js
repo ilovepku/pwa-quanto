@@ -12,7 +12,7 @@ import PieChartIcon from "@material-ui/icons/PieChart";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Typography from "@material-ui/core/Typography";
 import HistoryPanels from "./HistoryPanels";
-import ButtonAppBar from "./ButtonAppBar";
+import ButtonToolBar from "./ButtonToolBar";
 
 function TabContainer({ children }) {
   return (
@@ -64,7 +64,7 @@ class FullWidthTabs extends React.Component {
           <TabContainer>Item Four</TabContainer>
         </SwipeableViews>
         <AppBar position="fixed" color="default" className={classes.appBar}>
-          <ButtonAppBar />
+          <ButtonToolBar />
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}

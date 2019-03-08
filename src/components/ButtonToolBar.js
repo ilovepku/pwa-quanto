@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-function ButtonAppBar(props) {
+function ButtonToolBar(props) {
   const { classes, addToHistory } = props;
   return (
     <Toolbar className={classes.toolbar}>
@@ -45,7 +45,7 @@ function ButtonAppBar(props) {
   );
 }
 
-ButtonAppBar.propTypes = {
+ButtonToolBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -53,5 +53,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(ButtonAppBar)
+  )(ButtonToolBar)
 );
