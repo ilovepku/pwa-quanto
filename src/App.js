@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import FloatingActionButtons from "./components/FloatingActionButtons";
-// import CurrentActivity from "./components/CurrentActivity";
-import History from "./components/History";
+import FullWidthTabs from "./components/FullWidthTabs";
 
 import { updateState } from "./actions";
 import CacheManager from "./cache";
@@ -35,9 +33,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <CurrentActivity /> */}
-        <FloatingActionButtons />
-        <History />
+        <FullWidthTabs />
       </div>
     );
   }
