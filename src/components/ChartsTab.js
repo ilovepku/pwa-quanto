@@ -38,7 +38,7 @@ function ChartsTab(props) {
       animate={{
         duration: 2000
       }}
-      colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+      colorScale={"qualitative"}
     />
   );
 }
