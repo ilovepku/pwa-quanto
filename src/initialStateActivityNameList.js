@@ -29,6 +29,7 @@ const initialStateActivityNameList = [
   { name: "-", parent: "Eat" },
   { name: "Cook", parent: "Eat" },
   { name: "Meal", parent: "Eat" },
+  { name: "Snack", parent: "Eat" },
   { name: "-", parent: "Exercise" },
   { name: "Aerobic", parent: "Exercise" },
   { name: "Strength", parent: "Exercise" },

@@ -12,6 +12,8 @@ import PieChartIcon from "@material-ui/icons/PieChart";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Typography from "@material-ui/core/Typography";
 import HistoryPanels from "./HistoryPanels";
+import ChartsTab from "./ChartsTab";
+import ExampleCharts from "./ExampleCharts";
 import ButtonToolBar from "./ButtonToolBar";
 
 function TabContainer({ children }) {
@@ -59,8 +61,12 @@ class FullWidthTabs extends React.Component {
           <TabContainer>
             <HistoryPanels />
           </TabContainer>
-          <TabContainer>Item Two</TabContainer>
-          <TabContainer>Item Three</TabContainer>
+          <TabContainer>
+            <ExampleCharts />
+          </TabContainer>
+          <TabContainer>
+            <ChartsTab />
+          </TabContainer>
           <TabContainer>Item Four</TabContainer>
         </SwipeableViews>
         <AppBar position="fixed" color="default" className={classes.appBar}>
