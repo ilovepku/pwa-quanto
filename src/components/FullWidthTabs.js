@@ -13,7 +13,6 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Typography from "@material-ui/core/Typography";
 import HistoryPanels from "./HistoryPanels";
 import ChartsTab from "./ChartsTab";
-import ExampleCharts from "./ExampleCharts";
 import ButtonToolBar from "./ButtonToolBar";
 
 function TabContainer({ children }) {
@@ -61,9 +60,7 @@ class FullWidthTabs extends React.Component {
           <TabContainer>
             <HistoryPanels />
           </TabContainer>
-          <TabContainer>
-            <ExampleCharts />
-          </TabContainer>
+          <TabContainer>Item Two</TabContainer>
           <TabContainer>
             <ChartsTab />
           </TabContainer>

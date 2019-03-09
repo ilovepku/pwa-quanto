@@ -32,7 +32,15 @@ function ChartsTab(props) {
       data[index].y += item.duration;
     }
   });
-  return <VictoryPie data={data} />;
+  return (
+    <VictoryPie
+      data={data}
+      animate={{
+        duration: 2000
+      }}
+      colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+    />
+  );
 }
 
 export default connect(mapStateToProps)(ChartsTab);
