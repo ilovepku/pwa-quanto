@@ -19,28 +19,84 @@ function ChartsTab(props) {
         return {
           activity: item.activity,
           detail: item.detail,
-          duration: nextDatetime - item.datetime
+          duration: Math.round((nextDatetime - item.datetime) / 1000 / 60)
         };
       })
     : null;
-  let data = [];
-  durationHistory.forEach(item => {
-    var index = data.findIndex(obj => obj.x === item.activity);
-    if (index === -1) {
-      data.push({ x: item.activity, y: item.duration });
-    } else {
-      data[index].y += item.duration;
-    }
-  });
+  console.log(JSON.stringify(durationHistory));
+  let data = groupBy(durationHistory, "activity");
+  let data2 = groupBy(
+    durationHistory.filter(item => (item.activity === "Work")),
+    "detail"
+  );
+  console.log(JSON.stringify(data2));
   return (
-    <VictoryPie
-      data={data}
-      animate={{
-        duration: 2000
-      }}
-      colorScale={"qualitative"}
-    />
+    <div>
+      <VictoryPie
+        data={data}
+        height={300}
+        padding={{ left: 0, top: 10, right: 0, bottom: 0 }}
+        colorScale={"qualitative"}
+        labelRadius={45}
+        labels={d =>
+          `${d.x} ${Math.floor(d.y / 60)}:${("0" + (d.y % 60)).slice(-2)}`
+        }
+        style={{ labels: { fill: "white", fontSize: 16 } }}
+        events={[
+          {
+            target: "data",
+            eventHandlers: {
+              onClick: () => {
+                return [
+                  {
+                    target: "data",
+                    mutation: props => {
+                      const fill = props.style && props.style.fill;
+                      return fill === "#c43a31"
+                        ? null
+                        : { style: { fill: "#c43a31" } };
+                    }
+                  },
+                  {
+                    target: "labels",
+                    mutation: props => {
+                      return props.text === "clicked"
+                        ? null
+                        : { text: "clicked" };
+                    }
+                  }
+                ];
+              }
+            }
+          }
+        ]}
+      />
+      <VictoryPie
+        data={data2}
+        height={300}
+        padding={{ left: 0, top: 10, right: 0, bottom: 0 }}
+        colorScale={"heatmap"}
+        labelRadius={45}
+        labels={d =>
+          `${d.x} ${Math.floor(d.y / 60)}:${("0" + (d.y % 60)).slice(-2)}`
+        }
+        style={{ labels: { fill: "white", fontSize: 16 } }}
+      />
+    </div>
   );
 }
 
 export default connect(mapStateToProps)(ChartsTab);
+
+function groupBy(objectArray, property) {
+  let resultArray = [];
+  objectArray.forEach(item => {
+    var index = resultArray.findIndex(obj => obj.x === item[property]);
+    if (index === -1) {
+      resultArray.push({ x: item[property], y: item.duration });
+    } else {
+      resultArray[index].y += item.duration;
+    }
+  });
+  return resultArray;
+}
