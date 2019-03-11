@@ -83,10 +83,9 @@ class ChartsTab extends Component {
           itemsPerRow={5}
           title={
             !selectedActivity
-              ? `All Activities ${date2HHMM(dataSum)}`
-              : `Activity: ${selectedActivity} ${date2HHMM(dataSum)}`
+              ? `Stats - All Activities ${date2HHMM(dataSum)}`
+              : `Stats - ${selectedActivity} ${date2HHMM(dataSum)}`
           }
-          centerTitle
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}
           data={legendData}
