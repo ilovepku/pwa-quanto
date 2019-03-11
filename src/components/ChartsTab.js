@@ -40,9 +40,10 @@ class ChartsTab extends Component {
     // data for legend
     const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
     const legendData = data.map(item => ({
-      name: `${item.x} ${Math.floor(item.y / 60)}:${("0" + (item.y % 60)).slice(
-        -2
-      )} ${((item.y / dataSum) * 100).toFixed(2)}%`
+      name: `${item.x} ${date2HHMM(item.y)} ${(
+        (item.y / dataSum) *
+        100
+      ).toFixed(2)}%`
     }));
     return (
       <div>
@@ -83,8 +84,8 @@ class ChartsTab extends Component {
           itemsPerRow={5}
           title={
             !selectedActivity
-              ? "All Activities"
-              : "Activity: " + selectedActivity
+              ? `All Activities ${date2HHMM(dataSum)} 100%`
+              : `Activity: ${selectedActivity} ${date2HHMM(dataSum)} 100%`
           }
           centerTitle
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
@@ -109,4 +110,8 @@ function groupBy(objectArray, property) {
     }
   });
   return resultArray;
+}
+
+function date2HHMM(date) {
+  return Math.floor(date / 60) + ":" + ("0" + (date % 60)).slice(-2);
 }
