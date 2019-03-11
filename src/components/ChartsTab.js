@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { VictoryPie } from "victory";
+import { VictoryPie, VictoryLegend } from "victory";
 
 const mapStateToProps = state => {
   return {
@@ -27,8 +27,14 @@ class ChartsTab extends Component {
           };
         })
       : null;
-    let data = groupBy(durationHistory, "activity");
-    let data2 = groupBy(
+    const chartData = groupBy(durationHistory, "activity");
+    const dataSum = chartData.reduce((acc, cur) => acc + cur.y, 0);
+    const legendData = chartData.map(item => ({
+      name: `${item.x} ${Math.floor(item.y / 60)}:${("0" + (item.y % 60)).slice(
+        -2
+      )} ${((item.y / dataSum) * 100).toFixed(2)}%`
+    }));
+    const data2 = groupBy(
       durationHistory.filter(
         item => item.activity === this.state.selectedActivity
       ),
@@ -37,15 +43,8 @@ class ChartsTab extends Component {
     return (
       <div>
         <VictoryPie
-          data={data}
-          height={300}
-          padding={{ left: 0, top: 10, right: 0, bottom: 0 }}
+          data={chartData}
           colorScale={"qualitative"}
-          labelRadius={45}
-          labels={d =>
-            `${d.x} ${Math.floor(d.y / 60)}:${("0" + (d.y % 60)).slice(-2)}`
-          }
-          style={{ labels: { fill: "white", fontSize: 16 } }}
           events={[
             {
               target: "data",
@@ -64,7 +63,7 @@ class ChartsTab extends Component {
             }
           ]}
         />
-        <VictoryPie
+        {/* <VictoryPie
           data={data2}
           height={300}
           padding={{ left: 0, top: 10, right: 0, bottom: 0 }}
@@ -74,6 +73,14 @@ class ChartsTab extends Component {
             `${d.x} ${Math.floor(d.y / 60)}:${("0" + (d.y % 60)).slice(-2)}`
           }
           style={{ labels: { fill: "white", fontSize: 16 } }}
+        /> */}
+        <VictoryLegend
+          itemsPerRow={5}
+          title="All Activities"
+          centerTitle
+          colorScale={"qualitative"}
+          style={{ title: { fontSize: 20 } }}
+          data={legendData}
         />
       </div>
     );
@@ -83,7 +90,7 @@ class ChartsTab extends Component {
 export default connect(mapStateToProps)(ChartsTab);
 
 function groupBy(objectArray, property) {
-  let resultArray = [];
+  const resultArray = [];
   objectArray.forEach(item => {
     var index = resultArray.findIndex(obj => obj.x === item[property]);
     if (index === -1) {
