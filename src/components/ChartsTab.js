@@ -40,10 +40,9 @@ class ChartsTab extends Component {
     // data for legend
     const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
     const legendData = data.map(item => ({
-      name: `${item.x} ${date2HHMM(item.y)} ${(
-        (item.y / dataSum) *
-        100
-      ).toFixed(2)}%`
+      name: `${((item.y / dataSum) * 100).toFixed(2)}% ${date2HHMM(item.y)} ${
+        item.x
+      }`
     }));
     return (
       <div>
@@ -84,8 +83,8 @@ class ChartsTab extends Component {
           itemsPerRow={5}
           title={
             !selectedActivity
-              ? `All Activities ${date2HHMM(dataSum)} 100%`
-              : `Activity: ${selectedActivity} ${date2HHMM(dataSum)} 100%`
+              ? `All Activities ${date2HHMM(dataSum)}`
+              : `Activity: ${selectedActivity} ${date2HHMM(dataSum)}`
           }
           centerTitle
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
