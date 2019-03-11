@@ -47,9 +47,6 @@ class ChartsTab extends Component {
     return (
       <div>
         <VictoryPie
-          animate={{
-            duration: 500
-          }}
           padAngle={3}
           padding={0}
           innerRadius={100}
