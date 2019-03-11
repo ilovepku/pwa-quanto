@@ -10,10 +10,11 @@ const mapStateToProps = state => {
 
 class ChartsTab extends Component {
   state = {
-    selectedActivity: this.props.history[0].activity
+    selectedActivity: ""
   };
   render() {
     const { history } = this.props;
+    const { selectedActivity } = this.state;
     const durationHistory = history.length
       ? history.map(function(item, index) {
           const nextDatetime =
@@ -27,24 +28,31 @@ class ChartsTab extends Component {
           };
         })
       : null;
-    const chartData = groupBy(durationHistory, "activity");
-    const dataSum = chartData.reduce((acc, cur) => acc + cur.y, 0);
-    const legendData = chartData.map(item => ({
+
+    const activityData = groupBy(durationHistory, "activity");
+
+    const detailData = groupBy(
+      durationHistory.filter(item => item.activity === selectedActivity),
+      "detail"
+    );
+    // data switch between activity and detail
+    const data = !selectedActivity ? activityData : detailData;
+    // data for legend
+    const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
+    const legendData = data.map(item => ({
       name: `${item.x} ${Math.floor(item.y / 60)}:${("0" + (item.y % 60)).slice(
         -2
       )} ${((item.y / dataSum) * 100).toFixed(2)}%`
     }));
-    const data2 = groupBy(
-      durationHistory.filter(
-        item => item.activity === this.state.selectedActivity
-      ),
-      "detail"
-    );
     return (
       <div>
         <VictoryPie
-          data={chartData}
-          colorScale={"qualitative"}
+          padAngle={3}
+          padding={0}
+          innerRadius={100}
+          data={data}
+          labels={() => null}
+          colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           events={[
             {
               target: "data",
@@ -54,7 +62,11 @@ class ChartsTab extends Component {
                     {
                       target: "data",
                       mutation: props => {
-                        this.setState({ selectedActivity: props.datum.x });
+                        if (!selectedActivity) {
+                          this.setState({ selectedActivity: props.datum.x });
+                        } else {
+                          this.setState({ selectedActivity: "" });
+                        }
                       }
                     }
                   ];
@@ -63,22 +75,16 @@ class ChartsTab extends Component {
             }
           ]}
         />
-        {/* <VictoryPie
-          data={data2}
-          height={300}
-          padding={{ left: 0, top: 10, right: 0, bottom: 0 }}
-          colorScale={"heatmap"}
-          labelRadius={45}
-          labels={d =>
-            `${d.x} ${Math.floor(d.y / 60)}:${("0" + (d.y % 60)).slice(-2)}`
-          }
-          style={{ labels: { fill: "white", fontSize: 16 } }}
-        /> */}
         <VictoryLegend
+          padding={0}
           itemsPerRow={5}
-          title="All Activities"
+          title={
+            !selectedActivity
+              ? "All Activities"
+              : "Activity: " + selectedActivity
+          }
           centerTitle
-          colorScale={"qualitative"}
+          colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}
           data={legendData}
         />
