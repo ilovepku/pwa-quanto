@@ -16,7 +16,7 @@
     "react-swipeable-views": "^0.13.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "victory": "^32.0.0"
+    "victory": "^32.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
