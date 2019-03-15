@@ -1,2 +1,0 @@
-# pwa-quanto
-PWA Quanto

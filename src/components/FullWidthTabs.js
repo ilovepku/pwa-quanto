@@ -12,6 +12,7 @@ import PieChartIcon from "@material-ui/icons/PieChart";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Typography from "@material-ui/core/Typography";
 import HistoryPanels from "./HistoryPanels";
+import ActivityList from "./ActivityList";
 import ChartsTab from "./ChartsTab";
 import ButtonToolBar from "./ButtonToolBar";
 
@@ -60,7 +61,9 @@ class FullWidthTabs extends React.Component {
           <TabContainer>
             <HistoryPanels />
           </TabContainer>
-          <TabContainer>Item Two</TabContainer>
+          <TabContainer>
+            <ActivityList />
+          </TabContainer>
           <TabContainer>
             <ChartsTab />
           </TabContainer>
