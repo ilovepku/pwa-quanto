@@ -19,35 +19,49 @@ class Column extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Droppable droppableId={this.props.column.id}>
+      <Draggable draggableId={this.props.column.id} index={this.props.index}>
         {provided => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            <List
-              subheader={
-                <ListSubheader>{this.props.column.title}</ListSubheader>
-              }
-              className={classes.root}
-            >
-              {this.props.tasks.map((task, index) => (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
-                  {provided => (
-                    <div
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                    >
-                      <ListItem>
-                        <ListItemText primary={task.content} />
-                      </ListItem>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-            </List>
-            {provided.placeholder}
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <Droppable droppableId={this.props.column.id} type="task">
+              {provided => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <List
+                    subheader={
+                      <ListSubheader>{this.props.column.title}</ListSubheader>
+                    }
+                    className={classes.root}
+                  >
+                    {this.props.tasks.map((task, index) => (
+                      <Draggable
+                        key={task.id}
+                        draggableId={task.id}
+                        index={index}
+                      >
+                        {provided => (
+                          <div
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <ListItem>
+                              <ListItemText primary={task.content} />
+                            </ListItem>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  </List>
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </div>
         )}
-      </Droppable>
+      </Draggable>
     );
   }
 }
