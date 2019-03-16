@@ -1,33 +1,9 @@
 import React from "react";
 import Column from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import initialData from "./initialData";
 
-const initialData = {
-  tasks: {
-    "task-1": { id: "task-1", content: "Take out the garbage" },
-    "task-2": { id: "task-2", content: "Watch my favorite show" },
-    "task-3": { id: "task-3", content: "Charge my phone" },
-    "task-4": { id: "task-4", content: "Cook dinner" }
-  },
-  columns: {
-    "column-1": {
-      id: "column-1",
-      title: "To do",
-      taskIds: ["task-1", "task-2"]
-    },
-    "column-2": {
-      id: "column-2",
-      title: "In Progress",
-      taskIds: ["task-3", "task-4"]
-    },
-    "column-3": {
-      id: "column-3",
-      title: "Done",
-      taskIds: []
-    }
-  },
-  columnOrder: ["column-1", "column-2", "column-3"]
-};
+console.log(initialData);
 
 class ActivityList extends React.Component {
   state = initialData;
@@ -46,38 +22,38 @@ class ActivityList extends React.Component {
       return;
     }
 
-    if (type === "column") {
-      const newColumnOrder = Array.from(this.state.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
+    if (type === "activity") {
+      const newActivityOrder = Array.from(this.state.activityOrder);
+      newActivityOrder.splice(source.index, 1);
+      newActivityOrder.splice(destination.index, 0, draggableId);
 
       const newState = {
         ...this.sate,
-        columnOrder: newColumnOrder
+        activityOrder: newActivityOrder
       };
       this.setState(newState);
       return;
     }
 
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
+    const start = this.state.activities[source.droppableId];
+    const finish = this.state.activities[destination.droppableId];
 
-    // moving within the same column
+    // moving within the same activity
     if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
+      const newDetailIds = Array.from(start.detailIds);
+      newDetailIds.splice(source.index, 1);
+      newDetailIds.splice(destination.index, 0, draggableId);
 
-      const newColumn = {
+      const newActivity = {
         ...start,
-        taskIds: newTaskIds
+        detailIds: newDetailIds
       };
 
       const newState = {
         ...this.state,
-        columns: {
-          ...this.state.columns,
-          [newColumn.id]: newColumn
+        activitys: {
+          ...this.state.activities,
+          [newActivity.id]: newActivity
         }
       };
 
@@ -85,25 +61,25 @@ class ActivityList extends React.Component {
       return;
     }
 
-    // moving from one column to another
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
+    // moving from one activity to another
+    const startDetailIds = Array.from(start.detailIds);
+    startDetailIds.splice(source.index, 1);
     const newStart = {
       ...start,
-      taskIds: startTaskIds
+      detailIds: startDetailIds
     };
 
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
+    const finishDetailIds = Array.from(finish.detailIds);
+    finishDetailIds.splice(destination.index, 0, draggableId);
     const newFinish = {
       ...finish,
-      taskIds: finishTaskIds
+      detailIds: finishDetailIds
     };
 
     const newState = {
       ...this.state,
-      columns: {
-        ...this.state.columns,
+      activities: {
+        ...this.state.activities,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish
       }
@@ -114,20 +90,20 @@ class ActivityList extends React.Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="all-columns" direction="vertical" type="column">
+        <Droppable droppableId="all-activities" direction="vertical" type="activity">
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {this.state.columnOrder.map((columnId, index) => {
-                const column = this.state.columns[columnId];
-                const tasks = column.taskIds.map(
-                  taskId => this.state.tasks[taskId]
+              {this.state.activityOrder.map((activityId, index) => {
+                const activity = this.state.activities[activityId];
+                const details = activity.detailIds.map(
+                  detailId => this.state.details[detailId]
                 );
 
                 return (
                   <Column
-                    key={column.id}
-                    column={column}
-                    tasks={tasks}
+                    key={activity.id}
+                    activity={activity}
+                    details={details}
                     index={index}
                   />
                 );

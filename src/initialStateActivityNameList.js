@@ -27,7 +27,7 @@
 
 const initialStateActivityNameList = [
   { name: "-", parent: "Eat" },
-  { name: "Cook", parent: "Eat" },
+  { name: "Prepare", parent: "Eat" },
   { name: "Meal", parent: "Eat" },
   { name: "Snack", parent: "Eat" },
   { name: "-", parent: "Exercise" },
@@ -47,6 +47,7 @@ const initialStateActivityNameList = [
   { name: "Health", parent: "Life" },
   { name: "Housework", parent: "Life" },
   { name: "Hygiene", parent: "Life" },
+  { name: "Prepare", parent: "Life" },
   { name: "Potty", parent: "Life" },
   { name: "Shop", parent: "Life" },
   { name: "-", parent: "Social" },
@@ -71,7 +72,9 @@ const initialStateActivityNameList = [
   { name: "Discuss", parent: "Work" },
   { name: "Job hunting", parent: "Work" },
   { name: "Meetings", parent: "Work" },
-  { name: "Research", parent: "Work" }
+  { name: "Planning", parent: "Work" },
+  { name: "Research", parent: "Work" },
+  { name: "Testing", parent: "Work" }
 ];
 
 export default initialStateActivityNameList;

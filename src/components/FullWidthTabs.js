@@ -61,13 +61,13 @@ class FullWidthTabs extends React.Component {
           <TabContainer>
             <HistoryPanels />
           </TabContainer>
-          <TabContainer>
-            <ActivityList />
-          </TabContainer>
+          <TabContainer>Item Two</TabContainer>
           <TabContainer>
             <ChartsTab />
           </TabContainer>
-          <TabContainer>Item Four</TabContainer>
+          <TabContainer>
+            <ActivityList />
+          </TabContainer>
         </SwipeableViews>
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <ButtonToolBar />

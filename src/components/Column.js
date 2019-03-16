@@ -19,26 +19,26 @@ class Column extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Draggable draggableId={this.props.column.id} index={this.props.index}>
+      <Draggable draggableId={this.props.activity.id} index={this.props.index}>
         {provided => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <Droppable droppableId={this.props.column.id} type="task">
+            <Droppable droppableId={this.props.activity.id} type="detail">
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <List
                     subheader={
-                      <ListSubheader>{this.props.column.title}</ListSubheader>
+                      <ListSubheader>{this.props.activity.title}</ListSubheader>
                     }
                     className={classes.root}
                   >
-                    {this.props.tasks.map((task, index) => (
+                    {this.props.details.map((detail, index) => (
                       <Draggable
-                        key={task.id}
-                        draggableId={task.id}
+                        key={detail.id}
+                        draggableId={detail.id}
                         index={index}
                       >
                         {provided => (
@@ -48,7 +48,7 @@ class Column extends React.Component {
                             ref={provided.innerRef}
                           >
                             <ListItem>
-                              <ListItemText primary={task.content} />
+                              <ListItemText primary={detail.content} />
                             </ListItem>
                           </div>
                         )}
