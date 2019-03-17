@@ -1,10 +1,10 @@
 import React from "react";
 import Column from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import initialData from "./initialData";
+import initialActivityList from "../initialActivityList";
 
 class ActivityList extends React.Component {
-  state = initialData;
+  state = initialActivityList;
 
   onDragEnd = result => {
     const { destination, source, draggableId, type } = result;

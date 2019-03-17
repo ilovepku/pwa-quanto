@@ -9,33 +9,34 @@ import {
   UPDATE_STATE
 } from "./constants.js";
 import CacheManager from "./cache";
-import initialStateActivityNameList from "./initialStateActivityNameList";
+import initialActivityList from "./initialActivityList";
 
 const cache = new CacheManager();
 
+const defaultActivityId = initialActivityList.activityOrder[0];
+const defaultActivity = initialActivityList.activities[defaultActivityId];
+const defaultActivityName = defaultActivity.title;
+const defaultDetailId = defaultActivity.detailIds[0];
+const defaultDetail = initialActivityList.details[defaultDetailId];
+const defaultDetailName = defaultDetail.content;
+
 const initialStateHistory = {
-  activityNameList: initialStateActivityNameList,
-  history: [{ datetime: new Date(), activity: "Work", detail: "-" }]
+  fullActivityList: initialActivityList,
+  history: [{ datetime: new Date(), activity: defaultActivityName, detail: defaultDetailName }]
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
   let newState;
   switch (action.type) {
     case ADD_TO_HISTORY:
-      const defaultActivity = [
-        ...new Set(state.activityNameList.map(item => item.parent))
-      ][0];
-      const defaultDetail = state.activityNameList.filter(
-        item => item.parent === defaultActivity
-      )[0].name;
       newState = {
         ...state,
         history: [
           ...state.history,
           {
             datetime: new Date(),
-            activity: defaultActivity,
-            detail: defaultDetail
+            activity: defaultActivityName,
+            detail: defaultDetailName
           }
         ]
       };

@@ -46,7 +46,7 @@ const styles = theme => ({
 
 const mapStateToProps = state => {
   return {
-    activityNameList: state.activityNameList
+    fullActivityList: state.fullActivityList
   };
 };
 
@@ -70,11 +70,17 @@ class DetailedExpansionPanel extends Component {
   };
 
   handleActivityChange = event => {
+    const selectedActivity = Object.values(this.props.fullActivityList.activities).filter(
+      item => item.title === event.target.value
+    )[0];
+
+    const detailList = selectedActivity.detailIds.map(
+      detailId => this.props.fullActivityList.details[detailId]
+    );
+
     this.setState({
       activity: event.target.value,
-      detail: this.props.activityNameList.filter(
-        item => item.parent === event.target.value
-      )[0].name
+      detail: detailList[0].content
     });
   };
 
@@ -85,7 +91,7 @@ class DetailedExpansionPanel extends Component {
   render() {
     const {
       classes,
-      activityNameList,
+      fullActivityList,
       saveActivity,
       splitActivity,
       deleteActivity,
@@ -93,11 +99,16 @@ class DetailedExpansionPanel extends Component {
     } = this.props;
     const { datetime, activity, detail } = this.state;
 
-    const activityList = [
-      ...new Set(activityNameList.map(item => item.parent))
-    ];
-    const detailList = activityNameList.filter(
-      item => item.parent === activity
+    const activityList = fullActivityList.activityOrder.map(activityId => {
+      return fullActivityList.activities[activityId];
+    });
+
+    const selectedActivity = Object.values(fullActivityList.activities).filter(
+      item => item.title === activity
+    )[0];
+
+    const detailList = selectedActivity.detailIds.map(
+      detailId => fullActivityList.details[detailId]
     );
 
     return (

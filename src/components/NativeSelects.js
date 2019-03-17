@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -18,12 +17,6 @@ const styles = theme => ({
   }
 });
 
-const mapStateToProps = state => {
-  return {
-    activityNameList: state.activityNameList
-  };
-};
-
 class NativeSelects extends React.Component {
   render() {
     const {
@@ -36,17 +29,17 @@ class NativeSelects extends React.Component {
       handleDetailChange
     } = this.props;
 
-    const activityListItems = activityList.map(item => {
+    const activityNameListItems = activityList.map(item => {
       return (
-        <option value={item} key={item}>
-          {item}
+        <option value={item.title} key={item.id}>
+          {item.title}
         </option>
       );
     });
-    const detailListItems = detailList.map(item => {
+    const detailNameListItems = detailList.map(item => {
       return (
-        <option value={item.name} key={item.name}>
-          {item.name}
+        <option value={item.content} key={item.id}>
+          {item.content}
         </option>
       );
     });
@@ -64,7 +57,7 @@ class NativeSelects extends React.Component {
               <Input name="activity" id="activity-native-label-placeholder" />
             }
           >
-            {activityListItems}
+            {activityNameListItems}
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
@@ -76,7 +69,7 @@ class NativeSelects extends React.Component {
             onChange={handleDetailChange}
             input={<Input name="detail" id="detail-native-label-placeholder" />}
           >
-            {detailListItems}
+            {detailNameListItems}
           </NativeSelect>
         </FormControl>
       </div>
@@ -88,4 +81,4 @@ NativeSelects.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(NativeSelects));
+export default withStyles(styles)(NativeSelects);
