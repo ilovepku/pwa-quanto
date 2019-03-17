@@ -35,6 +35,12 @@ const styles = () => ({
   }
 });
 
+const inlineStyles = {
+  views: {
+    paddingBottom: "125px"
+  }
+};
+
 class FullWidthTabs extends React.Component {
   state = {
     value: 0
@@ -50,13 +56,13 @@ class FullWidthTabs extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <React.Fragment>
         <CssBaseline />
         <SwipeableViews
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
+          style={inlineStyles.views}
         >
           <TabContainer>
             <HistoryPanels />

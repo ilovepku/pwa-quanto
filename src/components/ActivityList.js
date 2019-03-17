@@ -3,8 +3,6 @@ import Column from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import initialData from "./initialData";
 
-console.log(initialData);
-
 class ActivityList extends React.Component {
   state = initialData;
 
