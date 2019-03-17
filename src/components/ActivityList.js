@@ -49,7 +49,7 @@ class ActivityList extends React.Component {
 
       const newState = {
         ...this.state,
-        activitys: {
+        activities: {
           ...this.state.activities,
           [newActivity.id]: newActivity
         }
@@ -88,7 +88,11 @@ class ActivityList extends React.Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="all-activities" direction="vertical" type="activity">
+        <Droppable
+          droppableId="all-activities"
+          direction="vertical"
+          type="activity"
+        >
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {this.state.activityOrder.map((activityId, index) => {
