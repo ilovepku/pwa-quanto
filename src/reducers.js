@@ -1,11 +1,12 @@
 import {
-  SET_ACTIVITY_DATETIME,
+  /* SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
-  SET_DETAIL,
+  SET_DETAIL, */
   SAVE_ACTIVITY,
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  REORDER_ACTIVITY_LIST,
   UPDATE_STATE
 } from "./constants.js";
 import CacheManager from "./cache";
@@ -13,6 +14,7 @@ import initialActivityList from "./initialActivityList";
 
 const cache = new CacheManager();
 
+// find default activity and detail names
 const defaultActivityId = initialActivityList.activityOrder[0];
 const defaultActivity = initialActivityList.activities[defaultActivityId];
 const defaultActivityName = defaultActivity.title;
@@ -22,7 +24,13 @@ const defaultDetailName = defaultDetail.content;
 
 const initialStateHistory = {
   fullActivityList: initialActivityList,
-  history: [{ datetime: new Date(), activity: defaultActivityName, detail: defaultDetailName }]
+  history: [
+    {
+      datetime: new Date(),
+      activity: defaultActivityName,
+      detail: defaultDetailName
+    }
+  ]
 };
 
 export const rootReducer = (state = initialStateHistory, action = {}) => {
@@ -42,7 +50,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
-    case SET_ACTIVITY_DATETIME:
+    /* case SET_ACTIVITY_DATETIME:
       newState = {
         ...state,
         history: state.history.map((item, index) => {
@@ -84,7 +92,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         })
       };
       cache.writeData("state", newState);
-      return newState;
+      return newState; */
     case SAVE_ACTIVITY:
       newState = {
         ...state,
@@ -122,6 +130,98 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
+
+    case REORDER_ACTIVITY_LIST:
+      const { destination, source, draggableId, type } = action.payload;
+
+      if (!destination) {
+        return;
+      }
+
+      if (
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      ) {
+        return;
+      }
+
+      if (type === "activity") {
+        const newActivityOrder = Array.from(
+          state.fullActivityList.activityOrder
+        );
+        newActivityOrder.splice(source.index, 1);
+        newActivityOrder.splice(destination.index, 0, draggableId);
+
+        newState = {
+          ...state,
+          fullActivityList: {
+            ...state.fullActivityList,
+            activityOrder: newActivityOrder
+          }
+        };
+        cache.writeData("state", newState);
+        return newState;
+      }
+
+      const start = state.fullActivityList.activities[source.droppableId];
+      const finish = state.fullActivityList.activities[destination.droppableId];
+
+      // moving within the same activity
+      if (start === finish) {
+        const newDetailIds = Array.from(start.detailIds);
+        newDetailIds.splice(source.index, 1);
+        newDetailIds.splice(destination.index, 0, draggableId);
+
+        const newActivity = {
+          ...start,
+          detailIds: newDetailIds
+        };
+
+        newState = {
+          ...state,
+          fullActivityList: {
+            ...state.fullActivityList,
+            activities: {
+              ...state.fullActivityList.activities,
+              [newActivity.id]: newActivity
+            }
+          }
+        };
+
+        cache.writeData("state", newState);
+        return newState;
+      }
+
+      // moving from one activity to another
+      const startDetailIds = Array.from(start.detailIds);
+      startDetailIds.splice(source.index, 1);
+      const newStart = {
+        ...start,
+        detailIds: startDetailIds
+      };
+
+      const finishDetailIds = Array.from(finish.detailIds);
+      finishDetailIds.splice(destination.index, 0, draggableId);
+      const newFinish = {
+        ...finish,
+        detailIds: finishDetailIds
+      };
+
+      newState = {
+        ...state,
+        fullActivityList: {
+          ...state.fullActivityList,
+          activities: {
+            ...state.fullActivityList.activities,
+            [newStart.id]: newStart,
+            [newFinish.id]: newFinish
+          }
+        }
+      };
+
+      cache.writeData("state", newState);
+      return newState;
+
     case UPDATE_STATE:
       return action.payload;
     default:
