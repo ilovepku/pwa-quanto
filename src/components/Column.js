@@ -1,11 +1,23 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import DeleteIcon from "@material-ui/icons/Delete";
+
+import { deleteActivityName, deleteDetailName } from "../actions";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteActivityName: payload => dispatch(deleteActivityName(payload)),
+    deleteDetailName: payload => dispatch(deleteDetailName(payload))
+  };
+};
 
 const styles = theme => ({
   root: {
@@ -17,25 +29,39 @@ const styles = theme => ({
 
 class Column extends React.Component {
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      activity,
+      index,
+      details,
+      deleteActivityName,
+      deleteDetailName
+    } = this.props;
     return (
-      <Draggable draggableId={this.props.activity.id} index={this.props.index}>
+      <Draggable draggableId={activity.id} index={index}>
         {provided => (
           <div
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <Droppable droppableId={this.props.activity.id} type="detail">
+            <Droppable droppableId={activity.id} type="detail">
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <List
                     subheader={
-                      <ListSubheader>{this.props.activity.title}</ListSubheader>
+                      <ListSubheader>
+                        {activity.title}
+                        <ListItemIcon>
+                          <DeleteIcon
+                            onClick={() => deleteActivityName(activity.id)}
+                          />
+                        </ListItemIcon>
+                      </ListSubheader>
                     }
                     className={classes.root}
                   >
-                    {this.props.details.map((detail, index) => (
+                    {details.map((detail, index) => (
                       <Draggable
                         key={detail.id}
                         draggableId={detail.id}
@@ -49,6 +75,16 @@ class Column extends React.Component {
                           >
                             <ListItem>
                               <ListItemText primary={detail.content} />
+                              <ListItemIcon>
+                                <DeleteIcon
+                                  onClick={() =>
+                                    deleteDetailName({
+                                      activityId: activity.id,
+                                      detailId: detail.id
+                                    })
+                                  }
+                                />
+                              </ListItemIcon>
                             </ListItem>
                           </div>
                         )}
@@ -70,4 +106,9 @@ Column.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Column);
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Column)
+);

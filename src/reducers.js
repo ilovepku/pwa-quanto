@@ -6,6 +6,8 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  DELETE_ACTIVITY_NAME,
+  DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE
 } from "./constants.js";
@@ -128,6 +130,46 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         ...state,
         history: state.history.filter((item, index) => index !== action.payload)
       };
+      cache.writeData("state", newState);
+      return newState;
+
+    case DELETE_ACTIVITY_NAME:
+      newState = {
+        ...state,
+        fullActivityList: {
+          ...state.fullActivityList,
+          activityOrder: state.fullActivityList.activityOrder.filter(
+            item => item !== action.payload
+          )
+        }
+      };
+      newState.fullActivityList.activities[action.payload].detailIds.forEach(
+        item => {
+          delete newState.fullActivityList.details[item];
+        }
+      );
+      delete newState.fullActivityList.activities[action.payload];
+      console.log(newState);
+      cache.writeData("state", newState);
+      return newState;
+
+    case DELETE_DETAIL_NAME:
+      newState = {
+        ...state,
+        fullActivityList: {
+          ...state.fullActivityList,
+          activities: {
+            ...state.fullActivityList.activities,
+            [action.payload.activityId]: {
+              ...state.fullActivityList.activities[action.payload.activityId],
+              detailIds: state.fullActivityList.activities[
+                action.payload.activityId
+              ].detailIds.filter(item => item !== action.payload.detailId)
+            }
+          }
+        }
+      };
+      delete newState.fullActivityList.details[action.payload.detailId];
       cache.writeData("state", newState);
       return newState;
 

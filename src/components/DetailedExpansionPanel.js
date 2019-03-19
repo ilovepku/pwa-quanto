@@ -70,9 +70,9 @@ class DetailedExpansionPanel extends Component {
   };
 
   handleActivityChange = event => {
-    const selectedActivity = Object.values(this.props.fullActivityList.activities).filter(
-      item => item.title === event.target.value
-    )[0];
+    const selectedActivity = Object.values(
+      this.props.fullActivityList.activities
+    ).filter(item => item.title === event.target.value)[0];
 
     const detailList = selectedActivity.detailIds.map(
       detailId => this.props.fullActivityList.details[detailId]
@@ -103,9 +103,14 @@ class DetailedExpansionPanel extends Component {
       return fullActivityList.activities[activityId];
     });
 
-    const selectedActivity = Object.values(fullActivityList.activities).filter(
+    const currentActivity = Object.values(fullActivityList.activities).filter(
       item => item.title === activity
     )[0];
+
+    // check if current activity still exist in activity list
+    const selectedActivity = !currentActivity
+      ? Object.values(fullActivityList.activities)[0]
+      : currentActivity;
 
     const detailList = selectedActivity.detailIds.map(
       detailId => fullActivityList.details[detailId]

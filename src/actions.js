@@ -6,6 +6,8 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  DELETE_ACTIVITY_NAME,
+  DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE
 } from "./constants.js";
@@ -42,6 +44,16 @@ export const deleteActivity = payload => ({
 
 export const addToHistory = () => ({
   type: ADD_TO_HISTORY
+});
+
+export const deleteActivityName = payload => ({
+  type: DELETE_ACTIVITY_NAME,
+  payload
+});
+
+export const deleteDetailName = payload => ({
+  type: DELETE_DETAIL_NAME,
+  payload
 });
 
 export const reorderActivityList = payload => ({
