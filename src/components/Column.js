@@ -5,9 +5,11 @@ import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import InputBase from "@material-ui/core/InputBase";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
+import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import { deleteActivityName, deleteDetailName } from "../actions";
@@ -70,12 +72,20 @@ class Column extends React.Component {
                         {provided => (
                           <div
                             {...provided.draggableProps}
-                            {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
                             <ListItem>
-                              <ListItemText primary={detail.content} />
-                              <ListItemIcon>
+                              <ListItemIcon
+                                {...provided.dragHandleProps}
+                                aria-label="Drag"
+                              >
+                                <DragIndicatorIcon />
+                              </ListItemIcon>
+                              <InputBase defaultValue={detail.content} />
+                              <ListItemIcon aria-label="Edit">
+                                <CreateIcon />
+                              </ListItemIcon>
+                              <ListItemIcon aria-label="Delete">
                                 <DeleteIcon
                                   onClick={() =>
                                     deleteDetailName({

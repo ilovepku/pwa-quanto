@@ -6,6 +6,8 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  EDIT_ACTIVITY_NAME,
+  EDIT_DETAIL_NAME,
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
@@ -44,6 +46,16 @@ export const deleteActivity = payload => ({
 
 export const addToHistory = () => ({
   type: ADD_TO_HISTORY
+});
+
+export const editActivityName = payload => ({
+  type: EDIT_ACTIVITY_NAME,
+  payload
+});
+
+export const editDetailName = payload => ({
+  type: EDIT_DETAIL_NAME,
+  payload
 });
 
 export const deleteActivityName = payload => ({

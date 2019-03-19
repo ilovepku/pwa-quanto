@@ -6,6 +6,8 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  EDIT_ACTIVITY_NAME,
+  EDIT_DETAIL_NAME,
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
@@ -133,6 +135,40 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       cache.writeData("state", newState);
       return newState;
 
+    case EDIT_ACTIVITY_NAME:
+      newState = {
+        ...state,
+        fullActivityList: {
+          ...state.fullActivityList,
+          activities: {
+            ...state.fullActivityList.activities,
+            [action.payload.activityId]: {
+              ...state.fullActivityList.activities[action.payload.activityId],
+              title: action.payload.title
+            }
+          }
+        }
+      };
+      cache.writeData("state", newState);
+      return newState;
+
+    case EDIT_DETAIL_NAME:
+      newState = {
+        ...state,
+        fullActivityList: {
+          ...state.fullActivityList,
+          details: {
+            ...state.fullActivityList.details,
+            [action.payload.detailId]: {
+              ...state.fullActivityList.details[action.payload.detailId],
+              content: action.payload.content
+            }
+          }
+        }
+      };
+      cache.writeData("state", newState);
+      return newState;
+
     case DELETE_ACTIVITY_NAME:
       newState = {
         ...state,
@@ -149,7 +185,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         }
       );
       delete newState.fullActivityList.activities[action.payload];
-      console.log(newState);
       cache.writeData("state", newState);
       return newState;
 
