@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import Column from "./Column";
+import List from "@material-ui/core/List";
+import NestedListItem from "./NestedListItem";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { reorderActivityList } from "../actions";
@@ -29,22 +30,24 @@ class ActivityList extends React.Component {
         >
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {fullActivityList.activityOrder.map((activityId, index) => {
-                const activity = fullActivityList.activities[activityId];
-                const details = activity.detailIds.map(
-                  detailId => fullActivityList.details[detailId]
-                );
+              <List component="nav">
+                {fullActivityList.activityOrder.map((activityId, index) => {
+                  const activity = fullActivityList.activities[activityId];
+                  const details = activity.detailIds.map(
+                    detailId => fullActivityList.details[detailId]
+                  );
 
-                return (
-                  <Column
-                    key={activity.id}
-                    activity={activity}
-                    details={details}
-                    index={index}
-                  />
-                );
-              })}
-              {provided.placeholder}
+                  return (
+                    <NestedListItem
+                      key={activity.id}
+                      activity={activity}
+                      details={details}
+                      index={index}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </List>
             </div>
           )}
         </Droppable>

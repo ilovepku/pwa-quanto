@@ -15,7 +15,6 @@ import HistoryPanels from "./HistoryPanels";
 import ActivityList from "./ActivityList";
 import ChartsTab from "./ChartsTab";
 import ButtonToolBar from "./ButtonToolBar";
-import NestedList from "./NestedList";
 
 function TabContainer({ children }) {
   return (
@@ -69,7 +68,7 @@ class FullWidthTabs extends React.Component {
             <HistoryPanels />
           </TabContainer>
           <TabContainer>
-            <NestedList />
+            Testing
           </TabContainer>
           <TabContainer>
             <ChartsTab />
