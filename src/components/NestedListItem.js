@@ -5,7 +5,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -58,20 +57,24 @@ class NestedListItem extends React.Component {
             <Droppable droppableId={activity.id} type="detail">
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <ListItem button onClick={this.handleClick}>
+                  <ListItem>
                     <ListItemIcon
                       {...provided.dragHandleProps}
                       aria-label="Drag"
                     >
                       <DragIndicatorIcon />
                     </ListItemIcon>
-                    <ListItemText inset primary={activity.name} />
+                    <Input item={activity} />
                     <ListItemIcon>
                       <DeleteIcon
                         onClick={() => deleteActivityName(activity.id)}
                       />
                     </ListItemIcon>
-                    {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                    {this.state.open ? (
+                      <ExpandLess onClick={this.handleClick} />
+                    ) : (
+                      <ExpandMore onClick={this.handleClick} />
+                    )}
                   </ListItem>
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
@@ -86,7 +89,7 @@ class NestedListItem extends React.Component {
                               {...provided.draggableProps}
                               ref={provided.innerRef}
                             >
-                              <ListItem button className={classes.nested}>
+                              <ListItem className={classes.nested}>
                                 <ListItemIcon
                                   {...provided.dragHandleProps}
                                   aria-label="Drag"

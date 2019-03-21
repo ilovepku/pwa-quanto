@@ -5,7 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 
-import { editDetailName } from "../actions";
+import { editActivityName, editDetailName } from "../actions";
 
 const styles = theme => ({
   form: {
@@ -15,6 +15,7 @@ const styles = theme => ({
 
 const mapDispatchToProps = dispatch => {
   return {
+    editActivityName: payload => dispatch(editActivityName(payload)),
     editDetailName: payload => dispatch(editDetailName(payload))
   };
 };
@@ -27,11 +28,19 @@ class Input extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.editDetailName({
-      detailId: this.props.item.id,
-      name: this.state.value
-    });
     event.preventDefault();
+    if (!this.props.item.detailIds) {
+      // check for item type: acitivty or detail
+      this.props.editDetailName({
+        detailId: this.props.item.id,
+        name: this.state.value
+      });
+    } else {
+      this.props.editActivityName({
+        activityId: this.props.item.id,
+        name: this.state.value
+      });
+    }
   }
 
   render() {
