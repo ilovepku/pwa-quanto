@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import NestedListItem from "./NestedListItem";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import Input from "./Input";
 
 import { reorderActivityList } from "../actions";
 
@@ -47,6 +49,9 @@ class ActivityList extends React.Component {
                   );
                 })}
                 {provided.placeholder}
+                <ListItem>
+                  <Input item={{ id: null, name: null, detailIds: [] }} />
+                </ListItem>
               </List>
             </div>
           )}

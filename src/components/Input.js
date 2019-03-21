@@ -29,17 +29,23 @@ class Input extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (!this.props.item.detailIds) {
+    if (this.props.item.detailIds) {
       // check for item type: acitivty or detail
-      this.props.editDetailName({
-        detailId: this.props.item.id,
-        name: this.state.value
-      });
-    } else {
       this.props.editActivityName({
         activityId: this.props.item.id,
         name: this.state.value
       });
+    } else {
+      this.props.editDetailName({
+        activityId: this.props.activityId,
+        detailId: this.props.item.id,
+        name: this.state.value
+      });
+    }
+    // clear input after adding new entry
+    if (this.props.item.id === null) {
+      this.setState({ value: null });
+      this.myFormRef.reset(); // manually reset form
     }
   }
 
@@ -49,9 +55,11 @@ class Input extends React.Component {
       <form
         onSubmit={event => this.handleSubmit(event)}
         className={classes.form}
+        ref={el => (this.myFormRef = el)}
       >
         <InputBase
           defaultValue={this.state.value}
+          placeholder={!this.props.item.name ? "Add a new one here!" : null}
           onChange={event => this.handleChange(event)}
         />
         <IconButton type="submit" aria-label="Edit">

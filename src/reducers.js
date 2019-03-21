@@ -1,3 +1,5 @@
+import nanoid from "nanoid";
+
 import {
   /* SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
@@ -136,15 +138,26 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       return newState;
 
     case EDIT_ACTIVITY_NAME:
+      let activityId = action.payload.activityId;
+      let newActivityIds = state.fullActivityList.activityIds.slice();
+      if (!activityId) {
+        activityId = "activity-" + nanoid(10);
+        newActivityIds.push(activityId);
+      }
+
       newState = {
         ...state,
         fullActivityList: {
           ...state.fullActivityList,
+          activityIds: newActivityIds,
           activities: {
             ...state.fullActivityList.activities,
-            [action.payload.activityId]: {
-              ...state.fullActivityList.activities[action.payload.activityId],
-              name: action.payload.name
+            [activityId]: {
+              id: activityId,
+              name: action.payload.name,
+              detailIds: !action.payload.activityId
+                ? []
+                : state.fullActivityList.activities[activityId].detailIds
             }
           }
         }
@@ -153,15 +166,31 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       return newState;
 
     case EDIT_DETAIL_NAME:
+      let detailId = action.payload.detailId;
+      let newDetailIds = state.fullActivityList.activities[
+        action.payload.activityId
+      ].detailIds.slice();
+      if (!detailId) {
+        detailId = "detail-" + nanoid(10);
+        newDetailIds.push(detailId);
+      }
+
       newState = {
         ...state,
         fullActivityList: {
           ...state.fullActivityList,
           details: {
             ...state.fullActivityList.details,
-            [action.payload.detailId]: {
-              ...state.fullActivityList.details[action.payload.detailId],
+            [detailId]: {
+              id: detailId,
               name: action.payload.name
+            }
+          },
+          activities: {
+            ...state.fullActivityList.activities,
+            [action.payload.activityId]: {
+              ...state.fullActivityList.activities[action.payload.activityId],
+              detailIds: newDetailIds
             }
           }
         }
@@ -223,9 +252,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       }
 
       if (type === "activity") {
-        const newactivityIds = Array.from(
-          state.fullActivityList.activityIds
-        );
+        const newactivityIds = Array.from(state.fullActivityList.activityIds);
         newactivityIds.splice(source.index, 1);
         newactivityIds.splice(destination.index, 0, draggableId);
 
