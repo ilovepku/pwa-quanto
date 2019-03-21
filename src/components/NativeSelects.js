@@ -31,15 +31,15 @@ class NativeSelects extends React.Component {
 
     const activityNameListItems = activityList.map(item => {
       return (
-        <option value={item.title} key={item.id}>
-          {item.title}
+        <option value={item.name} key={item.id}>
+          {item.name}
         </option>
       );
     });
     const detailNameListItems = detailList.map(item => {
       return (
-        <option value={item.content} key={item.id}>
-          {item.content}
+        <option value={item.name} key={item.id}>
+          {item.name}
         </option>
       );
     });

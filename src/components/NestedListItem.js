@@ -46,6 +46,7 @@ class NestedListItem extends React.Component {
       deleteActivityName,
       deleteDetailName
     } = this.props;
+    console.log(activity);
     return (
       <Draggable draggableId={activity.id} index={index}>
         {provided => (
@@ -64,7 +65,7 @@ class NestedListItem extends React.Component {
                     >
                       <DragIndicatorIcon />
                     </ListItemIcon>
-                    <ListItemText inset primary={activity.title} />
+                    <ListItemText inset primary={activity.name} />
                     <ListItemIcon>
                       <DeleteIcon
                         onClick={() => deleteActivityName(activity.id)}
@@ -92,7 +93,7 @@ class NestedListItem extends React.Component {
                                 >
                                   <DragIndicatorIcon />
                                 </ListItemIcon>
-                                <Input detail={detail} />
+                                <Input item={detail} />
                                 <ListItemIcon aria-label="Delete">
                                   <DeleteIcon
                                     onClick={() =>

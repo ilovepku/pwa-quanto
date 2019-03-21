@@ -72,7 +72,7 @@ class DetailedExpansionPanel extends Component {
   handleActivityChange = event => {
     const selectedActivity = Object.values(
       this.props.fullActivityList.activities
-    ).filter(item => item.title === event.target.value)[0];
+    ).filter(item => item.name === event.target.value)[0];
 
     const detailList = selectedActivity.detailIds.map(
       detailId => this.props.fullActivityList.details[detailId]
@@ -80,7 +80,7 @@ class DetailedExpansionPanel extends Component {
 
     this.setState({
       activity: event.target.value,
-      detail: detailList[0].content
+      detail: detailList[0].name
     });
   };
 
@@ -99,12 +99,12 @@ class DetailedExpansionPanel extends Component {
     } = this.props;
     const { datetime, activity, detail } = this.state;
 
-    const activityList = fullActivityList.activityOrder.map(activityId => {
+    const activityList = fullActivityList.activityIds.map(activityId => {
       return fullActivityList.activities[activityId];
     });
 
     const currentActivity = Object.values(fullActivityList.activities).filter(
-      item => item.title === activity
+      item => item.name === activity
     )[0];
 
     // check if current activity still exist in activity list

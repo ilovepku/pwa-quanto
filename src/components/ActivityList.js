@@ -31,7 +31,7 @@ class ActivityList extends React.Component {
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               <List component="nav">
-                {fullActivityList.activityOrder.map((activityId, index) => {
+                {fullActivityList.activityIds.map((activityId, index) => {
                   const activity = fullActivityList.activities[activityId];
                   const details = activity.detailIds.map(
                     detailId => fullActivityList.details[detailId]

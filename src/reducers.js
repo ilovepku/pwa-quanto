@@ -19,12 +19,12 @@ import initialActivityList from "./initialActivityList";
 const cache = new CacheManager();
 
 // find default activity and detail names
-const defaultActivityId = initialActivityList.activityOrder[0];
+const defaultActivityId = initialActivityList.activityIds[0];
 const defaultActivity = initialActivityList.activities[defaultActivityId];
-const defaultActivityName = defaultActivity.title;
+const defaultActivityName = defaultActivity.name;
 const defaultDetailId = defaultActivity.detailIds[0];
 const defaultDetail = initialActivityList.details[defaultDetailId];
-const defaultDetailName = defaultDetail.content;
+const defaultDetailName = defaultDetail.name;
 
 const initialStateHistory = {
   fullActivityList: initialActivityList,
@@ -144,7 +144,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
             ...state.fullActivityList.activities,
             [action.payload.activityId]: {
               ...state.fullActivityList.activities[action.payload.activityId],
-              title: action.payload.title
+              name: action.payload.name
             }
           }
         }
@@ -161,7 +161,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
             ...state.fullActivityList.details,
             [action.payload.detailId]: {
               ...state.fullActivityList.details[action.payload.detailId],
-              content: action.payload.content
+              name: action.payload.name
             }
           }
         }
@@ -174,7 +174,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         ...state,
         fullActivityList: {
           ...state.fullActivityList,
-          activityOrder: state.fullActivityList.activityOrder.filter(
+          activityIds: state.fullActivityList.activityIds.filter(
             item => item !== action.payload
           )
         }
@@ -223,17 +223,17 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       }
 
       if (type === "activity") {
-        const newActivityOrder = Array.from(
-          state.fullActivityList.activityOrder
+        const newactivityIds = Array.from(
+          state.fullActivityList.activityIds
         );
-        newActivityOrder.splice(source.index, 1);
-        newActivityOrder.splice(destination.index, 0, draggableId);
+        newactivityIds.splice(source.index, 1);
+        newactivityIds.splice(destination.index, 0, draggableId);
 
         newState = {
           ...state,
           fullActivityList: {
             ...state.fullActivityList,
-            activityOrder: newActivityOrder
+            activityIds: newactivityIds
           }
         };
         cache.writeData("state", newState);

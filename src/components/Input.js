@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Input extends React.Component {
-  state = { value: this.props.detail.content };
+  state = { value: this.props.item.name };
 
   handleChange(event) {
     this.setState({ value: event.target.value });
@@ -28,8 +28,8 @@ class Input extends React.Component {
 
   handleSubmit(event) {
     this.props.editDetailName({
-      detailId: this.props.detail.id,
-      content: this.state.value
+      detailId: this.props.item.id,
+      name: this.state.value
     });
     event.preventDefault();
   }
