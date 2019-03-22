@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import PauseIcon from "@material-ui/icons/Pause";
 
-import { addToHistory } from "../actions";
+import { addToHistory } from "../redux/actions";
 
 const styles = theme => ({
   title: {

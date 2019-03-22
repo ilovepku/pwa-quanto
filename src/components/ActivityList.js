@@ -6,7 +6,7 @@ import NestedListItem from "./NestedListItem";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Input from "./Input";
 
-import { reorderActivityList } from "../actions";
+import { reorderActivityList } from "../redux/actions";
 
 const mapStateToProps = state => {
   return {

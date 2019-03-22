@@ -1,27 +1,27 @@
 import React from "react";
+
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+
 import CssBaseline from "@material-ui/core/CssBaseline";
-import SwipeableViews from "react-swipeable-views";
-import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import FunctionsIcon from "@material-ui/icons/Functions";
+import Typography from "@material-ui/core/Typography";
+import AppBar from "@material-ui/core/AppBar";
+import SwipeableViews from "react-swipeable-views";
+
 import HistoryIcon from "@material-ui/icons/History";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import SettingsIcon from "@material-ui/icons/Settings";
-import Typography from "@material-ui/core/Typography";
-import HistoryPanels from "./HistoryPanels";
+import InfoIcon from "@material-ui/icons/Info";
+
+import HistoryTabView from "./HistoryTabView";
 import ActivityList from "./ActivityList";
 import ChartsTab from "./ChartsTab";
 import ButtonToolBar from "./ButtonToolBar";
 
 function TabContainer({ children }) {
-  return (
-    <Typography component="div" style={{ padding: 5 }}>
-      {children}
-    </Typography>
-  );
+  return <Typography component="div">{children}</Typography>;
 }
 
 TabContainer.propTypes = {
@@ -36,12 +36,12 @@ const styles = () => ({
 });
 
 const inlineStyles = {
-  views: {    
+  views: {
     paddingBottom: "125px"
   }
 };
 
-class FullWidthTabs extends React.Component {
+class SwipeableTabViews extends React.Component {
   state = {
     value: 0
   };
@@ -50,8 +50,8 @@ class FullWidthTabs extends React.Component {
     this.setState({ value });
   };
 
-  handleChangeIndex = index => {
-    this.setState({ value: index });
+  handleChangeIndex = value => {
+    this.setState({ value });
   };
 
   render() {
@@ -65,15 +65,15 @@ class FullWidthTabs extends React.Component {
           style={inlineStyles.views}
         >
           <TabContainer>
-            <HistoryPanels />
+            <HistoryTabView />
           </TabContainer>
-          <TabContainer>Testing</TabContainer>
           <TabContainer>
             <ChartsTab />
           </TabContainer>
           <TabContainer>
             <ActivityList />
           </TabContainer>
+          <TabContainer>By Sean LEE</TabContainer>
         </SwipeableViews>
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <ButtonToolBar />
@@ -85,9 +85,9 @@ class FullWidthTabs extends React.Component {
             variant="fullWidth"
           >
             <Tab icon={<HistoryIcon />} label="HISTORY" />
-            <Tab icon={<FunctionsIcon />} label="STATISTICS" />
             <Tab icon={<PieChartIcon />} label="CHARTS" />
             <Tab icon={<SettingsIcon />} label="SETTINGS" />
+            <Tab icon={<InfoIcon />} label="ABOUT" />
           </Tabs>
         </AppBar>
       </React.Fragment>
@@ -95,9 +95,8 @@ class FullWidthTabs extends React.Component {
   }
 }
 
-FullWidthTabs.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+SwipeableTabViews.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(FullWidthTabs);
+export default withStyles(styles)(SwipeableTabViews);

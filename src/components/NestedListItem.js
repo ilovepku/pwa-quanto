@@ -12,7 +12,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import Input from "./Input";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-import { deleteActivityName, deleteDetailName } from "../actions";
+import { deleteActivityName, deleteDetailName } from "../redux/actions";
 
 const mapDispatchToProps = dispatch => {
   return {

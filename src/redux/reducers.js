@@ -15,8 +15,10 @@ import {
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE
 } from "./constants.js";
-import CacheManager from "./cache";
-import initialActivityList from "./initialActivityList";
+
+import CacheManager from "../global/cache";
+
+import initialActivityList from "../data/initialActivityList";
 
 const cache = new CacheManager();
 
@@ -39,6 +41,7 @@ const initialStateHistory = {
   ]
 };
 
+// Todo: seperate history and activityList into 2 reducers?
 export const rootReducer = (state = initialStateHistory, action = {}) => {
   let newState;
   switch (action.type) {

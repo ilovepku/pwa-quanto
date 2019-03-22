@@ -5,7 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 
-import { editActivityName, editDetailName } from "../actions";
+import { editActivityName, editDetailName } from "../redux/actions";
 
 const styles = theme => ({
   form: {

@@ -1,40 +1,35 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
+
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+
+import { connect } from "react-redux";
+import { saveActivity, splitActivity, deleteActivity } from "../redux/actions";
+
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 import SaveIcon from "@material-ui/icons/Save";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import DateTimePicker from "./DateTimePicker";
-import NativeSelects from "./NativeSelects";
 
-import { saveActivity, splitActivity, deleteActivity } from "../actions";
+import classNames from "classnames";
+
+import HistoryItemDateTimePicker from "./HistoryItemDateTimePicker";
+import HistoryItemNativeSelects from "./HistoryItemNativeSelects";
 
 const styles = theme => ({
-  heading: {
-    fontSize: theme.typography.pxToRem(15)
+  leftColumn: {
+    flexBasis: "40%"
   },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
-  },
-  details: {
-    alignItems: "center"
-  },
-  column: {
-    flexBasis: "50%"
-  },
-  button: {
-    margin: theme.spacing.unit
+  rightColumn: {
+    flexBasis: "60%"
   },
   rightIcon: {
     marginLeft: theme.spacing.unit
@@ -49,7 +44,6 @@ const mapStateToProps = state => {
     fullActivityList: state.fullActivityList
   };
 };
-
 const mapDispatchToProps = dispatch => {
   return {
     saveActivity: payload => dispatch(saveActivity(payload)),
@@ -58,22 +52,21 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class DetailedExpansionPanel extends Component {
+class HistoryItemExpansionPanel extends React.Component {
   state = {
     datetime: this.props.item.datetime,
     activity: this.props.item.activity,
     detail: this.props.item.detail
   };
 
-  handleDateChange = date => {
-    this.setState({ datetime: date });
+  handleDateChange = datetime => {
+    this.setState({ datetime });
   };
-
+  // on activity change, load its details and select the first detail
   handleActivityChange = event => {
     const selectedActivity = Object.values(
       this.props.fullActivityList.activities
     ).filter(item => item.name === event.target.value)[0];
-
     const detailList = selectedActivity.detailIds.map(
       detailId => this.props.fullActivityList.details[detailId]
     );
@@ -95,23 +88,26 @@ class DetailedExpansionPanel extends Component {
       saveActivity,
       splitActivity,
       deleteActivity,
+      item,
       index
     } = this.props;
     const { datetime, activity, detail } = this.state;
 
+    // if current history item's activity doesn't exist in activity list, select default activity
+    const fullActivityListActivities = Object.values(
+      fullActivityList.activities
+    );
+    const currentActivity = fullActivityListActivities.filter(
+      item => item.name === activity
+    )[0];
+    const selectedActivity = !currentActivity
+      ? fullActivityListActivities[0]
+      : currentActivity;
+
+    // load activity and detail lists
     const activityList = fullActivityList.activityIds.map(activityId => {
       return fullActivityList.activities[activityId];
     });
-
-    const currentActivity = Object.values(fullActivityList.activities).filter(
-      item => item.name === activity
-    )[0];
-
-    // check if current activity still exist in activity list
-    const selectedActivity = !currentActivity
-      ? Object.values(fullActivityList.activities)[0]
-      : currentActivity;
-
     const detailList = selectedActivity.detailIds.map(
       detailId => fullActivityList.details[detailId]
     );
@@ -119,49 +115,42 @@ class DetailedExpansionPanel extends Component {
     return (
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<CreateIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>
-              {this.props.item.datetime.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                hour12: false
-              })}
-            </Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              {this.props.item.activity}: {this.props.item.detail}
-            </Typography>
-          </div>
+          <Typography className={classes.leftColumn}>
+            {item.datetime.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: false
+            })}
+          </Typography>
+          <Typography className={classes.rightColumn}>
+            {item.activity}: {item.detail}
+          </Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column}>
-            <DateTimePicker
-              datetime={datetime}
-              handleDateChange={this.handleDateChange}
-            />
-          </div>
-          <div className={classes.column}>
-            <NativeSelects
-              activityList={activityList}
-              detailList={detailList}
-              activity={activity}
-              detail={detail}
-              handleActivityChange={this.handleActivityChange}
-              handleDetailChange={this.handleDetailChange}
-            />
-          </div>
+
+        <ExpansionPanelDetails>
+          <HistoryItemDateTimePicker
+            datetime={datetime}
+            handleDateChange={this.handleDateChange}
+          />
+          <HistoryItemNativeSelects
+            activityList={activityList}
+            detailList={detailList}
+            activity={activity}
+            detail={detail}
+            handleActivityChange={this.handleActivityChange}
+            handleDetailChange={this.handleDetailChange}
+          />
         </ExpansionPanelDetails>
+
         <Divider />
         <ExpansionPanelActions>
           <Button
             variant="outlined"
             size="small"
             color="secondary"
-            className={classes.button}
             onClick={() => deleteActivity(index)}
           >
             Delete
@@ -173,7 +162,6 @@ class DetailedExpansionPanel extends Component {
             variant="outlined"
             size="small"
             color="secondary"
-            className={classes.button}
             onClick={() => splitActivity({ datetime, activity, detail, index })}
           >
             Split
@@ -185,7 +173,6 @@ class DetailedExpansionPanel extends Component {
             variant="outlined"
             size="small"
             color="primary"
-            className={classes.button}
             onClick={() => saveActivity({ datetime, activity, detail, index })}
           >
             Save
@@ -199,7 +186,7 @@ class DetailedExpansionPanel extends Component {
   }
 }
 
-DetailedExpansionPanel.propTypes = {
+HistoryItemExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -207,5 +194,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(DetailedExpansionPanel)
+  )(HistoryItemExpansionPanel)
 );
