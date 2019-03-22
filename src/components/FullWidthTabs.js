@@ -36,7 +36,7 @@ const styles = () => ({
 });
 
 const inlineStyles = {
-  views: {
+  views: {    
     paddingBottom: "125px"
   }
 };
@@ -60,7 +60,6 @@ class FullWidthTabs extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <SwipeableViews
-          animateHeight
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
           style={inlineStyles.views}

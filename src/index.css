@@ -1,0 +1,12 @@
+/* 
+- genius CSS fix for swipeable view dynamic height
+https://stackoverflow.com/questions/47095900/dynamic-height-for-material-ui-tab-containers
+*/
+
+.react-swipeable-view-container > div[aria-hidden="false"] {
+  height: 100%;
+}
+
+.react-swipeable-view-container > div[aria-hidden="true"] {
+  height: 0;
+}
