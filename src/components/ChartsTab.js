@@ -48,7 +48,6 @@ class ChartsTab extends Component {
       <div>
         <VictoryPie
           padAngle={3}
-          padding={0}
           innerRadius={100}
           data={data}
           labels={() => null}
@@ -76,8 +75,8 @@ class ChartsTab extends Component {
           ]}
         />
         <VictoryLegend
-          padding={0}
-          itemsPerRow={5}
+          height={150}
+          itemsPerRow={4}
           title={
             !selectedActivity
               ? `Stats - All Activities ${date2HHMM(dataSum)}`
