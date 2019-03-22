@@ -60,6 +60,7 @@ class FullWidthTabs extends React.Component {
       <React.Fragment>
         <CssBaseline />
         <SwipeableViews
+          animateHeight
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
           style={inlineStyles.views}
@@ -67,9 +68,7 @@ class FullWidthTabs extends React.Component {
           <TabContainer>
             <HistoryPanels />
           </TabContainer>
-          <TabContainer>
-            Testing
-          </TabContainer>
+          <TabContainer>Testing</TabContainer>
           <TabContainer>
             <ChartsTab />
           </TabContainer>
