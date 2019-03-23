@@ -2,8 +2,13 @@ import React from "react";
 
 import { connect } from "react-redux";
 
+import { withStyles } from "@material-ui/core/styles";
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+
+import AddIcon from "@material-ui/icons/Add";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -24,8 +29,15 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const styles = () => ({
+  listItem: {
+    paddingTop: 0,
+    paddingBottom: 0
+  }
+});
+
 function ActivityList(props) {
-  const { fullActivityList, reorderActivityList } = props;
+  const { classes, fullActivityList, reorderActivityList } = props;
   return (
     <DragDropContext onDragEnd={reorderActivityList}>
       <Droppable
@@ -55,7 +67,10 @@ function ActivityList(props) {
               {provided.placeholder}
 
               {/* the listItem to add a new activity */}
-              <ListItem>
+              <ListItem className={classes.listItem}>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
                 <ActivityListInput
                   item={{ id: null, name: null, detailIds: [] }} // pass in empty object to add a new activity
                 />
@@ -68,7 +83,9 @@ function ActivityList(props) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ActivityList);
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ActivityList)
+);

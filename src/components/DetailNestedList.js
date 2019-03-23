@@ -14,8 +14,11 @@ import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import AddIcon from "@material-ui/icons/Add";
 
 import { Droppable, Draggable } from "react-beautiful-dnd";
+
+import classNames from "classnames";
 
 import ActivityListInput from "./ActivityListInput";
 
@@ -29,6 +32,10 @@ const mapDispatchToProps = dispatch => {
 const styles = theme => ({
   nested: {
     paddingLeft: theme.spacing.unit * 4
+  },
+  listItem: {
+    paddingTop: 0,
+    paddingBottom: 0
   }
 });
 
@@ -57,7 +64,7 @@ class DetailNestedList extends React.Component {
             <Droppable droppableId={activity.id} type="detail">
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <ListItem>
+                  <ListItem className={classes.listItem}>
                     <ListItemIcon
                       {...outterProvided.dragHandleProps}
                       aria-label="Drag"
@@ -72,7 +79,7 @@ class DetailNestedList extends React.Component {
                         onClick={() => deleteActivityName(activity.id)}
                       />
                     </ListItemIcon>
-                    
+
                     {this.state.open ? (
                       <ExpandLess onClick={this.handleClick} />
                     ) : (
@@ -81,7 +88,7 @@ class DetailNestedList extends React.Component {
                   </ListItem>
 
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
+                    <List>
                       {details.map((detail, index) => (
                         <Draggable
                           key={detail.id}
@@ -93,7 +100,12 @@ class DetailNestedList extends React.Component {
                               {...provided.draggableProps}
                               ref={provided.innerRef}
                             >
-                              <ListItem className={classes.nested}>
+                              <ListItem
+                                className={classNames(
+                                  classes.nested,
+                                  classes.listItem
+                                )}
+                              >
                                 <ListItemIcon
                                   {...provided.dragHandleProps}
                                   aria-label="Drag"
@@ -125,7 +137,12 @@ class DetailNestedList extends React.Component {
                       {provided.placeholder}
 
                       {/* the listItem to add a new detail */}
-                      <ListItem className={classes.nested}>
+                      <ListItem
+                        className={classNames(classes.nested, classes.listItem)}
+                      >
+                        <ListItemIcon>
+                          <AddIcon />
+                        </ListItemIcon>
                         <ActivityListInput
                           item={{ id: null, name: null }} // pass in empty object to add a new detail
                           activityId={activity.id}
