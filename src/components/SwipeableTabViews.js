@@ -17,8 +17,8 @@ import InfoIcon from "@material-ui/icons/Info";
 
 import HistoryTabView from "./HistoryTabView";
 import ActivityList from "./ActivityList";
-import ChartsTab from "./ChartsTab";
-import ButtonToolBar from "./ButtonToolBar";
+import ChartsTabView from "./ChartsTabView";
+import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
 function TabContainer({ children }) {
   return <Typography component="div">{children}</Typography>;
@@ -59,6 +59,7 @@ class SwipeableTabViews extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
+
         <SwipeableViews
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
@@ -68,15 +69,18 @@ class SwipeableTabViews extends React.Component {
             <HistoryTabView />
           </TabContainer>
           <TabContainer>
-            <ChartsTab />
+            <ChartsTabView />
           </TabContainer>
           <TabContainer>
             <ActivityList />
           </TabContainer>
           <TabContainer>By Sean LEE</TabContainer>
         </SwipeableViews>
+
         <AppBar position="fixed" color="default" className={classes.appBar}>
-          <ButtonToolBar />
+        
+          <CurrentActivityToolBar />
+
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}

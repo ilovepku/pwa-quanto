@@ -16,13 +16,13 @@ import {
   UPDATE_STATE
 } from "./constants.js";
 
-import CacheManager from "../global/cache";
-
 import initialActivityList from "../data/initialActivityList";
 
+import CacheManager from "../global/cache";
 const cache = new CacheManager();
 
 // find default activity and detail names
+// Todo: change logic, now doens't reflect changed activity list
 const defaultActivityId = initialActivityList.activityIds[0];
 const defaultActivity = initialActivityList.activities[defaultActivityId];
 const defaultActivityName = defaultActivity.name;
@@ -117,6 +117,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
+
     case SPLIT_ACTIVITY:
       newState = {
         ...state,
@@ -132,6 +133,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
+
     case DELETE_ACTIVITY:
       newState = {
         ...state,
@@ -143,6 +145,8 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
     case EDIT_ACTIVITY_NAME:
       let activityId = action.payload.activityId;
       let newActivityIds = state.fullActivityList.activityIds.slice();
+
+      // prepare to add new activity if activityId is empty
       if (!activityId) {
         activityId = "activity-" + nanoid(10);
         newActivityIds.push(activityId);
@@ -173,6 +177,8 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       let newDetailIds = state.fullActivityList.activities[
         action.payload.activityId
       ].detailIds.slice();
+
+      // prepare to add new detail if activityId is empty
       if (!detailId) {
         detailId = "detail-" + nanoid(10);
         newDetailIds.push(detailId);
@@ -211,11 +217,14 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           )
         }
       };
+
+      // delete details related to activity to be deleted
       newState.fullActivityList.activities[action.payload].detailIds.forEach(
         item => {
           delete newState.fullActivityList.details[item];
         }
       );
+
       delete newState.fullActivityList.activities[action.payload];
       cache.writeData("state", newState);
       return newState;
@@ -243,10 +252,10 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
     case REORDER_ACTIVITY_LIST:
       const { destination, source, draggableId, type } = action.payload;
 
+      // check for no changes
       if (!destination) {
         return;
       }
-
       if (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
@@ -254,6 +263,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         return;
       }
 
+      // reording activities
       if (type === "activity") {
         const newactivityIds = Array.from(state.fullActivityList.activityIds);
         newactivityIds.splice(source.index, 1);
@@ -270,10 +280,11 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         return newState;
       }
 
+      // reording details
       const start = state.fullActivityList.activities[source.droppableId];
       const finish = state.fullActivityList.activities[destination.droppableId];
 
-      // moving within the same activity
+      // moving detailswithin the same activity
       if (start === finish) {
         const newDetailIds = Array.from(start.detailIds);
         newDetailIds.splice(source.index, 1);
@@ -299,7 +310,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         return newState;
       }
 
-      // moving from one activity to another
+      // moving details from one activity to another
       const startDetailIds = Array.from(start.detailIds);
       startDetailIds.splice(source.index, 1);
       const newStart = {

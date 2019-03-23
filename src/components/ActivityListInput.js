@@ -1,13 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import CreateIcon from "@material-ui/icons/Create";
 
+import { connect } from "react-redux";
 import { editActivityName, editDetailName } from "../redux/actions";
 
-const styles = theme => ({
+import { withStyles } from "@material-ui/core/styles";
+
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+
+import CreateIcon from "@material-ui/icons/Create";
+
+const styles = () => ({
   form: {
     display: "flex"
   }
@@ -20,7 +23,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class Input extends React.Component {
+class ActivityListInput extends React.Component {
   state = { value: this.props.item.name };
 
   handleChange(event) {
@@ -29,13 +32,15 @@ class Input extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    // check for item type: acitivty or detail
     if (this.props.item.detailIds) {
-      // check for item type: acitivty or detail
+      // is activity
       this.props.editActivityName({
         activityId: this.props.item.id,
         name: this.state.value
       });
     } else {
+      // is detail
       this.props.editDetailName({
         activityId: this.props.activityId,
         detailId: this.props.item.id,
@@ -55,13 +60,14 @@ class Input extends React.Component {
       <form
         onSubmit={event => this.handleSubmit(event)}
         className={classes.form}
-        ref={el => (this.myFormRef = el)}
+        ref={el => (this.myFormRef = el)} // ref for manually reset form
       >
         <InputBase
           defaultValue={this.state.value}
           placeholder={!this.props.item.name ? "Add a new one here!" : null}
           onChange={event => this.handleChange(event)}
         />
+
         <IconButton type="submit" aria-label="Edit">
           <CreateIcon />
         </IconButton>
@@ -74,5 +80,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(Input)
+  )(ActivityListInput)
 );

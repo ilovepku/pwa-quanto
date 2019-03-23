@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
+
 import { connect } from "react-redux";
+
 import { VictoryPie, VictoryLegend } from "victory";
 
 const mapStateToProps = state => {
@@ -8,13 +10,15 @@ const mapStateToProps = state => {
   };
 };
 
-class ChartsTab extends Component {
+class ChartsTabView extends React.Component {
   state = {
     selectedActivity: ""
   };
   render() {
     const { history } = this.props;
     const { selectedActivity } = this.state;
+
+    // generate history arr with duration property (calculated from started)
     const durationHistory = history.length
       ? history.map(function(item, index) {
           const nextDatetime =
@@ -24,28 +28,32 @@ class ChartsTab extends Component {
           return {
             activity: item.activity,
             detail: item.detail,
-            duration: Math.round((nextDatetime - item.datetime) / 1000 / 60)
+            duration: Math.ceil((nextDatetime - item.datetime) / 1000 / 60)
+            // Math.ceil to prevent no chart on first load
           };
         })
       : null;
 
+    // generate data arrs for VictoryPie with custom function
     const activityData = groupBy(durationHistory, "activity");
-
     const detailData = groupBy(
       durationHistory.filter(item => item.activity === selectedActivity),
       "detail"
     );
+
     // data switch between activity and detail
     const data = !selectedActivity ? activityData : detailData;
-    // data for legend
+
+    // generate data for VictoryLegend
     const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
     const legendData = data.map(item => ({
-      name: `${((item.y / dataSum) * 100).toFixed(2)}% ${date2HHMM(item.y)} ${
-        item.x
-      }`
+      name: `${((item.y / dataSum) * 100).toFixed(2)}% ${duration2HHMM(
+        item.y
+      )} ${item.x}`
     }));
+
     return (
-      <div>
+      <React.Fragment>
         <VictoryPie
           padAngle={3}
           innerRadius={100}
@@ -74,25 +82,28 @@ class ChartsTab extends Component {
             }
           ]}
         />
+
         <VictoryLegend
-          height={150}
-          itemsPerRow={4}
+          height={200}
+          itemsPerRow={5}
+          gutter={0}
           title={
             !selectedActivity
-              ? `Stats - All Activities ${date2HHMM(dataSum)}`
-              : `Stats - ${selectedActivity} ${date2HHMM(dataSum)}`
+              ? `Stats - All Activities ${duration2HHMM(dataSum)}`
+              : `Stats - ${selectedActivity} ${duration2HHMM(dataSum)}`
           }
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}
           data={legendData}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default connect(mapStateToProps)(ChartsTab);
+export default connect(mapStateToProps)(ChartsTabView);
 
+// custom function to generate data arrs for VictoryPie
 function groupBy(objectArray, property) {
   const resultArray = [];
   objectArray.forEach(item => {
@@ -106,6 +117,7 @@ function groupBy(objectArray, property) {
   return resultArray;
 }
 
-function date2HHMM(date) {
+// custom fuction to convert duration time (in minutes) to HHMM format
+function duration2HHMM(date) {
   return Math.floor(date / 60) + ":" + ("0" + (date % 60)).slice(-2);
 }

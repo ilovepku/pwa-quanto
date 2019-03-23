@@ -1,22 +1,23 @@
+// Todo: show activity & detail, elapsed time; implement interupt
+
 import React from "react";
+
 import { connect } from "react-redux";
+import { addToHistory } from "../redux/actions";
+
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+
 import AddIcon from "@material-ui/icons/Add";
 import PauseIcon from "@material-ui/icons/Pause";
 
-import { addToHistory } from "../redux/actions";
-
-const styles = theme => ({
+const styles = () => ({
   title: {
     flexGrow: 1
-  },
-  toolbar: {
-    alignItems: "center",
-    justifyContent: "space-between"
   }
 });
 
@@ -26,26 +27,25 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-function ButtonToolBar(props) {
+function CurrentActivityToolBar(props) {
   const { classes, addToHistory } = props;
   return (
-    <Toolbar className={classes.toolbar}>
-      <Typography className={classes.title} variant="h6" color="inherit">
+    <Toolbar>
+      <Typography className={classes.title} variant="h6">
         Current Activity
       </Typography>
-      <div>
-        <IconButton color="inherit" onClick={addToHistory}>
-          <AddIcon />
-        </IconButton>
-        <IconButton color="inherit">
-          <PauseIcon />
-        </IconButton>
-      </div>
+
+      <IconButton onClick={addToHistory}>
+        <AddIcon />
+      </IconButton>
+      <IconButton>
+        <PauseIcon />
+      </IconButton>
     </Toolbar>
   );
 }
 
-ButtonToolBar.propTypes = {
+CurrentActivityToolBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -53,5 +53,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(ButtonToolBar)
+  )(CurrentActivityToolBar)
 );

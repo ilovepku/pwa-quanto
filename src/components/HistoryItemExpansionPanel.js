@@ -28,9 +28,6 @@ const styles = theme => ({
   leftColumn: {
     flexBasis: "40%"
   },
-  rightColumn: {
-    flexBasis: "60%"
-  },
   rightIcon: {
     marginLeft: theme.spacing.unit
   },
@@ -125,7 +122,7 @@ class HistoryItemExpansionPanel extends React.Component {
               hour12: false
             })}
           </Typography>
-          <Typography className={classes.rightColumn}>
+          <Typography>
             {item.activity}: {item.detail}
           </Typography>
         </ExpansionPanelSummary>
@@ -145,7 +142,7 @@ class HistoryItemExpansionPanel extends React.Component {
           />
         </ExpansionPanelDetails>
 
-        <Divider />
+        <Divider variant="middle" />
         <ExpansionPanelActions>
           <Button
             variant="outlined"
@@ -161,7 +158,7 @@ class HistoryItemExpansionPanel extends React.Component {
           <Button
             variant="outlined"
             size="small"
-            color="secondary"
+            color="primary"
             onClick={() => splitActivity({ datetime, activity, detail, index })}
           >
             Split

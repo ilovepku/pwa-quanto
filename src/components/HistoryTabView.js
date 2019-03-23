@@ -21,7 +21,7 @@ function HistoryTabView(props) {
         />
       ))
     : null;
-  return <div>{panels.slice().reverse()}</div>;
+  return <React.Fragment>{panels.slice().reverse()}</React.Fragment>;
 }
 
 export default connect(mapStateToProps)(HistoryTabView);

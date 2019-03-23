@@ -1,25 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
 
-const styles = theme => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120
-  }
-});
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import NativeSelect from "@material-ui/core/NativeSelect";
+import Input from "@material-ui/core/Input";
 
 function HistoryItemNativeSelects(props) {
   const {
-    classes,
     activityList,
     detailList,
     activity,
@@ -44,9 +31,9 @@ function HistoryItemNativeSelects(props) {
   });
 
   return (
-    <div className={classes.root}>
-      <FormControl className={classes.formControl}>
-        <InputLabel shrink htmlFor="activity-native-label-placeholder">
+    <div>
+      <FormControl>
+        <InputLabel htmlFor="activity-native-label-placeholder">
           Activity
         </InputLabel>
         <NativeSelect
@@ -59,7 +46,8 @@ function HistoryItemNativeSelects(props) {
           {activityNameListItems}
         </NativeSelect>
       </FormControl>
-      <FormControl className={classes.formControl}>
+
+      <FormControl margin="dense">
         <InputLabel shrink htmlFor="detail-native-label-placeholder">
           Detail
         </InputLabel>
@@ -75,8 +63,4 @@ function HistoryItemNativeSelects(props) {
   );
 }
 
-HistoryItemNativeSelects.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(HistoryItemNativeSelects);
+export default HistoryItemNativeSelects;
