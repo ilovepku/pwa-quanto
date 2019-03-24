@@ -21,24 +21,9 @@ import initialActivityList from "../data/initialActivityList";
 import CacheManager from "../global/cache";
 const cache = new CacheManager();
 
-// find default activity and detail names
-// Todo: change logic, now doens't reflect changed activity list
-const defaultActivityId = initialActivityList.activityIds[0];
-const defaultActivity = initialActivityList.activities[defaultActivityId];
-const defaultActivityName = defaultActivity.name;
-const defaultDetailId = defaultActivity.detailIds[0];
-const defaultDetail = initialActivityList.details[defaultDetailId];
-const defaultDetailName = defaultDetail.name;
-
 const initialStateHistory = {
   fullActivityList: initialActivityList,
-  history: [
-    {
-      datetime: new Date(),
-      activity: defaultActivityName,
-      detail: defaultDetailName
-    }
-  ]
+  history: []
 };
 
 // Todo: seperate history and activityList into 2 reducers?
@@ -46,6 +31,15 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
   let newState;
   switch (action.type) {
     case ADD_TO_HISTORY:
+      // find default activity and detail names
+      const defaultActivityId = state.fullActivityList.activityIds[0];
+      const defaultActivity =
+        state.fullActivityList.activities[defaultActivityId];
+      const defaultActivityName = defaultActivity.name;
+      const defaultDetailId = defaultActivity.detailIds[0];
+      const defaultDetail = state.fullActivityList.details[defaultDetailId];
+      const defaultDetailName = defaultDetail.name;
+
       newState = {
         ...state,
         history: [
@@ -135,12 +129,19 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       return newState;
 
     case DELETE_ACTIVITY:
-      newState = {
-        ...state,
-        history: state.history.filter((item, index) => index !== action.payload)
-      };
-      cache.writeData("state", newState);
-      return newState;
+      if (state.history.length !== 1) {
+        // check for deleting last item
+        newState = {
+          ...state,
+          history: state.history.filter(
+            (item, index) => index !== action.payload
+          )
+        };
+        cache.writeData("state", newState);
+        return newState;
+      } else {
+        return state;
+      }
 
     case EDIT_ACTIVITY_NAME:
       let activityId = action.payload.activityId;

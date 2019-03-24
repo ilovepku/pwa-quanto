@@ -53,8 +53,18 @@ class HistoryItemExpansionPanel extends React.Component {
   state = {
     datetime: this.props.item.datetime,
     activity: this.props.item.activity,
-    detail: this.props.item.detail
+    detail: this.props.item.detail,
+    expanded: null
   };
+
+  // fix for splitted item form reset 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      datetime: nextProps.item.datetime,
+      activity: nextProps.item.activity,
+      detail: nextProps.item.detail
+    });
+  }
 
   handleDateChange = datetime => {
     this.setState({ datetime });
@@ -78,6 +88,12 @@ class HistoryItemExpansionPanel extends React.Component {
     this.setState({ detail: event.target.value });
   };
 
+  handleChange = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false
+    });
+  };
+
   render() {
     const {
       classes,
@@ -88,7 +104,7 @@ class HistoryItemExpansionPanel extends React.Component {
       item,
       index
     } = this.props;
-    const { datetime, activity, detail } = this.state;
+    const { datetime, activity, detail, expanded } = this.state;
 
     // if current history item's activity doesn't exist in activity list, select default activity
     const fullActivityListActivities = Object.values(
@@ -110,7 +126,10 @@ class HistoryItemExpansionPanel extends React.Component {
     );
 
     return (
-      <ExpansionPanel>
+      <ExpansionPanel
+        expanded={expanded === "panel-" + index}
+        onChange={this.handleChange("panel-" + index)}
+      >
         <ExpansionPanelSummary expandIcon={<CreateIcon />}>
           <Typography className={classes.leftColumn}>
             {item.datetime.toLocaleDateString("en-US", {
@@ -148,7 +167,10 @@ class HistoryItemExpansionPanel extends React.Component {
             variant="outlined"
             size="small"
             color="secondary"
-            onClick={() => deleteActivity(index)}
+            onClick={() => {
+              this.setState({ expanded: null });
+              deleteActivity(index);
+            }}
           >
             Delete
             <DeleteIcon
@@ -159,7 +181,16 @@ class HistoryItemExpansionPanel extends React.Component {
             variant="outlined"
             size="small"
             color="primary"
-            onClick={() => splitActivity({ datetime, activity, detail, index })}
+            onClick={() => {
+              splitActivity({ datetime, activity, detail, index });
+              // reset form after split
+              this.setState({
+                datetime: this.props.item.datetime,
+                activity: this.props.item.activity,
+                detail: this.props.item.detail,
+                expanded: null
+              });
+            }}
           >
             Split
             <CallSplitIcon
@@ -170,7 +201,10 @@ class HistoryItemExpansionPanel extends React.Component {
             variant="outlined"
             size="small"
             color="primary"
-            onClick={() => saveActivity({ datetime, activity, detail, index })}
+            onClick={() => {
+              this.setState({ expanded: null });
+              saveActivity({ datetime, activity, detail, index });
+            }}
           >
             Save
             <SaveIcon

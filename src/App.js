@@ -1,7 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { updateState } from "./redux/actions";
+import { updateState, addToHistory } from "./redux/actions";
 
 import CacheManager from "./global/cache";
 
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateState: value => dispatch(updateState(value))
+    updateState: value => dispatch(updateState(value)),
+    addToHistory: () => dispatch(addToHistory())
   };
 };
 
@@ -26,6 +27,7 @@ class App extends React.Component {
   componentWillMount = () => {
     cache.readData("state").then(savedState => {
       if (!savedState) {
+        this.props.addToHistory();
         cache.writeData("state", this.props.state);
         return;
       }

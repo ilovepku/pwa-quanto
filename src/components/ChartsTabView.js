@@ -32,7 +32,7 @@ class ChartsTabView extends React.Component {
             // Math.ceil to prevent no chart on first load
           };
         })
-      : null;
+      : [{ activity: "Loading", detail: "Loading", duration: 1 }]; // placeholder while loading
 
     // generate data arrs for VictoryPie with custom function
     const activityData = groupBy(durationHistory, "activity");

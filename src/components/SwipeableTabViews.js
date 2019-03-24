@@ -78,7 +78,6 @@ class SwipeableTabViews extends React.Component {
         </SwipeableViews>
 
         <AppBar position="fixed" color="default" className={classes.appBar}>
-        
           <CurrentActivityToolBar />
 
           <Tabs
