@@ -83,7 +83,7 @@ class ChartsTabView extends React.Component {
           ]}
         />
 
-        <VictoryLegend          
+        <VictoryLegend
           itemsPerRow={5}
           gutter={0}
           title={
@@ -94,6 +94,52 @@ class ChartsTabView extends React.Component {
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}
           data={legendData}
+          events={[
+            {
+              target: "data",
+              eventHandlers: {
+                onClick: () => {
+                  return [
+                    {
+                      target: "data",
+                      mutation: props => {
+                        if (!selectedActivity) {
+                          const nameArr = props.datum.name.split(" ");
+                          this.setState({
+                            selectedActivity: nameArr[nameArr.length - 1]
+                          });
+                        } else {
+                          this.setState({ selectedActivity: "" });
+                        }
+                      }
+                    }
+                  ];
+                }
+              }
+            },
+            {
+              target: "labels",
+              eventHandlers: {
+                onClick: () => {
+                  return [
+                    {
+                      target: "labels",
+                      mutation: props => {
+                        if (!selectedActivity) {
+                          const nameArr = props.datum.name.split(" ");
+                          this.setState({
+                            selectedActivity: nameArr[nameArr.length - 1]
+                          });
+                        } else {
+                          this.setState({ selectedActivity: "" });
+                        }
+                      }
+                    }
+                  ];
+                }
+              }
+            }
+          ]}
         />
       </React.Fragment>
     );
