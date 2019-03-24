@@ -18,6 +18,9 @@ import PauseIcon from "@material-ui/icons/Pause";
 const styles = () => ({
   title: {
     flexGrow: 1
+  },
+  toolBar: {
+    minHeight: 0
   }
 });
 
@@ -30,7 +33,7 @@ const mapDispatchToProps = dispatch => {
 function CurrentActivityToolBar(props) {
   const { classes, addToHistory } = props;
   return (
-    <Toolbar>
+    <Toolbar className={classes.toolBar}>
       <Typography className={classes.title} variant="h6">
         Current Activity
       </Typography>

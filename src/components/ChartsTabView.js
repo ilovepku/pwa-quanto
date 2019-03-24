@@ -83,8 +83,7 @@ class ChartsTabView extends React.Component {
           ]}
         />
 
-        <VictoryLegend
-          height={200}
+        <VictoryLegend          
           itemsPerRow={5}
           gutter={0}
           title={

@@ -23,7 +23,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 class App extends React.Component {
-  // Todo: logic change, async probably?
   componentWillMount = () => {
     cache.readData("state").then(savedState => {
       if (!savedState) {

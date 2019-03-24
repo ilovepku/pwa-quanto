@@ -32,12 +32,16 @@ const styles = () => ({
   appBar: {
     top: "auto",
     bottom: 0
+  },
+  iconButtons: {
+    minHeight: 0,
+    paddingTop: 0
   }
 });
 
 const inlineStyles = {
   views: {
-    paddingBottom: "125px"
+    paddingBottom: "100px"
   }
 };
 
@@ -87,10 +91,10 @@ class SwipeableTabViews extends React.Component {
             textColor="primary"
             variant="fullWidth"
           >
-            <Tab icon={<HistoryIcon />} label="HISTORY" />
-            <Tab icon={<PieChartIcon />} label="CHARTS" />
-            <Tab icon={<SettingsIcon />} label="SETTINGS" />
-            <Tab icon={<InfoIcon />} label="ABOUT" />
+            <Tab icon={<HistoryIcon />} label="HISTORY" className={classes.iconButtons} />
+            <Tab icon={<PieChartIcon />} label="CHARTS" className={classes.iconButtons} />
+            <Tab icon={<SettingsIcon />} label="SETTINGS" className={classes.iconButtons} />
+            <Tab icon={<InfoIcon />} label="ABOUT" className={classes.iconButtons} />
           </Tabs>
         </AppBar>
       </React.Fragment>
