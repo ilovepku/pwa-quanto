@@ -84,7 +84,7 @@ class CurrentActivityToolBar extends React.Component {
         <Typography className={classes.title}>
           {lastHistoryItem
             ? `Elapsed: ${duration2HHMM(this.state.lastHistoryItemDuration)}`
-            : "Loading"}
+            : null}
         </Typography>
 
         <IconButton onClick={addToHistory}>
