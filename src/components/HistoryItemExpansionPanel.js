@@ -6,6 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { saveActivity, splitActivity, deleteActivity } from "../redux/actions";
 
+import { withSnackbar } from "notistack";
+
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -57,7 +59,7 @@ class HistoryItemExpansionPanel extends React.Component {
     expanded: null
   };
 
-  // fix for splitted item form reset 
+  // fix for splitted item form reset
   componentWillReceiveProps(nextProps) {
     this.setState({
       datetime: nextProps.item.datetime,
@@ -102,7 +104,8 @@ class HistoryItemExpansionPanel extends React.Component {
       splitActivity,
       deleteActivity,
       item,
-      index
+      index,
+      enqueueSnackbar
     } = this.props;
     const { datetime, activity, detail, expanded } = this.state;
 
@@ -170,6 +173,7 @@ class HistoryItemExpansionPanel extends React.Component {
             onClick={() => {
               this.setState({ expanded: null });
               deleteActivity(index);
+              enqueueSnackbar("Entry deleted.", { variant: "success" });
             }}
           >
             Delete
@@ -221,9 +225,11 @@ HistoryItemExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(HistoryItemExpansionPanel)
+export default withSnackbar(
+  withStyles(styles)(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(HistoryItemExpansionPanel)
+  )
 );

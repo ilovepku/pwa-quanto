@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./redux/reducers";
 
+import { SnackbarProvider } from "notistack";
+
 import "./index.css";
 
 import App from "./App";
@@ -18,7 +20,16 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <SnackbarProvider
+      maxSnack={3}
+      dense
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "left"
+      }}
+    >
+      <App />
+    </SnackbarProvider>
   </Provider>,
   document.getElementById("root")
 );
