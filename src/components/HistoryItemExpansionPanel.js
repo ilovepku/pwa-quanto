@@ -127,6 +127,7 @@ class HistoryItemExpansionPanel extends React.Component {
     const detailList = selectedActivity.detailIds.map(
       detailId => fullActivityList.details[detailId]
     );
+    detailList.unshift({ id: "detail-0", name: "-" });
 
     return (
       <ExpansionPanel
