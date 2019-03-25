@@ -105,6 +105,8 @@ class HistoryItemExpansionPanel extends React.Component {
       deleteActivity,
       item,
       index,
+      lastItemDatetime,
+      nextItemDatetime,
       enqueueSnackbar
     } = this.props;
     const { datetime, activity, detail, expanded } = this.state;
@@ -187,14 +189,24 @@ class HistoryItemExpansionPanel extends React.Component {
             size="small"
             color="primary"
             onClick={() => {
-              splitActivity({ datetime, activity, detail, index });
-              // reset form after split
-              this.setState({
-                datetime: this.props.item.datetime,
-                activity: this.props.item.activity,
-                detail: this.props.item.detail,
-                expanded: null
-              });
+              if (
+                (!nextItemDatetime && datetime > new Date()) || // split time cannot be in the future
+                (nextItemDatetime && datetime > nextItemDatetime) || // split time cannot be later than next entry's time
+                datetime < this.props.item.datetime // split time cannot be earlier than current entry's time
+              ) {
+                enqueueSnackbar("Split time out of range.", {
+                  variant: "error"
+                });
+              } else {
+                splitActivity({ datetime, activity, detail, index });
+                // reset form after split
+                this.setState({
+                  datetime: this.props.item.datetime,
+                  activity: this.props.item.activity,
+                  detail: this.props.item.detail,
+                  expanded: null
+                });
+              }
             }}
           >
             Split
@@ -207,8 +219,18 @@ class HistoryItemExpansionPanel extends React.Component {
             size="small"
             color="primary"
             onClick={() => {
-              this.setState({ expanded: null });
-              saveActivity({ datetime, activity, detail, index });
+              if (
+                (!nextItemDatetime && datetime > new Date()) || // new time cannot be in the future
+                (nextItemDatetime && datetime > nextItemDatetime) || // new time cannot be later than next entry's time
+                (lastItemDatetime && datetime < lastItemDatetime) // new time cannot be earlier than later entry's time
+              ) {
+                enqueueSnackbar("New time out of range.", {
+                  variant: "error"
+                });
+              } else {
+                this.setState({ expanded: null });
+                saveActivity({ datetime, activity, detail, index });
+              }
             }}
           >
             Save

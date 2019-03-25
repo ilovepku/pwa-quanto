@@ -21,6 +21,12 @@ function HistoryTabView(props) {
           key={"history-" + index}
           index={index}
           item={item}
+          lastItemDatetime={
+            history[index - 1] ? history[index - 1].datetime : null
+          }
+          nextItemDatetime={
+            history[index + 1] ? history[index + 1].datetime : null
+          }
         />
       ))
       .slice()
