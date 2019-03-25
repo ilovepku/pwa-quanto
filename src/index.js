@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./redux/reducers";
 
+import Button from '@material-ui/core/Button';
+
 import { SnackbarProvider } from "notistack";
 
 import "./index.css";
@@ -21,12 +23,18 @@ const store = createStore(
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider
-      maxSnack={3}
+      preventDuplicate
+      maxSnack={1}
       dense
       anchorOrigin={{
         vertical: "top",
         horizontal: "left"
       }}
+      action={[
+        <Button color="secondary" size="small">
+          {"Dismiss"}
+        </Button>
+      ]}
     >
       <App />
     </SnackbarProvider>
