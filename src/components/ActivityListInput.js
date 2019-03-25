@@ -63,6 +63,7 @@ class ActivityListInput extends React.Component {
         ref={el => (this.myFormRef = el)} // ref for manually reset form
       >
         <InputBase
+          required
           defaultValue={this.state.value}
           placeholder={!this.props.item.name ? "Add a new one here!" : null}
           onChange={event => this.handleChange(event)}
