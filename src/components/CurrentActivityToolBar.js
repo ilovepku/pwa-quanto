@@ -3,7 +3,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { addToHistory } from "../redux/actions";
+import { addToHistory, splitActivity } from "../redux/actions";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 
 import AddIcon from "@material-ui/icons/Add";
 import PauseIcon from "@material-ui/icons/Pause";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
 import { duration2HHMM } from "../global/duration2HHMM";
 
@@ -33,7 +34,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    addToHistory: () => dispatch(addToHistory())
+    addToHistory: () => dispatch(addToHistory()),
+    splitActivity: payload => dispatch(splitActivity(payload))
   };
 };
 
@@ -68,7 +70,7 @@ class CurrentActivityToolBar extends React.Component {
   }
 
   render() {
-    const { classes, history, addToHistory } = this.props;
+    const { classes, history, addToHistory, splitActivity } = this.props;
     const lastHistoryItem = history.length ? history[history.length - 1] : null;
 
     return (
@@ -88,8 +90,37 @@ class CurrentActivityToolBar extends React.Component {
         <IconButton onClick={addToHistory}>
           <AddIcon />
         </IconButton>
-        <IconButton>
-          <PauseIcon />
+        <IconButton
+          onClick={() => {
+            if (
+              // if current activity is interruption, ends interruption
+              history.length &&
+              history[history.length - 1].activity === "Interruption"
+            ) {
+              splitActivity({
+                datetime: new Date(),
+                activity: history[history.length - 2].activity,
+                detail: history[history.length - 2].detail,
+                index: history.length - 1
+              });
+            } else {
+              // if current activity is not interruption, starts interruption
+              splitActivity({
+                datetime: new Date(),
+                activity: "Interruption",
+                detail: "-",
+                index: history.length - 1
+              });
+            }
+          }}
+        >
+          {history.length &&
+          history[history.length - 1].activity === "Interruption" ? (
+            // if current activity is interruption, show play button; else show pause button
+            <PlayArrowIcon />
+          ) : (
+            <PauseIcon />
+          )}
         </IconButton>
       </Toolbar>
     );
