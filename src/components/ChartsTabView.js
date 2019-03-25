@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import { VictoryPie, VictoryLegend } from "victory";
 
+import { duration2HHMM } from "../global/duration2HHMM";
+
 const mapStateToProps = state => {
   return {
     history: state.history
@@ -160,9 +162,4 @@ function groupBy(objectArray, property) {
     }
   });
   return resultArray;
-}
-
-// custom fuction to convert duration time (in minutes) to HHMM format
-function duration2HHMM(date) {
-  return Math.floor(date / 60) + ":" + ("0" + (date % 60)).slice(-2);
 }
