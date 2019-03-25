@@ -175,8 +175,15 @@ class HistoryItemExpansionPanel extends React.Component {
             color="secondary"
             onClick={() => {
               this.setState({ expanded: null });
-              deleteActivity(index);
-              enqueueSnackbar("Entry deleted.", { variant: "success" });
+              if (!lastItemDatetime && !nextItemDatetime) {
+                // if is last entry
+                enqueueSnackbar("Cannot delete last entry.", {
+                  variant: "warning"
+                });
+              } else {
+                deleteActivity(index);
+                enqueueSnackbar("Entry deleted.", { variant: "success" });
+              }
             }}
           >
             Delete
