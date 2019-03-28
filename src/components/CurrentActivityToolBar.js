@@ -137,3 +137,39 @@ export default withStyles(styles)(
     mapDispatchToProps
   )(CurrentActivityToolBar)
 );
+
+displayConfirmNotification();
+
+function displayConfirmNotification() {
+  Notification.requestPermission(result => {
+    if (result !== "granted") {
+      console.log("no notification permission granted");
+    } else {
+      if ("serviceWorker" in navigator) {
+        var options = {
+          body: "Elasped: 00:00",
+          /* badge: "", */
+          icon: "android-chrome-192x192.png",
+          tag: "default",
+          silent: true,
+          actions: [
+            {
+              action: "new",
+              title: "New",
+              icon: "icon-plus-24.png"
+            },
+            {
+              action: "interrupt",
+              title: "Interrupt",
+              icon: "icon-pause-24.png"
+            }
+          ]
+        };
+
+        navigator.serviceWorker.ready.then(swreg => {
+          swreg.showNotification("Eat - Meal", options);
+        });
+      }
+    }
+  });
+}
