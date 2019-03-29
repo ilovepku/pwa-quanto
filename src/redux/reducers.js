@@ -1,5 +1,7 @@
 import nanoid from "nanoid";
 
+import { duration2HHMM } from "../global/duration2HHMM";
+
 import {
   /* SET_ACTIVITY_DATETIME,
   SET_ACTIVITY,
@@ -13,7 +15,8 @@ import {
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
-  UPDATE_STATE
+  UPDATE_STATE,
+  DISPLAY_NOTIFICATION
 } from "./constants.js";
 
 import initialActivityList from "../data/initialActivityList";
@@ -343,6 +346,51 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
 
     case UPDATE_STATE:
       return action.payload;
+
+    case DISPLAY_NOTIFICATION:
+      // get last history item
+      const lastHistoryItem = state.history[state.history.length - 1];
+      const duration = duration2HHMM(
+        Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
+      );
+
+      Notification.requestPermission(result => {
+        if (result !== "granted") {
+          console.log("no notification permission granted");
+        } else {
+          if ("serviceWorker" in navigator) {
+            var options = {
+              body: "Elasped: " + duration,
+              timestamp: lastHistoryItem.datetime,
+              /* badge: "", */
+              icon: "android-chrome-192x192.png",
+              tag: "default",
+              silent: true,
+              actions: [
+                {
+                  action: "new",
+                  title: "New"/* ,
+                  icon: "icon-plus-24.png" */
+                },
+                {
+                  action: "interrupt",
+                  title: "Interrupt"/* ,
+                  icon: "icon-pause-24.png" */
+                }
+              ]
+            };
+
+            navigator.serviceWorker.ready.then(swreg => {
+              swreg.showNotification(
+                `${lastHistoryItem.activity}: ${lastHistoryItem.detail}`,
+                options
+              );
+            });
+          }
+        }
+      });
+      return state;
+
     default:
       return state;
   }

@@ -3,7 +3,11 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { addToHistory, splitActivity } from "../redux/actions";
+import {
+  addToHistory,
+  splitActivity,
+  displayNotification
+} from "../redux/actions";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -35,7 +39,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addToHistory: () => dispatch(addToHistory()),
-    splitActivity: payload => dispatch(splitActivity(payload))
+    splitActivity: payload => dispatch(splitActivity(payload)),
+    displayNotification: () => dispatch(displayNotification())
   };
 };
 
@@ -45,6 +50,7 @@ class CurrentActivityToolBar extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    this.props.displayNotification();
     this.setState({
       lastHistoryItemDuration: Math.floor(
         (new Date() -
@@ -57,13 +63,12 @@ class CurrentActivityToolBar extends React.Component {
 
   // ticker for elapsed
   componentDidMount() {
-    this.intervalID = setInterval(
-      () =>
-        this.setState({
-          lastHistoryItemDuration: this.state.lastHistoryItemDuration + 1
-        }),
-      1000 * 60
-    );
+    this.intervalID = setInterval(() => {
+      this.setState({
+        lastHistoryItemDuration: this.state.lastHistoryItemDuration + 1
+      });
+      this.props.displayNotification();
+    }, 1000 * 60);
   }
   componentWillUnmount() {
     clearInterval(this.intervalID);
@@ -72,6 +77,7 @@ class CurrentActivityToolBar extends React.Component {
   render() {
     const { classes, history, addToHistory, splitActivity } = this.props;
     const lastHistoryItem = history.length ? history[history.length - 1] : null;
+    const elapsed = duration2HHMM(this.state.lastHistoryItemDuration);
 
     return (
       <Toolbar className={classes.toolBar}>
@@ -82,9 +88,7 @@ class CurrentActivityToolBar extends React.Component {
         </Typography>
 
         <Typography className={classes.title}>
-          {lastHistoryItem
-            ? `Elapsed: ${duration2HHMM(this.state.lastHistoryItemDuration)}`
-            : null}
+          {lastHistoryItem ? `Elapsed: ${elapsed}` : null}
         </Typography>
 
         <IconButton onClick={addToHistory}>
@@ -137,39 +141,3 @@ export default withStyles(styles)(
     mapDispatchToProps
   )(CurrentActivityToolBar)
 );
-
-displayConfirmNotification();
-
-function displayConfirmNotification() {
-  Notification.requestPermission(result => {
-    if (result !== "granted") {
-      console.log("no notification permission granted");
-    } else {
-      if ("serviceWorker" in navigator) {
-        var options = {
-          body: "Elasped: 00:00",
-          /* badge: "", */
-          icon: "android-chrome-192x192.png",
-          tag: "default",
-          silent: true,
-          actions: [
-            {
-              action: "new",
-              title: "New",
-              icon: "icon-plus-24.png"
-            },
-            {
-              action: "interrupt",
-              title: "Interrupt",
-              icon: "icon-pause-24.png"
-            }
-          ]
-        };
-
-        navigator.serviceWorker.ready.then(swreg => {
-          swreg.showNotification("Eat - Meal", options);
-        });
-      }
-    }
-  });
-}
