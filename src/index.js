@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./redux/reducers";
+import { addToHistory, addInterruption } from "./redux/actions";
 
 import Button from "@material-ui/core/Button";
 
@@ -19,6 +20,17 @@ const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+if ("serviceWorker" in navigator) {
+  // Handler for messages coming from the service worker
+  navigator.serviceWorker.addEventListener("message", event => {
+    if (event.data === "interrupt") {
+      store.dispatch(addInterruption());
+    } else {
+      store.dispatch(addToHistory());
+    }
+  });
+}
 
 ReactDOM.render(
   <Provider store={store}>

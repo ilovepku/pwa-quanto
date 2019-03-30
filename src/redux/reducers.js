@@ -10,6 +10,7 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   ADD_TO_HISTORY,
+  ADD_INTERRUPTION,
   EDIT_ACTIVITY_NAME,
   EDIT_DETAIL_NAME,
   DELETE_ACTIVITY_NAME,
@@ -56,6 +57,42 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       };
       cache.writeData("state", newState);
       return newState;
+
+    case ADD_INTERRUPTION:
+      if (
+        // if current activity is interruption, ends interruption
+        state.history.length &&
+        state.history[state.history.length - 1].activity === "Interruption"
+      ) {
+        newState = {
+          ...state,
+          history: [
+            ...state.history,
+            {
+              datetime: new Date(),
+              activity: state.history[state.history.length - 2].activity,
+              detail: state.history[state.history.length - 2].detail
+            }
+          ]
+        };
+      } else {
+        // if current activity is not interruption, starts interruption
+        newState = {
+          ...state,
+          history: [
+            ...state.history,
+            {
+              datetime: new Date(),
+              activity: "Interruption",
+              detail: "-"
+            }
+          ]
+        };
+      }
+
+      cache.writeData("state", newState);
+      return newState;
+
     /* case SET_ACTIVITY_DATETIME:
       newState = {
         ...state,
@@ -369,19 +406,22 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
               actions: [
                 {
                   action: "new",
-                  title: "New"/* ,
+                  title: "New" /* ,
                   icon: "icon-plus-24.png" */
                 },
                 {
                   action: "interrupt",
-                  title: "Interrupt"/* ,
+                  title:
+                    lastHistoryItem.activity === "Interruption"
+                      ? "Resume"
+                      : "Interrupt" /* ,
                   icon: "icon-pause-24.png" */
                 }
               ]
             };
 
             navigator.serviceWorker.ready.then(swreg => {
-              swreg.showNotification(
+              return swreg.showNotification(
                 `${lastHistoryItem.activity}: ${lastHistoryItem.detail}`,
                 options
               );

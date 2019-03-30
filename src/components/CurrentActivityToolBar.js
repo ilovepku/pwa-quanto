@@ -5,7 +5,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   addToHistory,
-  splitActivity,
+  addInterruption,
   displayNotification
 } from "../redux/actions";
 
@@ -39,7 +39,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addToHistory: () => dispatch(addToHistory()),
-    splitActivity: payload => dispatch(splitActivity(payload)),
+    addInterruption: () => dispatch(addInterruption()),
     displayNotification: () => dispatch(displayNotification())
   };
 };
@@ -75,7 +75,7 @@ class CurrentActivityToolBar extends React.Component {
   }
 
   render() {
-    const { classes, history, addToHistory, splitActivity } = this.props;
+    const { classes, history, addToHistory, addInterruption } = this.props;
     const lastHistoryItem = history.length ? history[history.length - 1] : null;
     const elapsed = duration2HHMM(this.state.lastHistoryItemDuration);
 
@@ -94,30 +94,7 @@ class CurrentActivityToolBar extends React.Component {
         <IconButton onClick={addToHistory}>
           <AddIcon />
         </IconButton>
-        <IconButton
-          onClick={() => {
-            if (
-              // if current activity is interruption, ends interruption
-              history.length &&
-              history[history.length - 1].activity === "Interruption"
-            ) {
-              splitActivity({
-                datetime: new Date(),
-                activity: history[history.length - 2].activity,
-                detail: history[history.length - 2].detail,
-                index: history.length - 1
-              });
-            } else {
-              // if current activity is not interruption, starts interruption
-              splitActivity({
-                datetime: new Date(),
-                activity: "Interruption",
-                detail: "-",
-                index: history.length - 1
-              });
-            }
-          }}
-        >
+        <IconButton onClick={addInterruption}>
           {history.length &&
           history[history.length - 1].activity === "Interruption" ? (
             // if current activity is interruption, show play button; else show pause button
