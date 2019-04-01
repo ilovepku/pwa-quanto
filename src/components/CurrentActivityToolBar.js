@@ -59,17 +59,21 @@ class CurrentActivityToolBar extends React.Component {
           60
       )
     });
-  }
-
-  // ticker for elapsed
-  componentDidMount() {
+    clearInterval(this.intervalID);
+    // ticker for elapsed
     this.intervalID = setInterval(() => {
       this.setState({
-        lastHistoryItemDuration: this.state.lastHistoryItemDuration + 1
+        lastHistoryItemDuration: Math.floor(
+          (new Date() -
+            nextProps.history[nextProps.history.length - 1].datetime) /
+            1000 /
+            60
+        )
       });
       this.props.displayNotification();
     }, 1000 * 60);
   }
+
   componentWillUnmount() {
     clearInterval(this.intervalID);
   }
