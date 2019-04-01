@@ -5,6 +5,8 @@ import { editActivityName, editDetailName } from "../redux/actions";
 
 import { withStyles } from "@material-ui/core/styles";
 
+import { withSnackbar } from "notistack";
+
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -32,25 +34,35 @@ class ActivityListInput extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // check for item type: acitivty or detail
-    if (this.props.item.detailIds) {
-      // is activity
-      this.props.editActivityName({
-        activityId: this.props.item.id,
-        name: this.state.value
+    if (!this.state.value) {
+      this.props.enqueueSnackbar("Name cannot be empty.", {
+        variant: "error"
+      });
+    } else if (this.state.value === "Interruption") {
+      this.props.enqueueSnackbar("Name 'Interruption' is taken.", {
+        variant: "error"
       });
     } else {
-      // is detail
-      this.props.editDetailName({
-        activityId: this.props.activityId,
-        detailId: this.props.item.id,
-        name: this.state.value
-      });
-    }
-    // clear input after adding new entry
-    if (this.props.item.id === null) {
-      this.setState({ value: null });
-      this.myFormRef.reset(); // manually reset form
+      // check for item type: acitivty or detail
+      if (this.props.item.detailIds) {
+        // is activity
+        this.props.editActivityName({
+          activityId: this.props.item.id,
+          name: this.state.value
+        });
+      } else {
+        // is detail
+        this.props.editDetailName({
+          activityId: this.props.activityId,
+          detailId: this.props.item.id,
+          name: this.state.value
+        });
+      }
+      // clear input after adding new entry
+      if (this.props.item.id === null) {
+        this.setState({ value: null });
+        this.myFormRef.reset(); // manually reset form
+      }
     }
   }
 
@@ -63,7 +75,6 @@ class ActivityListInput extends React.Component {
         ref={el => (this.myFormRef = el)} // ref for manually reset form
       >
         <InputBase
-          required
           defaultValue={this.state.value}
           placeholder={!this.props.item.name ? "Add a new one here!" : null}
           onChange={event => this.handleChange(event)}
@@ -77,9 +88,11 @@ class ActivityListInput extends React.Component {
   }
 }
 
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(ActivityListInput)
+export default withSnackbar(
+  withStyles(styles)(
+    connect(
+      null,
+      mapDispatchToProps
+    )(ActivityListInput)
+  )
 );

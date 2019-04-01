@@ -43,7 +43,7 @@ ReactDOM.render(
         horizontal: "left"
       }}
       action={[
-        <Button key="snackBarButton" color="secondary" size="small">
+        <Button key="snackBarButton" color="primary" size="small">
           {"Dismiss"}
         </Button>
       ]}
