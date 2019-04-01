@@ -49,13 +49,19 @@ self.addEventListener("activate", () => {
   });
 });
 
-self.addEventListener("notificationclick", event => {
-  if (event.action === "interrupt") {
-    send_message_to_all_clients("interrupt");
-  } else {
-    send_message_to_all_clients("add");
-  }
-});
+self.addEventListener(
+  "notificationclick",
+  event => {
+    if (event.action === "interrupt") {
+      send_message_to_all_clients("interrupt");
+    } else if (event.action === "new") {
+      send_message_to_all_clients("new");
+    } else {
+      clients.openWindow("/");
+    }
+  },
+  false
+);
 
 function send_message_to_all_clients(msg) {
   clients.matchAll().then(clients => {
