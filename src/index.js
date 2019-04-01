@@ -26,7 +26,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.addEventListener("message", event => {
     if (event.data === "interrupt") {
       store.dispatch(addInterruption());
-    } else {
+    } else if (event.data === "new") {
       store.dispatch(addToHistory());
     }
   });
