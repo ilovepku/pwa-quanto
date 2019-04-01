@@ -44,15 +44,21 @@ class ChartsTabView extends React.Component {
     );
 
     // data switch between activity and detail
-    const data = !selectedActivity ? activityData : detailData;
+    let data = !selectedActivity ? activityData : detailData;
 
-    // generate data for VictoryLegend
+    // sort data descendingly by duration
+    data.sort((a, b) => {
+      return b.y - a.y;
+    });
+
+    // add name field for VictoryLegend data
     const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
-    const legendData = data.map(item => ({
-      name: `${((item.y / dataSum) * 100).toFixed(2)}% ${duration2HHMM(
+    data = data.map(item => {
+      item.name = `${((item.y / dataSum) * 100).toFixed(2)}% ${duration2HHMM(
         item.y
-      )} ${item.x}`
-    }));
+      )} ${item.x}`;
+      return item;
+    });
 
     return (
       <React.Fragment>
@@ -95,7 +101,7 @@ class ChartsTabView extends React.Component {
           }
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}
-          data={legendData}
+          data={data}
           events={[
             {
               target: "data",
@@ -106,9 +112,8 @@ class ChartsTabView extends React.Component {
                       target: "data",
                       mutation: props => {
                         if (!selectedActivity) {
-                          const nameArr = props.datum.name.split(" ");
                           this.setState({
-                            selectedActivity: nameArr[nameArr.length - 1]
+                            selectedActivity: props.datum.x
                           });
                         } else {
                           this.setState({ selectedActivity: "" });
