@@ -35,23 +35,14 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
   let newState;
   switch (action.type) {
     case ADD_TO_HISTORY:
-      // find default activity and detail names
-      const defaultActivityId = state.fullActivityList.activityIds[0];
-      const defaultActivity =
-        state.fullActivityList.activities[defaultActivityId];
-      const defaultActivityName = defaultActivity.name;
-      const defaultDetailId = defaultActivity.detailIds[0];
-      const defaultDetail = state.fullActivityList.details[defaultDetailId];
-      const defaultDetailName = defaultDetail.name;
-
       newState = {
         ...state,
         history: [
           ...state.history,
           {
             datetime: new Date(),
-            activity: defaultActivityName,
-            detail: defaultDetailName
+            activity: "Unclassified",
+            detail: "-"
           }
         ]
       };
