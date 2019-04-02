@@ -92,7 +92,10 @@ class ChartsTabView extends React.Component {
         />
 
         <VictoryLegend
+          // add left padding of 50 if legend has less than 2 columns
           itemsPerRow={5}
+          centerTitle={data.length > 10 ? false : true}
+          borderPadding={{ left: data.length > 10 ? 0 : 50 }}
           gutter={0}
           title={
             !selectedActivity
