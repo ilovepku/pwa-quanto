@@ -38,8 +38,8 @@ class ActivityListInput extends React.Component {
       this.props.enqueueSnackbar("Name cannot be empty.", {
         variant: "error"
       });
-    } else if (this.state.value === "Interruption") {
-      this.props.enqueueSnackbar("Name 'Interruption' is taken.", {
+    } else if (this.state.value === "Interruption" || "-" || "Unclassified") {
+      this.props.enqueueSnackbar("This name is reserved.", {
         variant: "error"
       });
     } else {
