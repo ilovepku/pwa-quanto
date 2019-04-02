@@ -26,6 +26,8 @@ import classNames from "classnames";
 import HistoryItemDateTimePicker from "./HistoryItemDateTimePicker";
 import HistoryItemNativeSelects from "./HistoryItemNativeSelects";
 
+import nanoid from "nanoid";
+
 const styles = theme => ({
   leftColumn: {
     flexBasis: "40%"
@@ -111,25 +113,28 @@ class HistoryItemExpansionPanel extends React.Component {
     } = this.props;
     const { datetime, activity, detail, expanded } = this.state;
 
-    // if current history item's activity doesn't exist in activity list, select default activity
-    const fullActivityListActivities = Object.values(
-      fullActivityList.activities
-    );
-    const currentActivity = fullActivityListActivities.filter(
-      item => item.name === activity
-    )[0];
-    const selectedActivity = !currentActivity
-      ? fullActivityListActivities[0]
-      : currentActivity;
-
     // load activity and detail lists
     const activityList = fullActivityList.activityIds.map(activityId => {
       return fullActivityList.activities[activityId];
     });
-    const detailList = selectedActivity.detailIds.map(
-      detailId => fullActivityList.details[detailId]
-    );
-    detailList.unshift({ id: "detail-0", name: "-" });
+
+    let detailList;
+    const currentActivity = activityList.find(item => item.name === activity);
+    if (currentActivity === undefined) {
+      // if activity no longer exists in activity list, add a temp activity
+      activityList.unshift({ id: "activity-" + nanoid(10), name: activity });
+      detailList = [{ id: "detail-" + nanoid(10), name: detail }];
+    } else {
+      detailList = currentActivity.detailIds.map(
+        detailId => fullActivityList.details[detailId]
+      );
+      if (!detailList.find(item => item.name === detail)) {
+        // if detail no longer exists in activity list, add a temp detail
+        detailList.unshift({ id: "detail-" + nanoid(10), name: detail });
+      }
+    }
+    // check for "-" to avoid duplicate "-"
+    detail !== "-" && detailList.unshift({ id: "detail-0", name: "-" });
 
     return (
       <ExpansionPanel

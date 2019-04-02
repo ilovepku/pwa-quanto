@@ -5,8 +5,17 @@ import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Input from "@material-ui/core/Input";
 
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  formControl: {
+    minWidth: 120
+  }
+});
+
 function HistoryItemNativeSelects(props) {
   const {
+    classes,
     activityList,
     detailList,
     activity,
@@ -32,7 +41,7 @@ function HistoryItemNativeSelects(props) {
 
   return (
     <div>
-      <FormControl>
+      <FormControl className={classes.formControl}>
         <InputLabel htmlFor="activity-native-label-placeholder">
           Activity
         </InputLabel>
@@ -47,7 +56,7 @@ function HistoryItemNativeSelects(props) {
         </NativeSelect>
       </FormControl>
 
-      <FormControl margin="dense">
+      <FormControl margin="dense" className={classes.formControl}>
         <InputLabel shrink htmlFor="detail-native-label-placeholder">
           Detail
         </InputLabel>
@@ -63,4 +72,4 @@ function HistoryItemNativeSelects(props) {
   );
 }
 
-export default HistoryItemNativeSelects;
+export default withStyles(styles)(HistoryItemNativeSelects);
