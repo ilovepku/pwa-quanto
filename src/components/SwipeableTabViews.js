@@ -18,6 +18,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import HistoryTabView from "./HistoryTabView";
 import ActivityList from "./ActivityList";
 import ChartsTabView from "./ChartsTabView";
+import AboutTabView from "./AboutTabView";
 import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
 function TabContainer({ children }) {
@@ -78,7 +79,9 @@ class SwipeableTabViews extends React.Component {
           <TabContainer>
             <ActivityList />
           </TabContainer>
-          <TabContainer>By Sean LEE</TabContainer>
+          <TabContainer>
+            <AboutTabView />
+          </TabContainer>
         </SwipeableViews>
 
         <AppBar position="fixed" color="default" className={classes.appBar}>
@@ -91,10 +94,26 @@ class SwipeableTabViews extends React.Component {
             textColor="primary"
             variant="fullWidth"
           >
-            <Tab icon={<HistoryIcon />} label="HISTORY" className={classes.iconButtons} />
-            <Tab icon={<PieChartIcon />} label="CHARTS" className={classes.iconButtons} />
-            <Tab icon={<SettingsIcon />} label="SETTINGS" className={classes.iconButtons} />
-            <Tab icon={<InfoIcon />} label="ABOUT" className={classes.iconButtons} />
+            <Tab
+              icon={<HistoryIcon />}
+              label="HISTORY"
+              className={classes.iconButtons}
+            />
+            <Tab
+              icon={<PieChartIcon />}
+              label="CHARTS"
+              className={classes.iconButtons}
+            />
+            <Tab
+              icon={<SettingsIcon />}
+              label="SETTINGS"
+              className={classes.iconButtons}
+            />
+            <Tab
+              icon={<InfoIcon />}
+              label="ABOUT"
+              className={classes.iconButtons}
+            />
           </Tabs>
         </AppBar>
       </React.Fragment>

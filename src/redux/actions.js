@@ -13,7 +13,9 @@ import {
   DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE,
-  DISPLAY_NOTIFICATION
+  DISPLAY_NOTIFICATION,
+  CLEAR_HISTORY,
+  DEFAULT_ACTIVITY_LIST
 } from "./constants.js";
 
 /* export const setActivityDatetime = payload => ({
@@ -86,4 +88,12 @@ export const updateState = payload => ({
 
 export const displayNotification = () => ({
   type: DISPLAY_NOTIFICATION
+});
+
+export const clearHistory = () => ({
+  type: CLEAR_HISTORY
+});
+
+export const defaultActivityList = () => ({
+  type: DEFAULT_ACTIVITY_LIST
 });

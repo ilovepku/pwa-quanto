@@ -17,7 +17,9 @@ import {
   DELETE_DETAIL_NAME,
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE,
-  DISPLAY_NOTIFICATION
+  DISPLAY_NOTIFICATION,
+  CLEAR_HISTORY,
+  DEFAULT_ACTIVITY_LIST
 } from "./constants.js";
 
 import initialActivityList from "../data/initialActivityList";
@@ -378,9 +380,11 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
     case DISPLAY_NOTIFICATION:
       // get last history item
       const lastHistoryItem = state.history[state.history.length - 1];
-      const duration = duration2HHMM(
-        Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
-      );
+      const duration = lastHistoryItem
+        ? duration2HHMM(
+            Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
+          )
+        : 0;
 
       Notification.requestPermission(result => {
         if (result !== "granted") {
@@ -389,7 +393,9 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           if ("serviceWorker" in navigator) {
             var options = {
               body: "Elasped: " + duration,
-              timestamp: lastHistoryItem.datetime,
+              timestamp: lastHistoryItem
+                ? lastHistoryItem.datetime
+                : new Date(),
               /* badge: "", */
               icon: "android-chrome-192x192.png",
               tag: "default",
@@ -402,10 +408,11 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
                 },
                 {
                   action: "interrupt",
-                  title:
-                    lastHistoryItem.activity === "Interruption"
+                  title: lastHistoryItem
+                    ? lastHistoryItem.activity === "Interruption"
                       ? "Resume"
-                      : "Interrupt" /* ,
+                      : "Interrupt"
+                    : "Loading" /* ,
                   icon: "icon-pause-24.png" */
                 }
               ]
@@ -421,6 +428,28 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         }
       });
       return state;
+
+    case CLEAR_HISTORY:
+      newState = {
+        ...state,
+        history: [
+          {
+            datetime: new Date(),
+            activity: "Unclassified",
+            detail: "-"
+          }
+        ]
+      };
+      cache.writeData("state", newState);
+      return newState;
+
+    case DEFAULT_ACTIVITY_LIST:
+      newState = {
+        ...state,
+        fullActivityList: initialActivityList
+      };
+      cache.writeData("state", newState);
+      return newState;
 
     default:
       return state;
