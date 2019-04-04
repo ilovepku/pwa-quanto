@@ -80,27 +80,24 @@ class CurrentActivityToolBar extends React.Component {
 
   render() {
     const { classes, history, addToHistory, addInterruption } = this.props;
-    const lastHistoryItem = history.length ? history[history.length - 1] : null;
+    const lastHistoryItem = history[history.length - 1];
     const elapsed = duration2HHMM(this.state.lastHistoryItemDuration);
 
     return (
       <Toolbar className={classes.toolBar}>
         <Typography className={classes.title}>
-          {lastHistoryItem
-            ? `${lastHistoryItem.activity}: ${lastHistoryItem.detail}`
-            : "Loading"}
+          {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
         </Typography>
 
         <Typography className={classes.title}>
-          {lastHistoryItem ? `Elapsed: ${elapsed}` : null}
+          {`Elapsed: ${elapsed}`}
         </Typography>
 
         <IconButton onClick={addToHistory}>
           <AddIcon />
         </IconButton>
         <IconButton onClick={addInterruption}>
-          {history.length &&
-          history[history.length - 1].activity === "Interruption" ? (
+          {history[history.length - 1].activity === "Interruption" ? (
             // if current activity is interruption, show play button; else show pause button
             <PlayArrowIcon />
           ) : (

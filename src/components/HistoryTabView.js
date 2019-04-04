@@ -2,8 +2,6 @@ import React from "react";
 
 import { connect } from "react-redux";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-
 import HistoryItemExpansionPanel from "./HistoryItemExpansionPanel";
 
 const mapStateToProps = state => {
@@ -14,26 +12,22 @@ const mapStateToProps = state => {
 
 function HistoryTabView(props) {
   const { history } = props;
-  const panels = history.length ? (
-    history
-      .map((item, index) => (
-        <HistoryItemExpansionPanel
-          key={"history-" + index}
-          index={index}
-          item={item}
-          lastItemDatetime={
-            history[index - 1] ? history[index - 1].datetime : null
-          }
-          nextItemDatetime={
-            history[index + 1] ? history[index + 1].datetime : null
-          }
-        />
-      ))
-      .slice()
-      .reverse()
-  ) : (
-    <CircularProgress />
-  );
+  const panels = history
+    .map((item, index) => (
+      <HistoryItemExpansionPanel
+        key={"history-" + index}
+        index={index}
+        item={item}
+        lastItemDatetime={
+          history[index - 1] ? history[index - 1].datetime : null
+        }
+        nextItemDatetime={
+          history[index + 1] ? history[index + 1].datetime : null
+        }
+      />
+    ))
+    .slice()
+    .reverse();
   return <React.Fragment>{panels}</React.Fragment>;
 }
 

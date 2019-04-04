@@ -24,12 +24,15 @@ import {
 
 import initialActivityList from "../data/initialActivityList";
 
-import CacheManager from "../global/cache";
-const cache = new CacheManager();
-
 const initialStateHistory = {
   fullActivityList: initialActivityList,
-  history: []
+  history: [
+    {
+      datetime: new Date(),
+      activity: "Unclassified",
+      detail: "-"
+    }
+  ]
 };
 
 // Todo: seperate history and activityList into 2 reducers?
@@ -48,7 +51,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         ]
       };
-      cache.writeData("state", newState);
       return newState;
 
     case ADD_INTERRUPTION:
@@ -83,7 +85,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         };
       }
 
-      cache.writeData("state", newState);
       return newState;
 
     /* case SET_ACTIVITY_DATETIME:
@@ -97,7 +98,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
-      cache.writeData("state", newState);
       return newState;
     case SET_ACTIVITY:
       const detail = state.activityNameList.filter(
@@ -114,7 +114,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
-      cache.writeData("state", newState);
       return newState;
     case SET_DETAIL:
       newState = {
@@ -127,7 +126,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
-      cache.writeData("state", newState);
       return newState; */
     case SAVE_ACTIVITY:
       newState = {
@@ -142,7 +140,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           };
         })
       };
-      cache.writeData("state", newState);
       return newState;
 
     case SPLIT_ACTIVITY:
@@ -158,7 +155,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           ...state.history.slice(action.payload.index + 1)
         ]
       };
-      cache.writeData("state", newState);
       return newState;
 
     case DELETE_ACTIVITY:
@@ -170,7 +166,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
             (item, index) => index !== action.payload
           )
         };
-        cache.writeData("state", newState);
         return newState;
       } else {
         return state;
@@ -203,7 +198,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         }
       };
-      cache.writeData("state", newState);
       return newState;
 
     case EDIT_DETAIL_NAME:
@@ -238,7 +232,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         }
       };
-      cache.writeData("state", newState);
       return newState;
 
     case DELETE_ACTIVITY_NAME:
@@ -260,7 +253,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       );
 
       delete newState.fullActivityList.activities[action.payload];
-      cache.writeData("state", newState);
       return newState;
 
     case DELETE_DETAIL_NAME:
@@ -280,7 +272,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         }
       };
       delete newState.fullActivityList.details[action.payload.detailId];
-      cache.writeData("state", newState);
       return newState;
 
     case REORDER_ACTIVITY_LIST:
@@ -288,13 +279,13 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
 
       // check for no changes
       if (!destination) {
-        return;
+        return state;
       }
       if (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
       ) {
-        return;
+        return state;
       }
 
       // reording activities
@@ -310,7 +301,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
             activityIds: newactivityIds
           }
         };
-        cache.writeData("state", newState);
         return newState;
       }
 
@@ -340,7 +330,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         };
 
-        cache.writeData("state", newState);
         return newState;
       }
 
@@ -371,7 +360,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         }
       };
 
-      cache.writeData("state", newState);
       return newState;
 
     case UPDATE_STATE:
@@ -380,11 +368,9 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
     case DISPLAY_NOTIFICATION:
       // get last history item
       const lastHistoryItem = state.history[state.history.length - 1];
-      const duration = lastHistoryItem
-        ? duration2HHMM(
-            Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
-          )
-        : 0;
+      const duration = duration2HHMM(
+        Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
+      );
 
       Notification.requestPermission(result => {
         if (result !== "granted") {
@@ -393,9 +379,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           if ("serviceWorker" in navigator) {
             var options = {
               body: "Elasped: " + duration,
-              timestamp: lastHistoryItem
-                ? lastHistoryItem.datetime
-                : new Date(),
+              timestamp: lastHistoryItem.datetime,
               /* badge: "", */
               icon: "android-chrome-192x192.png",
               tag: "default",
@@ -408,11 +392,10 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
                 },
                 {
                   action: "interrupt",
-                  title: lastHistoryItem
-                    ? lastHistoryItem.activity === "Interruption"
+                  title:
+                    lastHistoryItem.activity === "Interruption"
                       ? "Resume"
-                      : "Interrupt"
-                    : "Loading" /* ,
+                      : "Interrupt" /* ,
                   icon: "icon-pause-24.png" */
                 }
               ]
@@ -440,7 +423,6 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           }
         ]
       };
-      cache.writeData("state", newState);
       return newState;
 
     case DEFAULT_ACTIVITY_LIST:
@@ -448,7 +430,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         ...state,
         fullActivityList: initialActivityList
       };
-      cache.writeData("state", newState);
+
       return newState;
 
     default:

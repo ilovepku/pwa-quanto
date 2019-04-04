@@ -143,7 +143,8 @@ class HistoryItemExpansionPanel extends React.Component {
       >
         <ExpansionPanelSummary expandIcon={<CreateIcon />}>
           <Typography className={classes.leftColumn}>
-            {item.datetime.toLocaleDateString("en-US", {
+            {new Date(item.datetime).toLocaleDateString("en-US", {
+              // temp workaround to convert str to date as redux persist auto converts date to string
               year: "numeric",
               month: "numeric",
               day: "numeric",

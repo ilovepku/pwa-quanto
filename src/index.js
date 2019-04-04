@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { rootReducer } from "./redux/reducers";
+import { store, persistor } from "./redux/configureStore";
+import { PersistGate } from "redux-persist/integration/react";
 import { addToHistory, addInterruption } from "./redux/actions";
 
 import Button from "@material-ui/core/Button";
@@ -15,11 +15,6 @@ import "./index.css";
 import App from "./App";
 
 import * as serviceWorker from "./serviceWorker";
-
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 if ("serviceWorker" in navigator) {
   // Handler for messages coming from the service worker
@@ -34,22 +29,24 @@ if ("serviceWorker" in navigator) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <SnackbarProvider
-      preventDuplicate
-      maxSnack={1}
-      dense
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left"
-      }}
-      action={[
-        <Button key="snackBarButton" color="primary" size="small">
-          {"Dismiss"}
-        </Button>
-      ]}
-    >
-      <App />
-    </SnackbarProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <SnackbarProvider
+        preventDuplicate
+        maxSnack={1}
+        dense
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left"
+        }}
+        action={[
+          <Button key="snackBarButton" color="primary" size="small">
+            {"Dismiss"}
+          </Button>
+        ]}
+      >
+        <App />
+      </SnackbarProvider>
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

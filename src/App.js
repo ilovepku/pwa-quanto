@@ -3,11 +3,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { updateState, addToHistory } from "./redux/actions";
 
-import CacheManager from "./global/cache";
-
 import SwipeableTabViews from "./components/SwipeableTabViews";
 
-const cache = new CacheManager();
+/* import CacheManager from "./global/cache";
+const cache = new CacheManager(); */
 
 const mapStateToProps = state => {
   return {
@@ -23,7 +22,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 class App extends React.Component {
-  componentWillMount = () => {
+  /* componentWillMount = () => {
     cache.readData("state").then(savedState => {
       if (!savedState) {
         this.props.addToHistory();
@@ -32,7 +31,7 @@ class App extends React.Component {
       }
       this.props.updateState(savedState);
     });
-  };
+  }; */
 
   render() {
     return <SwipeableTabViews />;
