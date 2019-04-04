@@ -143,7 +143,8 @@ class HistoryItemExpansionPanel extends React.Component {
       >
         <ExpansionPanelSummary expandIcon={<CreateIcon />}>
           <Typography className={classes.leftColumn}>
-            {item.datetime.toLocaleDateString("en-US", {              
+            {console.log(item.datetime)}
+            {new Date(item.datetime).toLocaleDateString("en-US", {
               year: "numeric",
               month: "numeric",
               day: "numeric",

@@ -23,11 +23,11 @@ class ChartsTabView extends React.Component {
     // generate history arr with duration property (calculated from started)
     const durationHistory = history.map(function(item, index) {
       const nextDatetime =
-        index !== history.length - 1 ? history[index + 1].datetime : new Date();
+        index !== history.length - 1 ? new Date(history[index + 1].datetime) : new Date();
       return {
         activity: item.activity,
         detail: item.detail,
-        duration: Math.ceil((nextDatetime - item.datetime) / 1000 / 60)
+        duration: Math.ceil((nextDatetime - new Date(item.datetime)) / 1000 / 60)
         // Math.ceil to prevent no chart on first load
       };
     });

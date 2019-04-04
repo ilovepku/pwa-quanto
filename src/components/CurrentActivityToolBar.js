@@ -54,7 +54,7 @@ class CurrentActivityToolBar extends React.Component {
     this.setState({
       lastHistoryItemDuration: Math.floor(
         (new Date() -
-          nextProps.history[nextProps.history.length - 1].datetime) /
+          new Date(nextProps.history[nextProps.history.length - 1].datetime)) /
           1000 /
           60
       )
@@ -65,7 +65,9 @@ class CurrentActivityToolBar extends React.Component {
       this.setState({
         lastHistoryItemDuration: Math.floor(
           (new Date() -
-            nextProps.history[nextProps.history.length - 1].datetime) /
+            new Date(
+              nextProps.history[nextProps.history.length - 1].datetime
+            )) /
             1000 /
             60
         )

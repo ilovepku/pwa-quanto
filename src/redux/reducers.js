@@ -369,7 +369,9 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       // get last history item
       const lastHistoryItem = state.history[state.history.length - 1];
       const duration = duration2HHMM(
-        Math.floor((new Date() - lastHistoryItem.datetime) / 1000 / 60)
+        Math.floor(
+          (new Date() - new Date(lastHistoryItem.datetime)) / 1000 / 60
+        )
       );
 
       Notification.requestPermission(result => {
@@ -379,7 +381,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
           if ("serviceWorker" in navigator) {
             var options = {
               body: "Elasped: " + duration,
-              timestamp: lastHistoryItem.datetime,
+              timestamp: new Date(lastHistoryItem.datetime),
               /* badge: "", */
               icon: "android-chrome-192x192.png",
               tag: "default",

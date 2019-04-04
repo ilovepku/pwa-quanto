@@ -19,10 +19,10 @@ function HistoryTabView(props) {
         index={index}
         item={item}
         lastItemDatetime={
-          history[index - 1] ? history[index - 1].datetime : null
+          history[index - 1] ? new Date(history[index - 1].datetime) : null
         }
         nextItemDatetime={
-          history[index + 1] ? history[index + 1].datetime : null
+          history[index + 1] ? new Date(history[index + 1].datetime) : null
         }
       />
     ))
