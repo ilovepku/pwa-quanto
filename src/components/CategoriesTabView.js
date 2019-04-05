@@ -33,10 +33,13 @@ const styles = () => ({
   listItem: {
     paddingTop: 0,
     paddingBottom: 0
+  },
+  view: {
+    marginBottom: "100px"
   }
 });
 
-function ActivityList(props) {
+function CategoriesTabView(props) {
   const { classes, fullActivityList, reorderActivityList } = props;
   return (
     <DragDropContext onDragEnd={reorderActivityList}>
@@ -46,7 +49,11 @@ function ActivityList(props) {
         type="activity"
       >
         {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={classes.view}
+          >
             <List>
               {fullActivityList.activityIds.map((activityId, index) => {
                 const activity = fullActivityList.activities[activityId];
@@ -87,5 +94,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ActivityList)
+  )(CategoriesTabView)
 );

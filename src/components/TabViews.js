@@ -3,21 +3,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import SwipeableViews from "react-swipeable-views";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
 import HistoryIcon from "@material-ui/icons/History";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import SettingsIcon from "@material-ui/icons/Settings";
-import InfoIcon from "@material-ui/icons/Info";
+import CategoryIcon from "@material-ui/icons/Category";
 
 import HistoryTabView from "./HistoryTabView";
-import ActivityList from "./ActivityList";
 import ChartsTabView from "./ChartsTabView";
+import CategoriesTabView from "./CategoriesTabView";
 import AboutTabView from "./AboutTabView";
 import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
@@ -33,18 +31,8 @@ const styles = () => ({
   appBar: {
     top: "auto",
     bottom: 0
-  },
-  iconButtons: {
-    minHeight: 0,
-    paddingTop: 0
   }
 });
-
-const inlineStyles = {
-  views: {
-    paddingBottom: "100px"
-  }
-};
 
 class SwipeableTabViews extends React.Component {
   state = {
@@ -61,60 +49,46 @@ class SwipeableTabViews extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { value } = this.state;
     return (
       <React.Fragment>
-        <CssBaseline />
-
-        <SwipeableViews
-          index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
-          style={inlineStyles.views}
-        >
+        {value === 0 && (
           <TabContainer>
             <HistoryTabView />
           </TabContainer>
+        )}
+        {value === 1 && (
           <TabContainer>
             <ChartsTabView />
           </TabContainer>
+        )}
+        {value === 2 && (
           <TabContainer>
-            <ActivityList />
+            <CategoriesTabView />
           </TabContainer>
+        )}
+        {value === 3 && (
           <TabContainer>
             <AboutTabView />
           </TabContainer>
-        </SwipeableViews>
+        )}
 
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <CurrentActivityToolBar />
 
-          <Tabs
-            value={this.state.value}
+          <BottomNavigation
+            value={value}
             onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
+            showLabels
           >
-            <Tab
-              icon={<HistoryIcon />}
-              label="HISTORY"
-              className={classes.iconButtons}
+            <BottomNavigationAction label="HISTORY" icon={<HistoryIcon />} />
+            <BottomNavigationAction label="CHARTS" icon={<PieChartIcon />} />
+            <BottomNavigationAction
+              label="CATEGORIES"
+              icon={<CategoryIcon />}
             />
-            <Tab
-              icon={<PieChartIcon />}
-              label="CHARTS"
-              className={classes.iconButtons}
-            />
-            <Tab
-              icon={<SettingsIcon />}
-              label="SETTINGS"
-              className={classes.iconButtons}
-            />
-            <Tab
-              icon={<InfoIcon />}
-              label="ABOUT"
-              className={classes.iconButtons}
-            />
-          </Tabs>
+            <BottomNavigationAction label="SETTINGS" icon={<SettingsIcon />} />
+          </BottomNavigation>
         </AppBar>
       </React.Fragment>
     );

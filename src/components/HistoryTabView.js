@@ -2,7 +2,15 @@ import React from "react";
 
 import { connect } from "react-redux";
 
+import { withStyles } from "@material-ui/core/styles";
+
 import HistoryItemExpansionPanel from "./HistoryItemExpansionPanel";
+
+const styles = () => ({
+  view: {
+    marginBottom: "100px"
+  }
+});
 
 const mapStateToProps = state => {
   return {
@@ -11,7 +19,7 @@ const mapStateToProps = state => {
 };
 
 function HistoryTabView(props) {
-  const { history } = props;
+  const { history, classes } = props;
   const panels = history
     .map((item, index) => (
       <HistoryItemExpansionPanel
@@ -28,7 +36,7 @@ function HistoryTabView(props) {
     ))
     .slice()
     .reverse();
-  return <React.Fragment>{panels}</React.Fragment>;
+  return <div className={classes.view}>{panels}</div>;
 }
 
-export default connect(mapStateToProps)(HistoryTabView);
+export default withStyles(styles)(connect(mapStateToProps)(HistoryTabView));
