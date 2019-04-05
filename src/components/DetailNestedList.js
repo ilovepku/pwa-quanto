@@ -39,6 +39,16 @@ const styles = theme => ({
   }
 });
 
+const getItemStyle = isDragging => ({
+  ...(isDragging && {
+    background: "lightgrey"
+  })
+});
+
+const getListStyle = isDraggingOver => ({
+  background: isDraggingOver ? "lightblue" : "white"
+});
+
 class DetailNestedList extends React.Component {
   state = {
     open: false
@@ -59,12 +69,19 @@ class DetailNestedList extends React.Component {
     } = this.props;
     return (
       <Draggable draggableId={activity.id} index={index}>
-        {outterProvided => (
+        {(outterProvided, outterSnapshot) => (
           <div {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
             <Droppable droppableId={activity.id} type="detail">
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <ListItem className={classes.listItem}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
+                  <ListItem
+                    className={classes.listItem}
+                    style={getItemStyle(outterSnapshot.isDragging)}
+                  >
                     <ListItemIcon
                       {...outterProvided.dragHandleProps}
                       aria-label="Drag"
@@ -95,7 +112,7 @@ class DetailNestedList extends React.Component {
                           draggableId={detail.id}
                           index={index}
                         >
-                          {provided => (
+                          {(provided, snapshot) => (
                             <div
                               {...provided.draggableProps}
                               ref={provided.innerRef}
@@ -105,6 +122,7 @@ class DetailNestedList extends React.Component {
                                   classes.nested,
                                   classes.listItem
                                 )}
+                                style={getItemStyle(snapshot.isDragging)}
                               >
                                 <ListItemIcon
                                   {...provided.dragHandleProps}
