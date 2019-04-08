@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import {
-  clearHistory,
-  defaultActivityList,
-  displayNotification
-} from "../redux/actions";
+import { defaultActivityList, displayNotification } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+
+import PurgeHistoryDialog from "./PurgeHistoryDialog";
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearHistory: () => dispatch(clearHistory()),
     defaultActivityList: () => dispatch(defaultActivityList()),
     displayNotification: () => dispatch(displayNotification())
   };
@@ -19,15 +17,30 @@ const mapDispatchToProps = dispatch => {
 
 class SettingsTabView extends Component {
   state = {
+    open: false,
     disabled: Notification.permission === "granted" ? true : false,
     buttonText:
       Notification.permission === "granted"
         ? "Notification Enabled"
         : "Enable Notification"
   };
+
   componentWillUnmount() {
     clearInterval(this.intervalID);
   }
+
+  handleOpenEditDialog = () => {
+    this.setState({
+      open: true
+    });
+  };
+
+  handleCloseEditDialog = () => {
+    this.setState({
+      open: false
+    });
+  };
+
   handlePermissionRequestClick() {
     Notification.requestPermission(result => {
       if (result === "granted") {
@@ -45,8 +58,8 @@ class SettingsTabView extends Component {
   }
 
   render() {
-    const { clearHistory, defaultActivityList } = this.props;
-    const { disabled, buttonText } = this.state;
+    const { defaultActivityList } = this.props;
+    const { open, disabled, buttonText } = this.state;
     return (
       <Fragment>
         <div>
@@ -65,8 +78,12 @@ class SettingsTabView extends Component {
         </div>
 
         <div>
-          <Button variant="contained" color="secondary" onClick={clearHistory}>
-            CLEAR HISTORY
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={this.handleOpenEditDialog}
+          >
+            Purge History
           </Button>
         </div>
 
@@ -81,6 +98,12 @@ class SettingsTabView extends Component {
         </div>
 
         <div>By Sean LEE</div>
+
+        <Dialog open={open} onClose={this.handleCloseEditDialog}>
+          <PurgeHistoryDialog
+            handleCloseEditDialog={this.handleCloseEditDialog}
+          />
+        </Dialog>
       </Fragment>
     );
   }

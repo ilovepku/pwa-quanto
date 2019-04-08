@@ -172,7 +172,6 @@ class HistoryItemDialog extends React.Component {
                   handleCloseEditDialog();
                 }
               } else {
-                console.log(datetime);
                 if (
                   (!nextItemDatetime && datetime > new Date()) || // new time cannot be in the future
                   (nextItemDatetime && datetime > nextItemDatetime) || // new time cannot be later than next entry's start time
@@ -184,6 +183,9 @@ class HistoryItemDialog extends React.Component {
                 } else {
                   saveActivity({ datetime, activity, detail, index });
                   handleCloseEditDialog();
+                  enqueueSnackbar("Successfully saved.", {
+                    variant: "success"
+                  });
                 }
               }
             }}

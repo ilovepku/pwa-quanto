@@ -18,8 +18,8 @@ import {
   REORDER_ACTIVITY_LIST,
   UPDATE_STATE,
   DISPLAY_NOTIFICATION,
-  CLEAR_HISTORY,
-  DEFAULT_ACTIVITY_LIST
+  DEFAULT_ACTIVITY_LIST,
+  PURGE_HISTORY
 } from "./constants.js";
 
 import initialActivityList from "../data/initialActivityList";
@@ -410,23 +410,29 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       }
       return state;
 
-    case CLEAR_HISTORY:
-      newState = {
-        ...state,
-        history: [
-          {
-            datetime: new Date(),
-            activity: "Unclassified",
-            detail: "-"
-          }
-        ]
-      };
-      return newState;
-
     case DEFAULT_ACTIVITY_LIST:
       newState = {
         ...state,
         fullActivityList: initialActivityList
+      };
+
+      return newState;
+
+    case PURGE_HISTORY:
+      const newHistory = state.history.filter(item => {
+        return new Date(item.datetime).getTime() >= action.payload.getTime();
+      });
+      newState = {
+        ...state,
+        history: newHistory.length
+          ? newHistory
+          : [
+              {
+                datetime: new Date(),
+                activity: "Unclassified",
+                detail: "-"
+              }
+            ]
       };
 
       return newState;
