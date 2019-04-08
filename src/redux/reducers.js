@@ -148,7 +148,7 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
         history: [
           ...state.history.slice(0, action.payload.index + 1),
           {
-            datetime: action.payload.datetime,
+            datetime: action.payload.splitDatetime,
             activity: action.payload.activity,
             detail: action.payload.detail
           },

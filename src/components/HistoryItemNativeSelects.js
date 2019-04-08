@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   formControl: {
-    minWidth: 120
+    minWidth: 180
   }
 });
 
@@ -40,8 +40,8 @@ function HistoryItemNativeSelects(props) {
   });
 
   return (
-    <div>
-      <FormControl className={classes.formControl}>
+    <React.Fragment>
+      <FormControl margin="dense" className={classes.formControl}>
         <InputLabel htmlFor="activity-native-label-placeholder">
           Activity
         </InputLabel>
@@ -68,7 +68,7 @@ function HistoryItemNativeSelects(props) {
           {detailNameListItems}
         </NativeSelect>
       </FormControl>
-    </div>
+    </React.Fragment>
   );
 }
 
