@@ -16,7 +16,7 @@ import CategoryIcon from "@material-ui/icons/Category";
 import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
-import AboutTabView from "./AboutTabView";
+import SettingsTabView from "./SettingsTabView";
 import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
 function TabContainer({ children }) {
@@ -69,7 +69,7 @@ class SwipeableTabViews extends React.Component {
         )}
         {value === 3 && (
           <TabContainer>
-            <AboutTabView />
+            <SettingsTabView />
           </TabContainer>
         )}
 

@@ -366,52 +366,48 @@ export const rootReducer = (state = initialStateHistory, action = {}) => {
       return action.payload;
 
     case DISPLAY_NOTIFICATION:
-      // get last history item
-      const lastHistoryItem = state.history[state.history.length - 1];
-      const duration = duration2HHMM(
-        Math.floor(
-          (new Date() - new Date(lastHistoryItem.datetime)) / 1000 / 60
-        )
-      );
+      if (Notification.permission === "granted") {
+        // get last history item
+        const lastHistoryItem = state.history[state.history.length - 1];
+        const duration = duration2HHMM(
+          Math.floor(
+            (new Date() - new Date(lastHistoryItem.datetime)) / 1000 / 60
+          )
+        );
 
-      Notification.requestPermission(result => {
-        if (result !== "granted") {
-          console.log("no notification permission granted");
-        } else {
-          if ("serviceWorker" in navigator) {
-            var options = {
-              body: "Elasped: " + duration,
-              timestamp: new Date(lastHistoryItem.datetime),
-              /* badge: "", */
-              icon: "android-chrome-192x192.png",
-              tag: "default",
-              silent: true,
-              actions: [
-                {
-                  action: "new",
-                  title: "New" /* ,
+        if ("serviceWorker" in navigator) {
+          var options = {
+            body: "Elasped: " + duration,
+            timestamp: new Date(lastHistoryItem.datetime),
+            /* badge: "", */
+            icon: "android-chrome-192x192.png",
+            tag: "default",
+            silent: true,
+            actions: [
+              {
+                action: "new",
+                title: "New" /* ,
                   icon: "icon-plus-24.png" */
-                },
-                {
-                  action: "interrupt",
-                  title:
-                    lastHistoryItem.activity === "Interruption"
-                      ? "Resume"
-                      : "Interrupt" /* ,
+              },
+              {
+                action: "interrupt",
+                title:
+                  lastHistoryItem.activity === "Interruption"
+                    ? "Resume"
+                    : "Interrupt" /* ,
                   icon: "icon-pause-24.png" */
-                }
-              ]
-            };
+              }
+            ]
+          };
 
-            navigator.serviceWorker.ready.then(swreg => {
-              return swreg.showNotification(
-                `${lastHistoryItem.activity}: ${lastHistoryItem.detail}`,
-                options
-              );
-            });
-          }
+          navigator.serviceWorker.ready.then(swreg => {
+            return swreg.showNotification(
+              `${lastHistoryItem.activity}: ${lastHistoryItem.detail}`,
+              options
+            );
+          });
         }
-      });
+      }
       return state;
 
     case CLEAR_HISTORY:
