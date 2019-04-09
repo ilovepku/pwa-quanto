@@ -11,7 +11,9 @@ import {
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_CATEGORIES,
-  DEFAULT_CATEGORIES
+  DEFAULT_CATEGORIES,
+  CHARTS_FILTER_SWITCH,
+  CHARTS_FILTER_SET
 } from "./constants.js";
 
 // history related
@@ -75,4 +77,14 @@ export const reorderCategories = payload => ({
 
 export const defaultCategories = () => ({
   type: DEFAULT_CATEGORIES
+});
+
+// settings related
+export const chartsFilterSwitch = () => ({
+  type: CHARTS_FILTER_SWITCH
+});
+
+export const chartsFilterSet = payload => ({
+  type: CHARTS_FILTER_SET,
+  payload
 });

@@ -5,6 +5,7 @@ import localForage from "localforage";
 
 import { historyReducer } from "./historyReducer";
 import { categoriesReducer } from "./categoriesReducer";
+import { settingsReducer } from "./settingsReducer";
 
 const persistConfig = {
   key: "root",
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   history: historyReducer,
-  categories: categoriesReducer
+  categories: categoriesReducer,
+  settings: settingsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

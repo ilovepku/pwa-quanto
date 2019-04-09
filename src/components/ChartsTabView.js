@@ -8,7 +8,8 @@ import { duration2HHMM } from "../global/duration2HHMM";
 
 const mapStateToProps = state => {
   return {
-    history: state.history
+    history: state.history,
+    settings: state.settings
   };
 };
 
@@ -17,17 +18,38 @@ class ChartsTabView extends React.Component {
     selectedActivity: ""
   };
   render() {
-    const { history } = this.props;
+    const { history, settings } = this.props;
     const { selectedActivity } = this.state;
 
+    // check for chartsFilter switch in settings and filter the history
+    const newHistory = settings.chartsFilter
+      ? history.filter(
+          item =>
+            new Date(item.datetime).getTime() >= settings.chartsStart &&
+            new Date(item.datetime).getTime() <= settings.chartsEnd
+        )
+      : history;
+    // generate chartsFilterStart-End in MM/DD format
+    const chartsFilterSpan =
+      settings.chartsFilter &&
+      `${new Date(settings.chartsStart).getMonth() + 1}/${new Date(
+        settings.chartsStart
+      ).getDate()}-${new Date(settings.chartsEnd).getMonth() + 1}/${new Date(
+        settings.chartsEnd
+      ).getDate()}`;
+
     // generate history arr with duration property (calculated from started)
-    const durationHistory = history.map(function(item, index) {
+    const durationHistory = newHistory.map(function(item, index) {
       const nextDatetime =
-        index !== history.length - 1 ? new Date(history[index + 1].datetime) : new Date();
+        index !== newHistory.length - 1
+          ? new Date(history[index + 1].datetime)
+          : new Date();
       return {
         activity: item.activity,
         detail: item.detail,
-        duration: Math.ceil((nextDatetime - new Date(item.datetime)) / 1000 / 60)
+        duration: Math.ceil(
+          (nextDatetime - new Date(item.datetime)) / 1000 / 60
+        )
         // Math.ceil to prevent no chart on first load
       };
     });
@@ -95,8 +117,12 @@ class ChartsTabView extends React.Component {
           gutter={0}
           title={
             !selectedActivity
-              ? `Stats - All Activities ${duration2HHMM(dataSum)}`
-              : `Stats - ${selectedActivity} ${duration2HHMM(dataSum)}`
+              ? `Stats - All Activities ${
+                  chartsFilterSpan ? chartsFilterSpan : ""
+                } ${duration2HHMM(dataSum)}`
+              : `Stats - ${selectedActivity} ${
+                  chartsFilterSpan ? chartsFilterSpan : ""
+                } ${duration2HHMM(dataSum)}`
           }
           colorScale={!selectedActivity ? "qualitative" : "heatmap"}
           style={{ title: { fontSize: 20 } }}

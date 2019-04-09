@@ -25,7 +25,7 @@ class SettingsPurgeHistoryDialog extends Component {
     date: new Date()
   };
   handleDateChange = date => {
-    this.setState({ date });
+    this.setState({ date: date.setHours(23, 59, 59, 999) });
   };
   render() {
     const { purgeHistory, enqueueSnackbar, handleCloseEditDialog } = this.props;

@@ -140,7 +140,7 @@ export const historyReducer = (state = initialHistory, action = {}) => {
 
     case PURGE_HISTORY:
       const newHistory = state.filter(item => {
-        return new Date(item.datetime).getTime() >= action.payload.getTime();
+        return new Date(item.datetime).getTime() >= action.payload;
       });
       newState = newHistory.length ? newHistory : initialHistory;
 

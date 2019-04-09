@@ -5,6 +5,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
 import SettingsGeneralTab from "./SettingsGeneralTab";
+import SettingsChartsTab from "./SettingsChartsTab";
 
 class SettingsTabView extends Component {
   state = {
@@ -22,12 +23,12 @@ class SettingsTabView extends Component {
         <AppBar position="static">
           <Tabs value={value} onChange={this.handleChange} centered>
             <Tab label="General" />
-            <Tab label="Statistics" />
+            <Tab label="Charts" />
             <Tab label="About" />
           </Tabs>
         </AppBar>
         {value === 0 && <SettingsGeneralTab />}
-        {value === 1 && "Item Two"}
+        {value === 1 && <SettingsChartsTab />}
         {value === 2 && "Item Three"}
       </React.Fragment>
     );
