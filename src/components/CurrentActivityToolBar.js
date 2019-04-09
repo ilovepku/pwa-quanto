@@ -125,12 +125,12 @@ class CurrentActivityToolBar extends React.Component {
         </Typography>
 
         <IconButton onClick={addActivity}>
-          <AddIcon />
+          <AddIcon color="primary" />
         </IconButton>
         <IconButton onClick={interruptActivity}>
           {history[history.length - 1].activity === "Interruption" ? (
             // if current activity is interruption, show play button; else show pause button
-            <PlayArrowIcon />
+            <PlayArrowIcon color="secondary" />
           ) : (
             <PauseIcon />
           )}
