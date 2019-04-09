@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class ActivityListInput extends React.Component {
+class CategoriesInput extends React.Component {
   state = { value: this.props.item.name };
 
   handleChange(event) {
@@ -84,7 +84,6 @@ class ActivityListInput extends React.Component {
         className={classes.form}
         ref={el => (this.myFormRef = el)} // ref for manually reset form
       >
-
         <TextField
           inputRef={el => (this.myTextField = el)}
           // ref for focus
@@ -122,6 +121,6 @@ export default withSnackbar(
     connect(
       null,
       mapDispatchToProps
-    )(ActivityListInput)
+    )(CategoriesInput)
   )
 );

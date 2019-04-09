@@ -1,37 +1,27 @@
 import {
-  /* SET_ACTIVITY_DATETIME,
-  SET_ACTIVITY,
-  SET_DETAIL, */
+  ADD_ACTIVITY,
+  INTERRUPT_ACTIVITY,
   SAVE_ACTIVITY,
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
-  ADD_TO_HISTORY,
-  ADD_INTERRUPTION,
+  DISPLAY_NOTIFICATION,
+  PURGE_HISTORY,
   EDIT_ACTIVITY_NAME,
   EDIT_DETAIL_NAME,
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
-  REORDER_ACTIVITY_LIST,
-  UPDATE_STATE,
-  DISPLAY_NOTIFICATION,
-  DEFAULT_ACTIVITY_LIST,
-  PURGE_HISTORY
+  REORDER_CATEGORIES,
+  DEFAULT_CATEGORIES
 } from "./constants.js";
 
-/* export const setActivityDatetime = payload => ({
-  type: SET_ACTIVITY_DATETIME,
-  payload
+// history related
+export const addActivity = () => ({
+  type: ADD_ACTIVITY
 });
 
-export const setActivity = payload => ({
-  type: SET_ACTIVITY,
-  payload
+export const interruptActivity = () => ({
+  type: INTERRUPT_ACTIVITY
 });
-
-export const setDetail = payload => ({
-  type: SET_DETAIL,
-  payload
-}); */
 
 export const saveActivity = payload => ({
   type: SAVE_ACTIVITY,
@@ -48,14 +38,16 @@ export const deleteActivity = payload => ({
   payload
 });
 
-export const addToHistory = () => ({
-  type: ADD_TO_HISTORY
+export const displayNotification = () => ({
+  type: DISPLAY_NOTIFICATION
 });
 
-export const addInterruption = () => ({
-  type: ADD_INTERRUPTION
+export const purgeHistory = payload => ({
+  type: PURGE_HISTORY,
+  payload
 });
 
+// categories related
 export const editActivityName = payload => ({
   type: EDIT_ACTIVITY_NAME,
   payload
@@ -76,25 +68,11 @@ export const deleteDetailName = payload => ({
   payload
 });
 
-export const reorderActivityList = payload => ({
-  type: REORDER_ACTIVITY_LIST,
+export const reorderCategories = payload => ({
+  type: REORDER_CATEGORIES,
   payload
 });
 
-export const updateState = payload => ({
-  type: UPDATE_STATE,
-  payload
-});
-
-export const displayNotification = () => ({
-  type: DISPLAY_NOTIFICATION
-});
-
-export const defaultActivityList = () => ({
-  type: DEFAULT_ACTIVITY_LIST
-});
-
-export const purgeHistory = payload => ({
-  type: PURGE_HISTORY,
-  payload
+export const defaultCategories = () => ({
+  type: DEFAULT_CATEGORIES
 });

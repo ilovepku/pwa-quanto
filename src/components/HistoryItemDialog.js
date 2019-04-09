@@ -17,7 +17,7 @@ import nanoid from "nanoid";
 
 const mapStateToProps = state => {
   return {
-    fullActivityList: state.fullActivityList
+    categories: state.categories
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -54,10 +54,10 @@ class HistoryItemDialog extends React.Component {
   // on activity change, load its details and select the first detail
   handleActivityChange = event => {
     const selectedActivity = Object.values(
-      this.props.fullActivityList.activities
+      this.props.categories.activities
     ).filter(item => item.name === event.target.value)[0];
     const detailList = selectedActivity.detailIds.map(
-      detailId => this.props.fullActivityList.details[detailId]
+      detailId => this.props.categories.details[detailId]
     );
 
     this.setState({
@@ -72,7 +72,7 @@ class HistoryItemDialog extends React.Component {
 
   render() {
     const {
-      fullActivityList,
+      categories,
       saveActivity,
       splitActivity,
       deleteActivity,
@@ -86,8 +86,8 @@ class HistoryItemDialog extends React.Component {
     const { datetime, splitDatetime, activity, detail } = this.state;
 
     // load activity and detail lists
-    const activityList = fullActivityList.activityIds.map(activityId => {
-      return fullActivityList.activities[activityId];
+    const activityList = categories.activityIds.map(activityId => {
+      return categories.activities[activityId];
     });
 
     let detailList;
@@ -98,7 +98,7 @@ class HistoryItemDialog extends React.Component {
       detailList = [{ id: "detail-" + nanoid(10), name: detail }];
     } else {
       detailList = currentActivity.detailIds.map(
-        detailId => fullActivityList.details[detailId]
+        detailId => categories.details[detailId]
       );
       if (!detailList.find(item => item.name === detail)) {
         // if detail no longer exists in activity list, add a temp detail

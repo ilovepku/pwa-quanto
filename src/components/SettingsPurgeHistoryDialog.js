@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class PurgeHistoryDialog extends Component {
+class SettingsPurgeHistoryDialog extends Component {
   state = {
     date: new Date()
   };
@@ -71,5 +71,5 @@ export default withSnackbar(
   connect(
     null,
     mapDispatchToProps
-  )(PurgeHistoryDialog)
+  )(SettingsPurgeHistoryDialog)
 );

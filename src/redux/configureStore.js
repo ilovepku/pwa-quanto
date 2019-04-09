@@ -1,14 +1,20 @@
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 
 import localForage from "localforage";
 
-import { rootReducer } from "./reducers";
+import { historyReducer } from "./historyReducer";
+import { categoriesReducer } from "./categoriesReducer";
 
 const persistConfig = {
   key: "root",
   storage: localForage
 };
+
+const rootReducer = combineReducers({
+  history: historyReducer,
+  categories: categoriesReducer
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -1,9 +1,7 @@
 import React from "react";
 
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
@@ -19,14 +17,6 @@ import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
 import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
-function TabContainer({ children }) {
-  return <Typography component="div">{children}</Typography>;
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired
-};
-
 const styles = () => ({
   appBar: {
     top: "auto",
@@ -34,7 +24,7 @@ const styles = () => ({
   }
 });
 
-class SwipeableTabViews extends React.Component {
+class TabViews extends React.Component {
   state = {
     value: 0
   };
@@ -52,26 +42,10 @@ class SwipeableTabViews extends React.Component {
     const { value } = this.state;
     return (
       <React.Fragment>
-        {value === 0 && (
-          <TabContainer>
-            <HistoryTabView />
-          </TabContainer>
-        )}
-        {value === 1 && (
-          <TabContainer>
-            <ChartsTabView />
-          </TabContainer>
-        )}
-        {value === 2 && (
-          <TabContainer>
-            <CategoriesTabView />
-          </TabContainer>
-        )}
-        {value === 3 && (
-          <TabContainer>
-            <SettingsTabView />
-          </TabContainer>
-        )}
+        {value === 0 && <HistoryTabView />}
+        {value === 1 && <ChartsTabView />}
+        {value === 2 && <CategoriesTabView />}
+        {value === 3 && <SettingsTabView />}
 
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <CurrentActivityToolBar />
@@ -95,8 +69,4 @@ class SwipeableTabViews extends React.Component {
   }
 }
 
-SwipeableTabViews.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(SwipeableTabViews);
+export default withStyles(styles)(TabViews);

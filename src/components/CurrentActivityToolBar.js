@@ -4,8 +4,8 @@ import React from "react";
 
 import { connect } from "react-redux";
 import {
-  addToHistory,
-  addInterruption,
+  addActivity,
+  interruptActivity,
   displayNotification
 } from "../redux/actions";
 
@@ -38,8 +38,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    addToHistory: () => dispatch(addToHistory()),
-    addInterruption: () => dispatch(addInterruption()),
+    addActivity: () => dispatch(addActivity()),
+    interruptActivity: () => dispatch(interruptActivity()),
     displayNotification: () => dispatch(displayNotification())
   };
 };
@@ -110,7 +110,7 @@ class CurrentActivityToolBar extends React.Component {
   }
 
   render() {
-    const { classes, history, addToHistory, addInterruption } = this.props;
+    const { classes, history, addActivity, interruptActivity } = this.props;
     const lastHistoryItem = history[history.length - 1];
     const elapsed = duration2HHMM(this.state.lastHistoryItemDuration);
 
@@ -124,10 +124,10 @@ class CurrentActivityToolBar extends React.Component {
           {`Elapsed: ${elapsed}`}
         </Typography>
 
-        <IconButton onClick={addToHistory}>
+        <IconButton onClick={addActivity}>
           <AddIcon />
         </IconButton>
-        <IconButton onClick={addInterruption}>
+        <IconButton onClick={interruptActivity}>
           {history[history.length - 1].activity === "Interruption" ? (
             // if current activity is interruption, show play button; else show pause button
             <PlayArrowIcon />

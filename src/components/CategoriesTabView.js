@@ -12,20 +12,20 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
-import DetailNestedList from "./DetailNestedList";
-import ActivityListInput from "./ActivityListInput";
+import CategoriesNestedLists from "./CategoriesNestedLists";
+import CategoriesInput from "./CategoriesInput"
 
-import { reorderActivityList } from "../redux/actions";
+import { reorderCategories } from "../redux/actions";
 
 const mapStateToProps = state => {
   return {
-    fullActivityList: state.fullActivityList
+    categories: state.categories
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reorderActivityList: payload => dispatch(reorderActivityList(payload))
+    reorderCategories: payload => dispatch(reorderCategories(payload))
   };
 };
 
@@ -40,9 +40,9 @@ const styles = () => ({
 });
 
 function CategoriesTabView(props) {
-  const { classes, fullActivityList, reorderActivityList } = props;
+  const { classes, categories, reorderCategories } = props;
   return (
-    <DragDropContext onDragEnd={reorderActivityList}>
+    <DragDropContext onDragEnd={reorderCategories}>
       <Droppable
         droppableId="all-activities"
         direction="vertical"
@@ -55,14 +55,14 @@ function CategoriesTabView(props) {
             className={classes.view}
           >
             <List>
-              {fullActivityList.activityIds.map((activityId, index) => {
-                const activity = fullActivityList.activities[activityId];
+              {categories.activityIds.map((activityId, index) => {
+                const activity = categories.activities[activityId];
                 const details = activity.detailIds.map(
-                  detailId => fullActivityList.details[detailId]
+                  detailId => categories.details[detailId]
                 );
 
                 return (
-                  <DetailNestedList
+                  <CategoriesNestedLists
                     key={activity.id}
                     activity={activity}
                     details={details}
@@ -78,7 +78,7 @@ function CategoriesTabView(props) {
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
-                <ActivityListInput
+                <CategoriesInput
                   item={{ id: null, name: null, detailIds: [] }} // pass in empty object to add a new activity
                 />
               </ListItem>

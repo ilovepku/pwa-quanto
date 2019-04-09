@@ -20,7 +20,7 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 
 import classNames from "classnames";
 
-import ActivityListInput from "./ActivityListInput";
+import CategoriesInput from "./CategoriesInput";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -49,7 +49,7 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-class DetailNestedList extends React.Component {
+class CategoriesNestedLists extends React.Component {
   state = {
     open: false
   };
@@ -89,7 +89,7 @@ class DetailNestedList extends React.Component {
                       <DragIndicatorIcon />
                     </ListItemIcon>
 
-                    <ActivityListInput item={activity} />
+                    <CategoriesInput item={activity} />
 
                     <ListItemIcon>
                       <DeleteIcon
@@ -131,7 +131,7 @@ class DetailNestedList extends React.Component {
                                   <DragIndicatorIcon />
                                 </ListItemIcon>
 
-                                <ActivityListInput
+                                <CategoriesInput
                                   item={detail}
                                   activityId={activity.id}
                                 />
@@ -161,7 +161,7 @@ class DetailNestedList extends React.Component {
                         <ListItemIcon>
                           <AddIcon />
                         </ListItemIcon>
-                        <ActivityListInput
+                        <CategoriesInput
                           item={{ id: null, name: null }} // pass in empty object to add a new detail
                           activityId={activity.id}
                         />
@@ -182,5 +182,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(DetailNestedList)
+  )(CategoriesNestedLists)
 );

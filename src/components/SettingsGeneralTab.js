@@ -1,16 +1,16 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { defaultActivityList, displayNotification } from "../redux/actions";
+import { defaultCategories, displayNotification } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
-import PurgeHistoryDialog from "./PurgeHistoryDialog";
+import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
 
 const mapDispatchToProps = dispatch => {
   return {
-    defaultActivityList: () => dispatch(defaultActivityList()),
+    defaultCategories: () => dispatch(defaultCategories()),
     displayNotification: () => dispatch(displayNotification())
   };
 };
@@ -58,7 +58,7 @@ class SettingsGeneralTab extends React.Component {
   }
 
   render() {
-    const { defaultActivityList } = this.props;
+    const { defaultCategories } = this.props;
     const { open, disabled, buttonText } = this.state;
 
     return (
@@ -98,7 +98,7 @@ class SettingsGeneralTab extends React.Component {
           <Button
             variant="contained"
             color="secondary"
-            onClick={defaultActivityList}
+            onClick={defaultCategories}
           >
             DEFAULT CATEGORIES
           </Button>
@@ -106,7 +106,7 @@ class SettingsGeneralTab extends React.Component {
         </div>
 
         <Dialog open={open} onClose={this.handleCloseEditDialog}>
-          <PurgeHistoryDialog
+          <SettingsPurgeHistoryDialog
             handleCloseEditDialog={this.handleCloseEditDialog}
           />
         </Dialog>
