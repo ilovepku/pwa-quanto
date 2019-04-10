@@ -21,25 +21,33 @@ class ChartsTabView extends React.Component {
     const { history, settings } = this.props;
     const { selectedActivity } = this.state;
 
+    let newHistory = [...history];
+    // check for chartsExclude switch in settings and filter the history
+    if (settings.chartsExclude) {
+      newHistory = newHistory.filter(
+        item =>
+          !settings.chartsExcludeList.includes(item.activity) &&
+          !settings.chartsExcludeList.includes(item.detail)
+      );
+    }
     // check for chartsFilter switch in settings and filter the history
-    const newHistory = settings.chartsFilter
-      ? history.filter(
-          item =>
-            new Date(item.datetime).getTime() >= settings.chartsStart &&
-            new Date(item.datetime).getTime() <= settings.chartsEnd
-        )
-      : history;
+    if (settings.chartsFilter) {
+      newHistory = newHistory.filter(
+        item =>
+          new Date(item.datetime).getTime() >= settings.chartsFilterStart &&
+          new Date(item.datetime).getTime() <= settings.chartsFilterEnd
+      );
+    }
     // generate chartsFilterStart-End in MM/DD format
     const chartsFilterSpan =
       settings.chartsFilter &&
-      `${new Date(settings.chartsStart).getMonth() + 1}/${new Date(
-        settings.chartsStart
-      ).getDate()}-${new Date(settings.chartsEnd).getMonth() + 1}/${new Date(
-        settings.chartsEnd
-      ).getDate()}`;
+      `${new Date(settings.chartsFilterStart).getMonth() + 1}/${new Date(
+        settings.chartsFilterStart
+      ).getDate()}-${new Date(settings.chartsFilterEnd).getMonth() +
+        1}/${new Date(settings.chartsFilterEnd).getDate()}`;
 
     // generate history arr with duration property (calculated from started)
-    const durationHistory = newHistory.map(function(item, index) {
+    const durationHistory = newHistory.map((item, index) => {
       const nextDatetime =
         index !== newHistory.length - 1
           ? new Date(history[index + 1].datetime)

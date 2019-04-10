@@ -29,7 +29,7 @@ class SettingsTabView extends Component {
         </AppBar>
         {value === 0 && <SettingsGeneralTab />}
         {value === 1 && <SettingsChartsTab />}
-        {value === 2 && "Item Three"}
+        {value === 2 && "Coded by Sean Lee"}
       </React.Fragment>
     );
   }

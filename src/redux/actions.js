@@ -13,7 +13,10 @@ import {
   REORDER_CATEGORIES,
   DEFAULT_CATEGORIES,
   CHARTS_FILTER_SWITCH,
-  CHARTS_FILTER_SET
+  CHARTS_FILTER_SET,
+  CHARTS_EXCLUDE_SWITCH,
+  ADD_CHARTS_EXCLUDE_KEY,
+  DEL_CHARTS_EXCLUDE_KEY
 } from "./constants.js";
 
 // history related
@@ -86,5 +89,19 @@ export const chartsFilterSwitch = () => ({
 
 export const chartsFilterSet = payload => ({
   type: CHARTS_FILTER_SET,
+  payload
+});
+
+export const chartsExcludeSwitch = () => ({
+  type: CHARTS_EXCLUDE_SWITCH
+});
+
+export const addChartsExcludeKey = payload => ({
+  type: ADD_CHARTS_EXCLUDE_KEY,
+  payload
+});
+
+export const delChartsExcludeKey = payload => ({
+  type: DEL_CHARTS_EXCLUDE_KEY,
   payload
 });
