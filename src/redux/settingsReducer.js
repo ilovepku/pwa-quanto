@@ -1,6 +1,8 @@
 import {
   CHARTS_FILTER_SWITCH,
   CHARTS_FILTER_SET,
+  PREV_CHARTS_FILTER,
+  NEXT_CHARTS_FILTER,
   CHARTS_EXCLUDE_SWITCH,
   ADD_CHARTS_EXCLUDE_KEY,
   DEL_CHARTS_EXCLUDE_KEY
@@ -28,6 +30,31 @@ export const settingsReducer = (state = initialSettings, action = {}) => {
       newState = {
         ...state,
         [action.payload.type]: action.payload.date
+      };
+      return newState;
+
+    case PREV_CHARTS_FILTER:
+      newState = {
+        ...state,
+        chartsFilterStart:
+          state.chartsFilterStart -
+          (state.chartsFilterEnd - state.chartsFilterStart + 1),
+        chartsFilterEnd:
+          state.chartsFilterEnd -
+          (state.chartsFilterEnd - state.chartsFilterStart + 1)
+      };
+
+      return newState;
+
+    case NEXT_CHARTS_FILTER:
+      newState = {
+        ...state,
+        chartsFilterStart:
+          state.chartsFilterStart +
+          (state.chartsFilterEnd - state.chartsFilterStart + 1),
+        chartsFilterEnd:
+          state.chartsFilterEnd +
+          (state.chartsFilterEnd - state.chartsFilterStart + 1)
       };
       return newState;
 

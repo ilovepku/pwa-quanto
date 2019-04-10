@@ -1,10 +1,25 @@
 import React from "react";
 
+import { withStyles } from "@material-ui/core/styles";
+
 import { connect } from "react-redux";
+import { prevChartsFilter, nextChartsFilter } from "../redux/actions";
+
+import Fab from "@material-ui/core/Fab";
+import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
+import SkipNextIcon from "@material-ui/icons/SkipNext";
 
 import { VictoryPie, VictoryLegend } from "victory";
 
 import { duration2HHMM } from "../global/duration2HHMM";
+
+const styles = () => ({
+  fabs: {
+    position: "absolute",
+    bottom: 115,
+    right: 10
+  }
+});
 
 const mapStateToProps = state => {
   return {
@@ -13,12 +28,25 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    prevChartsFilter: () => dispatch(prevChartsFilter()),
+    nextChartsFilter: () => dispatch(nextChartsFilter())
+  };
+};
+
 class ChartsTabView extends React.Component {
   state = {
     selectedActivity: ""
   };
   render() {
-    const { history, settings } = this.props;
+    const {
+      classes,
+      history,
+      settings,
+      prevChartsFilter,
+      nextChartsFilter
+    } = this.props;
     const { selectedActivity } = this.state;
 
     let newHistory = [...history];
@@ -181,12 +209,28 @@ class ChartsTabView extends React.Component {
             }
           ]}
         />
+        {settings.chartsFilter && (
+          <div className={classes.fabs}>
+            <Fab aria-label="Previous" size="small" onClick={prevChartsFilter}>
+              <SkipPreviousIcon />
+            </Fab>
+            {"  "}
+            <Fab aria-label="Next" size="small" onClick={nextChartsFilter}>
+              <SkipNextIcon />
+            </Fab>
+          </div>
+        )}
       </React.Fragment>
     );
   }
 }
 
-export default connect(mapStateToProps)(ChartsTabView);
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ChartsTabView)
+);
 
 // custom function to generate data arrs for VictoryPie
 function groupBy(objectArray, property) {

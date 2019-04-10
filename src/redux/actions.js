@@ -14,6 +14,8 @@ import {
   DEFAULT_CATEGORIES,
   CHARTS_FILTER_SWITCH,
   CHARTS_FILTER_SET,
+  PREV_CHARTS_FILTER,
+  NEXT_CHARTS_FILTER,
   CHARTS_EXCLUDE_SWITCH,
   ADD_CHARTS_EXCLUDE_KEY,
   DEL_CHARTS_EXCLUDE_KEY
@@ -90,6 +92,14 @@ export const chartsFilterSwitch = () => ({
 export const chartsFilterSet = payload => ({
   type: CHARTS_FILTER_SET,
   payload
+});
+
+export const prevChartsFilter = () => ({
+  type: PREV_CHARTS_FILTER
+});
+
+export const nextChartsFilter = () => ({
+  type: NEXT_CHARTS_FILTER
 });
 
 export const chartsExcludeSwitch = () => ({
