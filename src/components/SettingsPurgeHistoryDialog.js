@@ -46,9 +46,7 @@ class SettingsPurgeHistoryDialog extends Component {
           </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog} color="primary">
-            Cancel
-          </Button>
+          <Button onClick={handleCloseEditDialog}>Cancel</Button>
           <Button
             onClick={() => {
               purgeHistory(date);
@@ -57,7 +55,7 @@ class SettingsPurgeHistoryDialog extends Component {
                 variant: "success"
               });
             }}
-            color="primary"
+            color="secondary"
           >
             Save
           </Button>

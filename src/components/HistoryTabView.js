@@ -75,6 +75,7 @@ class HistoryTabViewNew extends React.Component {
     const items = history
       .map((item, index) => (
         <ListItem
+          divider
           key={"history-" + index}
           onClick={() =>
             this.handleOpenEditDialog(

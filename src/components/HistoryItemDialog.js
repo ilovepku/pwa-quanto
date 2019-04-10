@@ -153,7 +153,7 @@ class HistoryItemDialog extends React.Component {
               DELETE
             </Button>
           )}
-          <Button onClick={handleCloseEditDialog} color="primary">
+          <Button onClick={handleCloseEditDialog}>
             Cancel
           </Button>
           <Button

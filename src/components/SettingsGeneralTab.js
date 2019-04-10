@@ -1,12 +1,25 @@
 import React from "react";
 
+import { withStyles } from "@material-ui/core/styles";
+
 import { connect } from "react-redux";
 import { defaultCategories, displayNotification } from "../redux/actions";
+
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
+
+const styles = () => ({
+  cards: {
+    marginTop: 5,
+    marginBottom: 5
+  }
+});
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -58,52 +71,48 @@ class SettingsGeneralTab extends React.Component {
   }
 
   render() {
-    const { defaultCategories } = this.props;
+    const { classes, defaultCategories } = this.props;
     const { open, disabled, buttonText } = this.state;
 
     return (
       <React.Fragment>
-        <p>General Settings</p>
-        <div>
-          <Button
-            disabled={disabled}
-            variant="contained"
-            color="secondary"
-            onClick={() => this.handlePermissionRequestClick()}
-          >
-            {buttonText}
-          </Button>
-          <p>
+        <Card className={classes.cards}>
+          <CardContent>
             Enable Notification to check/pause/add an activity without opening
             the app or even unlocking your device).
-          </p>
-        </div>
+          </CardContent>
+          <CardActions>
+            <Button
+              disabled={disabled}
+              color="primary"
+              onClick={() => this.handlePermissionRequestClick()}
+            >
+              {buttonText}
+            </Button>
+          </CardActions>
+        </Card>
 
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={this.handleOpenEditDialog}
-          >
-            Purge History
-          </Button>
-          <p>
+        <Card className={classes.cards}>
+          <CardContent>
             Delete all history entries on and before a certain date of your
             choice (a new activity will be startted if all history entries are
             purged).
-          </p>
-        </div>
+          </CardContent>
+          <CardActions>
+            <Button color="secondary" onClick={this.handleOpenEditDialog}>
+              Purge History
+            </Button>
+          </CardActions>
+        </Card>
 
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={defaultCategories}
-          >
-            DEFAULT CATEGORIES
-          </Button>
-          <p>Restore default categories</p>
-        </div>
+        <Card className={classes.cards}>
+          <CardContent>Restore default categories</CardContent>
+          <CardActions>
+            <Button color="secondary" onClick={defaultCategories}>
+              DEFAULT CATEGORIES
+            </Button>
+          </CardActions>
+        </Card>
 
         <Dialog open={open} onClose={this.handleCloseEditDialog}>
           <SettingsPurgeHistoryDialog
@@ -115,7 +124,9 @@ class SettingsGeneralTab extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SettingsGeneralTab);
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(SettingsGeneralTab)
+);

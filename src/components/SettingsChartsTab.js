@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { withStyles } from "@material-ui/core/styles";
+
 import { connect } from "react-redux";
 import {
   chartsFilterSwitch,
@@ -9,19 +11,28 @@ import {
   delChartsExcludeKey
 } from "../redux/actions";
 
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Chip from "@material-ui/core/Chip";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 
-import CreateIcon from "@material-ui/icons/Create";
+import AddIcon from "@material-ui/icons/Add";
 
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
 import { withSnackbar } from "notistack";
+
+const styles = () => ({
+  cards: {
+    marginTop: 5,
+    marginBottom: 5
+  }
+});
 
 const mapStateToProps = state => {
   return {
@@ -65,6 +76,7 @@ class SettingsChartsTab extends Component {
 
   render() {
     const {
+      classes,
       settings,
       chartsFilterSwitch,
       chartsFilterSet,
@@ -74,100 +86,112 @@ class SettingsChartsTab extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.chartsFilter}
-              onChange={() => {
-                if (settings.chartsFilterStart > settings.chartsFilterEnd) {
-                  enqueueSnackbar("End date earlier than start date.", {
-                    variant: "error"
-                  });
-                } else {
-                  chartsFilterSwitch();
+        <Card className={classes.cards}>
+          <CardContent>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={settings.chartsFilter}
+                  onChange={() => {
+                    if (settings.chartsFilterStart > settings.chartsFilterEnd) {
+                      enqueueSnackbar("End date earlier than start date.", {
+                        variant: "error"
+                      });
+                    } else {
+                      chartsFilterSwitch();
+                    }
+                  }}
+                  value="chartsFilterSwitch"
+                  color="primary"
+                />
+              }
+              label="Only include activities from"
+            />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                openTo="day"
+                label="Start"
+                format="yyyy/MM/dd"
+                value={new Date(settings.chartsFilterStart)}
+                onChange={date =>
+                  chartsFilterSet({
+                    type: "chartsFilterStart",
+                    date: date.setHours(0, 0, 0, 0)
+                  })
                 }
-              }}
-              value="chartsFilterSwitch"
-              color="primary"
-            />
-          }
-          label="Only include activities from"
-        />
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker
-            openTo="day"
-            label="Start"
-            format="yyyy/MM/dd"
-            value={new Date(settings.chartsFilterStart)}
-            onChange={date =>
-              chartsFilterSet({
-                type: "chartsFilterStart",
-                date: date.setHours(0, 0, 0, 0)
-              })
-            }
-            showTodayButton
-          />
-          <DatePicker
-            margin="dense"
-            openTo="day"
-            label="End"
-            format="yyyy/MM/dd"
-            value={new Date(settings.chartsFilterEnd)}
-            onChange={date =>
-              chartsFilterSet({
-                type: "chartsFilterEnd",
-                date: date.setHours(23, 59, 59, 999)
-              })
-            }
-            showTodayButton
-          />
-        </MuiPickersUtilsProvider>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={settings.chartsExclude}
-              onChange={chartsExcludeSwitch}
-              value="chartsExcludeSwitch"
-              color="primary"
-            />
-          }
-          label="Excluded listed from charts"
-        />
-        <div>
-          {settings.chartsExcludeList.map((item, index) => {
-            return (
-              <Chip
-                key={"chartsExcludeKey-" + index}
-                label={item}
-                onDelete={() => delChartsExcludeKey(index)}
+                showTodayButton
               />
-            );
-          })}
-        </div>
-        <form
-          onSubmit={event => this.handleSubmit(event)}
-          ref={el => (this.myFormRef = el)} // ref for manually reset form
-        >
-          <TextField
-            inputRef={el => (this.myTextField = el)}
-            // ref for focus
-            placeholder={"Add a new one here!"}
-            onChange={event => this.handleChange(event)}
-            variant="outlined"
-          />
+              <DatePicker
+                margin="dense"
+                openTo="day"
+                label="End"
+                format="yyyy/MM/dd"
+                value={new Date(settings.chartsFilterEnd)}
+                onChange={date =>
+                  chartsFilterSet({
+                    type: "chartsFilterEnd",
+                    date: date.setHours(23, 59, 59, 999)
+                  })
+                }
+                showTodayButton
+              />
+            </MuiPickersUtilsProvider>
+          </CardContent>
+        </Card>
 
-          <IconButton type="submit" aria-label="add">
-            <CreateIcon />
-          </IconButton>
-        </form>
+        <Card className={classes.cards}>
+          <CardContent>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={settings.chartsExclude}
+                  onChange={chartsExcludeSwitch}
+                  value="chartsExcludeSwitch"
+                  color="primary"
+                />
+              }
+              label="Excluded listed from charts"
+            />
+            <form
+              onSubmit={event => this.handleSubmit(event)}
+              ref={el => (this.myFormRef = el)} // ref for manually reset form
+            >
+              <TextField
+                inputRef={el => (this.myTextField = el)}
+                // ref for focus
+                placeholder={"Add a new one here!"}
+                onChange={event => this.handleChange(event)}
+              />
+
+              <IconButton type="submit" aria-label="add" color="primary">
+                <AddIcon />
+              </IconButton>
+            </form>
+            <div>
+              {settings.chartsExcludeList.length
+                ? settings.chartsExcludeList.map((item, index) => {
+                    return (
+                      <Chip
+                        key={"chartsExcludeKey-" + index}
+                        label={item}
+                        onDelete={() => delChartsExcludeKey(index)}
+                      />
+                    );
+                  })
+                : "List is currently empty."}
+            </div>
+          </CardContent>
+        </Card>
       </React.Fragment>
     );
   }
 }
 
-export default withSnackbar(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SettingsChartsTab)
+export default withStyles(styles)(
+  withSnackbar(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(SettingsChartsTab)
+  )
 );

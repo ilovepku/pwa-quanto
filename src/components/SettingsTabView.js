@@ -6,6 +6,7 @@ import Tab from "@material-ui/core/Tab";
 
 import SettingsGeneralTab from "./SettingsGeneralTab";
 import SettingsChartsTab from "./SettingsChartsTab";
+import SettingsAboutTab from "./SettingsAboutTab";
 
 class SettingsTabView extends Component {
   state = {
@@ -29,7 +30,7 @@ class SettingsTabView extends Component {
         </AppBar>
         {value === 0 && <SettingsGeneralTab />}
         {value === 1 && <SettingsChartsTab />}
-        {value === 2 && "Coded by Sean Lee"}
+        {value === 2 && <SettingsAboutTab />}
       </React.Fragment>
     );
   }

@@ -79,6 +79,7 @@ class CategoriesNestedLists extends React.Component {
                   style={getListStyle(snapshot.isDraggingOver)}
                 >
                   <ListItem
+                    divider
                     className={classes.listItem}
                     style={getItemStyle(outterSnapshot.isDragging)}
                   >
@@ -118,6 +119,7 @@ class CategoriesNestedLists extends React.Component {
                               ref={provided.innerRef}
                             >
                               <ListItem
+                                divider
                                 className={classNames(
                                   classes.nested,
                                   classes.listItem
@@ -156,6 +158,7 @@ class CategoriesNestedLists extends React.Component {
 
                       {/* the listItem to add a new detail */}
                       <ListItem
+                        divider
                         className={classNames(classes.nested, classes.listItem)}
                       >
                         <ListItemIcon>

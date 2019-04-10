@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import CategoriesNestedLists from "./CategoriesNestedLists";
-import CategoriesInput from "./CategoriesInput"
+import CategoriesInput from "./CategoriesInput";
 
 import { reorderCategories } from "../redux/actions";
 
@@ -74,7 +74,7 @@ function CategoriesTabView(props) {
               {provided.placeholder}
 
               {/* the listItem to add a new activity */}
-              <ListItem className={classes.listItem}>
+              <ListItem className={classes.listItem} divider>
                 <ListItemIcon>
                   <AddIcon />
                 </ListItemIcon>
