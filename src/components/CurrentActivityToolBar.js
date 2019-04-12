@@ -9,12 +9,10 @@ import {
   displayNotification
 } from "../redux/actions";
 
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 
 import AddIcon from "@material-ui/icons/Add";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -23,7 +21,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { duration2HHMM } from "../global/duration2HHMM";
 
 const styles = () => ({
-  title: {
+  text: {
     flexGrow: 1
   },
   toolBar: {
@@ -46,63 +44,39 @@ const mapDispatchToProps = dispatch => {
 
 class CurrentActivityToolBar extends React.Component {
   state = {
-    lastHistoryItemDuration: 0
+    lastHistoryItemElapsed: 0
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.props.displayNotification();
-    this.setState({
-      lastHistoryItemDuration: Math.floor(
-        (new Date() -
-          new Date(nextProps.history[nextProps.history.length - 1].datetime)) /
-          1000 /
-          60
-      )
-    });
-    clearInterval(this.intervalID);
-    // ticker for elapsed
-    this.intervalID = setInterval(() => {
-      this.setState({
-        lastHistoryItemDuration: Math.floor(
-          (new Date() -
-            new Date(
-              nextProps.history[nextProps.history.length - 1].datetime
-            )) /
-            1000 /
-            60
-        )
-      });
-      this.props.displayNotification();
-    }, 1000 * 60);
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    this.loopingUpdateElapsedAndDisplayNotifcation(nextProps);
   }
 
   componentDidMount() {
-    this.props.displayNotification();
-    this.setState({
-      lastHistoryItemDuration: Math.floor(
-        (new Date() -
-          new Date(
-            this.props.history[this.props.history.length - 1].datetime
-          )) /
-          1000 /
-          60
-      )
-    });
+    this.loopingUpdateElapsedAndDisplayNotifcation(this.props);
+  }
+
+  loopingUpdateElapsedAndDisplayNotifcation(props) {
+    // update toolbar elpased and display notification once
+    this.updateElapsedAndDisplayNotifcation(props);
+    // clearInterval and set new Interval to update toolbar elapsed and display notifcation every minute
     clearInterval(this.intervalID);
-    // ticker for elapsed
     this.intervalID = setInterval(() => {
-      this.setState({
-        lastHistoryItemDuration: Math.floor(
+      this.updateElapsedAndDisplayNotifcation(props);
+    }, 1000 * 60);
+  }
+
+  updateElapsedAndDisplayNotifcation(props) {
+    this.setState({
+      lastHistoryItemElapsed: duration2HHMM(
+        Math.floor(
           (new Date() -
-            new Date(
-              this.props.history[this.props.history.length - 1].datetime
-            )) /
+            new Date(props.history[props.history.length - 1].datetime)) /
             1000 /
             60
         )
-      });
-      this.props.displayNotification();
-    }, 1000 * 60);
+      )
+    });
+    this.props.displayNotification();
   }
 
   componentWillUnmount() {
@@ -111,24 +85,24 @@ class CurrentActivityToolBar extends React.Component {
 
   render() {
     const { classes, history, addActivity, interruptActivity } = this.props;
+    const { lastHistoryItemElapsed } = this.state;
     const lastHistoryItem = history[history.length - 1];
-    const elapsed = duration2HHMM(this.state.lastHistoryItemDuration);
 
     return (
       <Toolbar className={classes.toolBar}>
-        <Typography className={classes.title}>
+        <div className={classes.text}>
           {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
-        </Typography>
+        </div>
 
-        <Typography className={classes.title}>
-          {`Elapsed: ${elapsed}`}
-        </Typography>
+        <div className={classes.text}>
+          {`Elapsed: ${lastHistoryItemElapsed}`}
+        </div>
 
         <IconButton onClick={addActivity}>
-          <AddIcon color="primary" />
+          <AddIcon />
         </IconButton>
         <IconButton onClick={interruptActivity}>
-          {history[history.length - 1].activity === "Interruption" ? (
+          {lastHistoryItem.activity === "Interruption" ? (
             // if current activity is interruption, show play button; else show pause button
             <PlayArrowIcon color="secondary" />
           ) : (
@@ -139,10 +113,6 @@ class CurrentActivityToolBar extends React.Component {
     );
   }
 }
-
-CurrentActivityToolBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(
   connect(

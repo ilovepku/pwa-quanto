@@ -8,8 +8,8 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
 import HistoryIcon from "@material-ui/icons/History";
 import PieChartIcon from "@material-ui/icons/PieChart";
-import SettingsIcon from "@material-ui/icons/Settings";
 import CategoryIcon from "@material-ui/icons/Category";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
@@ -19,6 +19,7 @@ import CurrentActivityToolBar from "./CurrentActivityToolBar";
 
 const styles = () => ({
   appBar: {
+    position: "fixed",
     top: "auto",
     bottom: 0
   }
@@ -26,33 +27,29 @@ const styles = () => ({
 
 class TabViews extends React.Component {
   state = {
-    value: 0
+    tabIndex: 0
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = value => {
-    this.setState({ value });
+  handleTabIndexChange = (event, tabIndex) => {
+    this.setState({ tabIndex });
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    const { tabIndex } = this.state;
     return (
       <React.Fragment>
-        {value === 0 && <HistoryTabView />}
-        {value === 1 && <ChartsTabView />}
-        {value === 2 && <CategoriesTabView />}
-        {value === 3 && <SettingsTabView />}
+        {tabIndex === 0 && <HistoryTabView />}
+        {tabIndex === 1 && <ChartsTabView />}
+        {tabIndex === 2 && <CategoriesTabView />}
+        {tabIndex === 3 && <SettingsTabView />}
 
-        <AppBar position="fixed" color="default" className={classes.appBar}>
+        <AppBar className={classes.appBar}>
           <CurrentActivityToolBar />
 
           <BottomNavigation
-            value={value}
-            onChange={this.handleChange}
+            value={tabIndex}
+            onChange={this.handleTabIndexChange}
             showLabels
           >
             <BottomNavigationAction label="HISTORY" icon={<HistoryIcon />} />

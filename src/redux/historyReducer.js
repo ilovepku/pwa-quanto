@@ -13,7 +13,7 @@ import {
 const initialHistory = [
   {
     datetime: new Date(),
-    activity: "Unclassified",
+    activity: "Unsorted",
     detail: "-"
   }
 ];
@@ -26,7 +26,7 @@ export const historyReducer = (state = initialHistory, action = {}) => {
         ...state,
         {
           datetime: new Date(),
-          activity: "Unclassified",
+          activity: "Unsorted",
           detail: "-"
         }
       ];
@@ -62,13 +62,21 @@ export const historyReducer = (state = initialHistory, action = {}) => {
 
     case SAVE_ACTIVITY:
       newState = state.map((item, index) => {
-        if (index !== action.payload.index) return item;
-        return {
-          ...item,
-          datetime: action.payload.datetime,
-          activity: action.payload.activity,
-          detail: action.payload.detail
-        };
+        if (index === action.payload.index) {
+          return {
+            ...item,
+            datetime: action.payload.datetime,
+            activity: action.payload.activity,
+            detail: action.payload.detail
+          };
+        } else if (index === action.payload.index + 1) {
+          return {
+            ...item,
+            datetime: action.payload.nextItemDatetime
+          };
+        } else {
+          return item;
+        }
       });
       return newState;
 
@@ -77,8 +85,8 @@ export const historyReducer = (state = initialHistory, action = {}) => {
         ...state.slice(0, action.payload.index + 1),
         {
           datetime: action.payload.splitDatetime,
-          activity: action.payload.activity,
-          detail: action.payload.detail
+          activity: "Unsorted",
+          detail: "-"
         },
         ...state.slice(action.payload.index + 1)
       ];

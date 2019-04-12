@@ -45,7 +45,7 @@ class CategoriesInput extends React.Component {
       } else if (
         this.state.value === "Interruption" ||
         this.state.value === "-" ||
-        this.state.value === "Unclassified"
+        this.state.value === "Unsorted"
       ) {
         console.log("run");
         this.props.enqueueSnackbar("This name is reserved.", {
@@ -69,7 +69,7 @@ class CategoriesInput extends React.Component {
         }
         // clear input after adding new entry
         if (this.props.item.id === null) {
-          this.setState({ value: null });
+          //this.setState({ value: null });
           this.myFormRef.reset(); // manually reset form
         }
       }

@@ -15,7 +15,8 @@ import Dialog from "@material-ui/core/Dialog";
 import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 
-import HistoryItemDialog from "./HistoryItemDialog";
+import HistoryItemEditDialog from "./HistoryItemEditDialog";
+import HistoryItemSplitDialog from "./HistoryItemSplitDialog";
 
 const styles = () => ({
   view: {
@@ -31,12 +32,13 @@ const mapStateToProps = state => {
 
 class HistoryTabViewNew extends React.Component {
   state = {
-    open: false,
+    editDialogOpen: false,
+    splitDialogOpen: false,
     item: null,
     index: null,
     lastItemDatetime: null,
     nextItemDatetime: null,
-    split: false
+    nextNextItemDatetime: null
   };
 
   handleOpenEditDialog = (
@@ -44,33 +46,44 @@ class HistoryTabViewNew extends React.Component {
     index,
     lastItemDatetime,
     nextItemDatetime,
-    split
+    nextNextItemDatetime
   ) => {
     this.setState({
-      open: true,
+      editDialogOpen: true,
       item,
       index,
       lastItemDatetime,
       nextItemDatetime,
-      split
+      nextNextItemDatetime
     });
   };
 
-  handleCloseEditDialog = () => {
+  handleOpenSplitDialog = (item, index, nextItemDatetime) => {
     this.setState({
-      open: false
+      splitDialogOpen: true,
+      item,
+      index,
+      nextItemDatetime
+    });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({
+      editDialogOpen: false,
+      splitDialogOpen: false
     });
   };
 
   render() {
     const { history, classes } = this.props;
     const {
-      open,
+      editDialogOpen,
+      splitDialogOpen,
       item,
       index,
       lastItemDatetime,
       nextItemDatetime,
-      split
+      nextNextItemDatetime
     } = this.state;
     const items = history
       .map((item, index) => (
@@ -83,7 +96,7 @@ class HistoryTabViewNew extends React.Component {
               index,
               history[index - 1] ? new Date(history[index - 1].datetime) : null,
               history[index + 1] ? new Date(history[index + 1].datetime) : null,
-              false // for split
+              history[index + 2] ? new Date(history[index + 2].datetime) : null
             )
           }
         >
@@ -103,16 +116,12 @@ class HistoryTabViewNew extends React.Component {
           />
           <ListItemSecondaryAction
             onClick={() =>
-              this.handleOpenEditDialog(
+              this.handleOpenSplitDialog(
                 item,
                 index,
-                history[index - 1]
-                  ? new Date(history[index - 1].datetime)
-                  : null,
                 history[index + 1]
                   ? new Date(history[index + 1].datetime)
-                  : null,
-                true
+                  : null
               )
             }
           >
@@ -127,14 +136,22 @@ class HistoryTabViewNew extends React.Component {
     return (
       <React.Fragment>
         <List className={classes.view}>{items}</List>
-        <Dialog open={open} onClose={this.handleCloseEditDialog}>
-          <HistoryItemDialog
+        <Dialog open={editDialogOpen} onClose={this.handleCloseDialog}>
+          <HistoryItemEditDialog
             item={item}
             index={index}
             lastItemDatetime={lastItemDatetime}
             nextItemDatetime={nextItemDatetime}
-            handleCloseEditDialog={this.handleCloseEditDialog}
-            split={split}
+            nextNextItemDatetime={nextNextItemDatetime}
+            handleCloseDialog={this.handleCloseDialog}
+          />
+        </Dialog>
+        <Dialog open={splitDialogOpen} onClose={this.handleCloseDialog}>
+          <HistoryItemSplitDialog
+            index={index}
+            datetime={item && item.datetime}
+            nextItemDatetime={nextItemDatetime}
+            handleCloseDialog={this.handleCloseDialog}
           />
         </Dialog>
       </React.Fragment>
