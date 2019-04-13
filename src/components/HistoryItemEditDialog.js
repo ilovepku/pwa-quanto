@@ -58,11 +58,12 @@ class HistoryItemEditDialog extends React.Component {
 
   // on activity change, load its details and select the first detail
   handleActivityChange = event => {
-    const selectedActivity = Object.values(
-      this.props.categories.activities
-    ).filter(item => item.name === event.target.value)[0];
+    const { categories } = this.props;
+    const selectedActivity = Object.values(categories.activities).filter(
+      item => item.name === event.target.value
+    )[0];
     const detailList = selectedActivity.detailIds.map(
-      detailId => this.props.categories.details[detailId]
+      detailId => categories.details[detailId]
     );
 
     this.setState({
@@ -75,18 +76,87 @@ class HistoryItemEditDialog extends React.Component {
     this.setState({ detail: event.target.value });
   };
 
-  render() {
+  handleActivitySave = () => {
     const {
-      classes,
-      categories,
-      saveActivity,
-      deleteActivity,
       index,
       lastItemDatetime,
       nextNextItemDatetime,
+      saveActivity,
       handleCloseDialog,
       enqueueSnackbar
     } = this.props;
+    const { datetime, nextItemDatetime, activity, detail } = this.state;
+    if (lastItemDatetime && datetime < lastItemDatetime) {
+      // new time cannot be earlier than previou entry's start time
+      enqueueSnackbar("Start time before last activity.", {
+        variant: "error"
+      });
+    } else if (
+      nextItemDatetime &&
+      datetime > nextItemDatetime // new time cannot be later than next entry's start time
+    ) {
+      enqueueSnackbar("Start time after end time.", {
+        variant: "error"
+      });
+    } else if (!nextItemDatetime && datetime > new Date()) {
+      // new start time is in the future
+      enqueueSnackbar("Start time in the future.", {
+        variant: "error"
+      });
+    } else if (
+      nextNextItemDatetime &&
+      nextItemDatetime > nextNextItemDatetime
+      // new end time cannot be earlier than start time of next next item
+    ) {
+      enqueueSnackbar("End time after next activity.", {
+        variant: "error"
+      });
+    } else if (
+      !nextNextItemDatetime &&
+      nextItemDatetime > new Date()
+      // new end time cannot be in the future
+    ) {
+      enqueueSnackbar("End time in the future.", {
+        variant: "error"
+      });
+    } else {
+      saveActivity({
+        datetime: datetime,
+        nextItemDatetime: nextItemDatetime,
+        activity: activity,
+        detail: detail,
+        index: index
+      });
+      handleCloseDialog();
+      enqueueSnackbar("Activity saved.", {
+        variant: "success"
+      });
+    }
+  };
+
+  handleActivityDel = () => {
+    const {
+      index,
+      lastItemDatetime,
+      deleteActivity,
+      handleCloseDialog,
+      enqueueSnackbar
+    } = this.props;
+    const { nextItemDatetime } = this.state;
+    if (!lastItemDatetime && !nextItemDatetime) {
+      // if is last entry
+      enqueueSnackbar("A new activity has been started.", {
+        variant: "warning"
+      });
+    } else {
+      enqueueSnackbar("Activity deleted.", { variant: "success" });
+    }
+    deleteActivity(index);
+    handleCloseDialog();
+  };
+
+  render() {
+    const { classes, categories, handleCloseDialog } = this.props;
     const { datetime, nextItemDatetime, activity, detail } = this.state;
 
     // load activity and detail lists
@@ -196,54 +266,15 @@ class HistoryItemEditDialog extends React.Component {
             </NativeSelect>
           </FormControl>
         </DialogContent>
+
         <DialogActions>
-          <Button
-            onClick={() => {
-              if (!lastItemDatetime && !nextItemDatetime) {
-                // if is last entry
-                enqueueSnackbar("Cannot delete last entry.", {
-                  variant: "warning"
-                });
-              } else {
-                deleteActivity(index);
-                handleCloseDialog();
-                enqueueSnackbar("Entry deleted.", { variant: "success" });
-              }
-            }}
-            color="secondary"
-          >
+          <Button onClick={this.handleActivityDel} color="secondary">
             DELETE
           </Button>
+
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button
-            onClick={() => {
-              if (
-                (lastItemDatetime && datetime < lastItemDatetime) || // new time cannot be earlier than previou entry's start time
-                (nextItemDatetime && datetime > nextItemDatetime) || // new time cannot be later than next entry's start time
-                (!nextItemDatetime && datetime > new Date()) || // new time cannot be in the future
-                (nextNextItemDatetime &&
-                  nextItemDatetime > nextNextItemDatetime) || // new end time cannot be earlier than start time of next next item
-                (!nextNextItemDatetime && nextItemDatetime > new Date()) // new end time cannot be in the future
-              ) {
-                enqueueSnackbar("New time out of range.", {
-                  variant: "error"
-                });
-              } else {
-                saveActivity({
-                  datetime,
-                  nextItemDatetime,
-                  activity,
-                  detail,
-                  index
-                });
-                handleCloseDialog();
-                enqueueSnackbar("Successfully saved.", {
-                  variant: "success"
-                });
-              }
-            }}
-            color="primary"
-          >
+
+          <Button onClick={this.handleActivitySave} color="primary">
             Save
           </Button>
         </DialogActions>

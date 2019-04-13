@@ -93,13 +93,10 @@ export const historyReducer = (state = initialHistory, action = {}) => {
       return newState;
 
     case DELETE_ACTIVITY:
-      if (state.length !== 1) {
-        // check for deleting last item
-        newState = state.filter((item, index) => index !== action.payload);
-        return newState;
-      } else {
-        return state;
-      }
+      newState = state.filter((item, index) => index !== action.payload);
+      console.log(newState);
+      if (newState.length === 0) newState = initialHistory;
+      return newState;
 
     case DISPLAY_NOTIFICATION:
       if (Notification.permission === "granted") {
@@ -147,10 +144,10 @@ export const historyReducer = (state = initialHistory, action = {}) => {
       return state;
 
     case PURGE_HISTORY:
-      const newHistory = state.filter(item => {
+      newState = state.filter(item => {
         return new Date(item.datetime).getTime() >= action.payload;
       });
-      newState = newHistory.length ? newHistory : initialHistory;
+      if (newState.length === 0) newState = initialHistory;
 
       return newState;
 

@@ -48,32 +48,35 @@ class CurrentActivityToolBar extends React.Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.loopingUpdateElapsedAndDisplayNotifcation(nextProps);
+    const { history } = nextProps;
+    this.loopingUpdateElapsedAndDisplayNotifcation(
+      history[history.length - 1].datetime
+      // last history item start datetime
+    );
   }
 
   componentDidMount() {
-    this.loopingUpdateElapsedAndDisplayNotifcation(this.props);
+    const { history } = this.props;
+    this.loopingUpdateElapsedAndDisplayNotifcation(
+      history[history.length - 1].datetime
+      // last history item start datetime
+    );
   }
 
-  loopingUpdateElapsedAndDisplayNotifcation(props) {
+  loopingUpdateElapsedAndDisplayNotifcation(datetime) {
     // update toolbar elpased and display notification once
-    this.updateElapsedAndDisplayNotifcation(props);
+    this.updateElapsedAndDisplayNotifcation(datetime);
     // clearInterval and set new Interval to update toolbar elapsed and display notifcation every minute
     clearInterval(this.intervalID);
     this.intervalID = setInterval(() => {
-      this.updateElapsedAndDisplayNotifcation(props);
+      this.updateElapsedAndDisplayNotifcation(datetime);
     }, 1000 * 60);
   }
 
-  updateElapsedAndDisplayNotifcation(props) {
+  updateElapsedAndDisplayNotifcation(datetime) {
     this.setState({
       lastHistoryItemElapsed: duration2HHMM(
-        Math.floor(
-          (new Date() -
-            new Date(props.history[props.history.length - 1].datetime)) /
-            1000 /
-            60
-        )
+        Math.floor((new Date() - new Date(datetime)) / 1000 / 60)
       )
     });
     this.props.displayNotification();

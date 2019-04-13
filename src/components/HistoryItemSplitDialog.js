@@ -42,14 +42,34 @@ class HistoryItemSplitDialog extends React.Component {
     this.setState({ splitDatetime: datetime });
   };
 
-  render() {
+  handleActivitySplit = () => {
     const {
-      splitActivity,
       index,
       nextItemDatetime,
+      splitActivity,
       handleCloseDialog,
       enqueueSnackbar
     } = this.props;
+    const { datetime, splitDatetime } = this.state;
+    if (
+      (!nextItemDatetime && splitDatetime > new Date()) || // split time cannot be in the future
+      (nextItemDatetime && splitDatetime > nextItemDatetime) || // split time cannot be later than next entry's start time
+      splitDatetime < datetime // split time cannot be earlier than current entry's start time
+    ) {
+      enqueueSnackbar("Split time must be between 'Start' and 'End'.", {
+        variant: "error"
+      });
+    } else {
+      splitActivity({ splitDatetime, index });
+      handleCloseDialog();
+      enqueueSnackbar("Activity splitted.", {
+        variant: "success"
+      });
+    }
+  };
+
+  render() {
+    const { nextItemDatetime, handleCloseDialog } = this.props;
     const { datetime, splitDatetime } = this.state;
 
     return (
@@ -94,23 +114,7 @@ class HistoryItemSplitDialog extends React.Component {
 
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button
-            onClick={() => {
-              if (
-                (!nextItemDatetime && splitDatetime > new Date()) || // split time cannot be in the future
-                (nextItemDatetime && splitDatetime > nextItemDatetime) || // split time cannot be later than next entry's start time
-                splitDatetime < datetime // split time cannot be earlier than current entry's start time
-              ) {
-                enqueueSnackbar("Split time out of range.", {
-                  variant: "error"
-                });
-              } else {
-                splitActivity({ splitDatetime, index });
-                handleCloseDialog();
-              }
-            }}
-            color="primary"
-          >
+          <Button onClick={this.handleActivitySplit} color="primary">
             Save
           </Button>
         </DialogActions>
