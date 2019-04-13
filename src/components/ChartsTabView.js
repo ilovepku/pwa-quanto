@@ -67,7 +67,7 @@ class ChartsTabView extends React.Component {
       history.indexOf(filteredHistory[0]) > 0 // first filtered activity is not the first activity in history
     ) {
       filteredHistory.unshift(
-        Object.assign({}, history[history.indexOf(filteredHistory[0]) - 1])
+        Object.assign({}, history[history.indexOf(filteredHistory[0]) - 1]) // copy the object to prevent modifiying history at the same time
       );
       filteredHistory[0].datetime = new Date(settings.chartsFilterStart);
     }
