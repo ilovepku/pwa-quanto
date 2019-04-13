@@ -49,56 +49,62 @@ class ChartsTabView extends React.Component {
     } = this.props;
     const { selectedActivity } = this.state;
 
-    let newHistory = [...history];
-    // check for chartsExclude switch in settings and filter the history
+    // check for chartsFilter switch in settings and filter the history
+    const filteredHistory = settings.chartsFilter
+      ? history.filter(
+          item =>
+            new Date(item.datetime).getTime() >= settings.chartsFilterStart &&
+            new Date(item.datetime).getTime() <= settings.chartsFilterEnd
+        )
+      : history.slice();
+
+    // fix for first activty started before settings.chartsFilterStart
+    if (
+      settings.chartsFilter &&
+      filteredHistory.length &&
+      new Date(filteredHistory[0].datetime).getTime() >
+        settings.chartsFilterStart && // first filtered activity started later than chartsFilterStart
+      history.indexOf(filteredHistory[0]) > 0 // first filtered activity is not the first activity in history
+    ) {
+      filteredHistory.unshift(
+        Object.assign({}, history[history.indexOf(filteredHistory[0]) - 1])
+      );
+      filteredHistory[0].datetime = new Date(settings.chartsFilterStart);
+    }
+
+    // generate history arr with duration property (calculated from started)
+    let durationHistory = filteredHistory.map((item, index) => {
+      const nextDatetime =
+        index !== filteredHistory.length - 1
+          ? new Date(filteredHistory[index + 1].datetime)
+          : settings.chartsFilter
+          ? new Date(settings.chartsFilterEnd)
+          : new Date();
+      return {
+        activity: item.activity,
+        detail: item.detail,
+        duration: Math.round(
+          (nextDatetime - new Date(item.datetime)) / 1000 / 60
+        )
+      };
+    });
+
+    // check for chartsExclude switch in settings and filter the durationHistory
     if (settings.chartsExclude) {
-      newHistory = newHistory.filter(
+      durationHistory = durationHistory.filter(
         item =>
           !settings.chartsExcludeList.includes(item.activity) &&
           !settings.chartsExcludeList.includes(item.detail)
       );
     }
-    // check for chartsFilter switch in settings and filter the history
-    if (settings.chartsFilter) {
-      newHistory = newHistory.filter(
-        item =>
-          new Date(item.datetime).getTime() >= settings.chartsFilterStart &&
-          new Date(item.datetime).getTime() <= settings.chartsFilterEnd
-      );
-    }
-    // generate chartsFilterStart-End in MM/DD format
-    const chartsFilterSpan =
-      settings.chartsFilter &&
-      `${new Date(settings.chartsFilterStart).getMonth() + 1}/${new Date(
-        settings.chartsFilterStart
-      ).getDate()}-${new Date(settings.chartsFilterEnd).getMonth() +
-        1}/${new Date(settings.chartsFilterEnd).getDate()}`;
 
-    // generate history arr with duration property (calculated from started)
-    const durationHistory = newHistory.map((item, index) => {
-      const nextDatetime =
-        index !== newHistory.length - 1
-          ? new Date(history[index + 1].datetime)
-          : new Date();
-      return {
-        activity: item.activity,
-        detail: item.detail,
-        duration: Math.ceil(
-          (nextDatetime - new Date(item.datetime)) / 1000 / 60
-        )
-        // Math.ceil to prevent no chart on first load
-      };
-    });
-
-    // generate data arrs for VictoryPie with custom function
-    const activityData = groupBy(durationHistory, "activity");
-    const detailData = groupBy(
-      durationHistory.filter(item => item.activity === selectedActivity),
-      "detail"
-    );
-
-    // data switch between activity and detail
-    let data = !selectedActivity ? activityData : detailData;
+    // data switch between activity and detail (generated for VictoryPie with a custom function)
+    let data = !selectedActivity
+      ? groupBy(durationHistory, "activity")
+      : groupBy(
+          durationHistory.filter(item => item.activity === selectedActivity),
+          "detail"
+        );
 
     // sort data descendingly by duration
     data.sort((a, b) => {
@@ -113,6 +119,14 @@ class ChartsTabView extends React.Component {
       )} ${item.x}`;
       return item;
     });
+
+    // generate chartsFilterStart-End in MM/DD format
+    const chartsFilterSpan =
+      settings.chartsFilter &&
+      `${new Date(settings.chartsFilterStart).getMonth() + 1}/${new Date(
+        settings.chartsFilterStart
+      ).getDate()}-${new Date(settings.chartsFilterEnd).getMonth() +
+        1}/${new Date(settings.chartsFilterEnd).getDate()}`;
 
     return (
       <React.Fragment>

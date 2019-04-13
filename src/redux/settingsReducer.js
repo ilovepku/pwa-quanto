@@ -13,7 +13,7 @@ const initialSettings = {
   chartsFilterStart: new Date().setHours(0, 0, 0, 0),
   chartsFilterEnd: new Date().setHours(23, 59, 59, 999),
   chartsExclude: false,
-  chartsExcludeList: ["Sleep"]
+  chartsExcludeList: ["Unsorted"]
 };
 
 export const settingsReducer = (state = initialSettings, action = {}) => {
