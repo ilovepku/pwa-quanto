@@ -1,9 +1,7 @@
 import React from "react";
 
-import { withStyles } from "@material-ui/core/styles";
-
 import { connect } from "react-redux";
-import { defaultCategories, displayNotification } from "../redux/actions";
+import { displayNotification } from "../redux/actions";
 
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -13,56 +11,39 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
-
-const styles = () => ({
-  cards: {
-    marginTop: 5,
-    marginBottom: 5
-  }
-});
+import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
 
 const mapDispatchToProps = dispatch => {
   return {
-    defaultCategories: () => dispatch(defaultCategories()),
     displayNotification: () => dispatch(displayNotification())
   };
 };
 
 class SettingsGeneralTab extends React.Component {
   state = {
-    open: false,
-    disabled: Notification.permission === "granted" ? true : false,
-    buttonText:
-      Notification.permission === "granted"
-        ? "Notification Enabled"
-        : "Enable Notification"
+    purgeDialogOpen: false,
+    defaultCategoriesDialogOpen: false,
+    disabled: Notification.permission === "granted" ? true : false
   };
 
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
-  }
-
-  handleOpenEditDialog = () => {
+  handleOpenDialog = dialog => {
     this.setState({
-      open: true
+      [dialog]: true
     });
   };
 
-  handleCloseEditDialog = () => {
+  handleCloseDialog = () => {
     this.setState({
-      open: false
+      purgeDialogOpen: false,
+      defaultCategoriesDialogOpen: false
     });
   };
 
   handlePermissionRequestClick() {
+    const { displayNotification } = this.props;
     Notification.requestPermission(result => {
       if (result === "granted") {
-        this.props.displayNotification();
-        clearInterval(this.intervalID);
-        // ticker for elapsed
-        this.intervalID = setInterval(() => {
-          this.props.displayNotification();
-        }, 1000 * 60);
+        displayNotification();
         this.setState({
           disabled: true
         });
@@ -71,12 +52,15 @@ class SettingsGeneralTab extends React.Component {
   }
 
   render() {
-    const { classes, defaultCategories } = this.props;
-    const { open, disabled, buttonText } = this.state;
+    const {
+      disabled,
+      purgeDialogOpen,
+      defaultCategoriesDialogOpen
+    } = this.state;
 
     return (
       <React.Fragment>
-        <Card className={classes.cards}>
+        <Card>
           <CardContent>
             Enable Notification to check/pause/add an activity without opening
             the app or even unlocking your device).
@@ -87,36 +71,52 @@ class SettingsGeneralTab extends React.Component {
               color="primary"
               onClick={() => this.handlePermissionRequestClick()}
             >
-              {buttonText}
+              {disabled ? "Notification Enabled" : "Enable Notification"}
             </Button>
           </CardActions>
         </Card>
 
-        <Card className={classes.cards}>
+        <Card>
           <CardContent>
             Delete all history entries on and before a certain date of your
-            choice (a new activity will be startted if all history entries are
+            choice (a new activity will be started if all history entries are
             purged).
           </CardContent>
           <CardActions>
-            <Button color="secondary" onClick={this.handleOpenEditDialog}>
+            <Button
+              color="secondary"
+              onClick={() => this.handleOpenDialog("purgeDialogOpen")}
+            >
               Purge History
             </Button>
           </CardActions>
         </Card>
 
-        <Card className={classes.cards}>
+        <Card>
           <CardContent>Restore default categories</CardContent>
           <CardActions>
-            <Button color="secondary" onClick={defaultCategories}>
+            <Button
+              color="secondary"
+              onClick={() =>
+                this.handleOpenDialog("defaultCategoriesDialogOpen")
+              }
+            >
               DEFAULT CATEGORIES
             </Button>
           </CardActions>
         </Card>
 
-        <Dialog open={open} onClose={this.handleCloseEditDialog}>
+        <Dialog open={purgeDialogOpen} onClose={this.handleCloseDialog}>
           <SettingsPurgeHistoryDialog
-            handleCloseEditDialog={this.handleCloseEditDialog}
+            handleCloseDialog={this.handleCloseDialog}
+          />
+        </Dialog>
+        <Dialog
+          open={defaultCategoriesDialogOpen}
+          onClose={this.handleCloseDialog}
+        >
+          <SettingsDefaultCategoriesDialog
+            handleCloseDialog={this.handleCloseDialog}
           />
         </Dialog>
       </React.Fragment>
@@ -124,9 +124,7 @@ class SettingsGeneralTab extends React.Component {
   }
 }
 
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(SettingsGeneralTab)
-);
+export default connect(
+  null,
+  mapDispatchToProps
+)(SettingsGeneralTab);

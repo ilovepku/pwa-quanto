@@ -22,6 +22,9 @@ const styles = () => ({
     position: "fixed",
     top: "auto",
     bottom: 0
+  },
+  view: {
+    marginBottom: "100px"
   }
 });
 
@@ -39,10 +42,12 @@ class TabViews extends React.Component {
     const { tabIndex } = this.state;
     return (
       <React.Fragment>
-        {tabIndex === 0 && <HistoryTabView />}
-        {tabIndex === 1 && <ChartsTabView />}
-        {tabIndex === 2 && <CategoriesTabView />}
-        {tabIndex === 3 && <SettingsTabView />}
+        <div className={classes.view}>
+          {tabIndex === 0 && <HistoryTabView />}
+          {tabIndex === 1 && <ChartsTabView />}
+          {tabIndex === 2 && <CategoriesTabView />}
+          {tabIndex === 3 && <SettingsTabView />}
+        </div>
 
         <AppBar className={classes.appBar}>
           <CurrentActivityToolBar />

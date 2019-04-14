@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { withStyles } from "@material-ui/core/styles";
-
 import { connect } from "react-redux";
 import {
   chartsFilterSwitch,
@@ -27,13 +25,6 @@ import DateFnsUtils from "@date-io/date-fns";
 
 import { withSnackbar } from "notistack";
 
-const styles = () => ({
-  cards: {
-    marginTop: 5,
-    marginBottom: 5
-  }
-});
-
 const mapStateToProps = state => {
   return {
     settings: state.settings
@@ -52,31 +43,30 @@ const mapDispatchToProps = dispatch => {
 class SettingsChartsTab extends Component {
   state = { value: null };
 
-  handleChange(event) {
+  handleTextFieldChange(event) {
     this.setState({ value: event.target.value });
   }
 
   handleSubmit(event) {
+    const { settings, enqueueSnackbar } = this.props;
+    const { value } = this.state;
     event.preventDefault();
-    if (!this.state.value) {
-      this.props.enqueueSnackbar("Keyword is empty", {
+    if (!value) {
+      enqueueSnackbar("Keyword is empty", {
         variant: "error"
       });
-    } else if (
-      this.props.settings.chartsExcludeList.includes(this.state.value)
-    ) {
-      this.props.enqueueSnackbar("Keyword already exists", {
+    } else if (settings.chartsExcludeList.includes(value)) {
+      enqueueSnackbar("Keyword already exists", {
         variant: "error"
       });
     } else {
-      this.props.addChartsExcludeKey(this.state.value);
+      addChartsExcludeKey(value);
       this.myFormRef.reset(); // manually reset form
     }
   }
 
   render() {
     const {
-      classes,
       settings,
       chartsFilterSwitch,
       chartsFilterSet,
@@ -86,7 +76,7 @@ class SettingsChartsTab extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <Card className={classes.cards}>
+        <Card>
           <CardContent>
             <FormControlLabel
               control={
@@ -139,7 +129,7 @@ class SettingsChartsTab extends Component {
           </CardContent>
         </Card>
 
-        <Card className={classes.cards}>
+        <Card>
           <CardContent>
             <FormControlLabel
               control={
@@ -160,7 +150,7 @@ class SettingsChartsTab extends Component {
                 inputRef={el => (this.myTextField = el)}
                 // ref for focus
                 placeholder={"Add a new one here!"}
-                onChange={event => this.handleChange(event)}
+                onChange={event => this.handleTextFieldChange(event)}
               />
 
               <IconButton type="submit" aria-label="add" color="primary">
@@ -187,11 +177,9 @@ class SettingsChartsTab extends Component {
   }
 }
 
-export default withStyles(styles)(
-  withSnackbar(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(SettingsChartsTab)
-  )
+export default withSnackbar(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SettingsChartsTab)
 );

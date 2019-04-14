@@ -1,24 +1,14 @@
 import React from "react";
 
-import { withStyles } from "@material-ui/core/styles";
-
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 
-const styles = () => ({
-  cards: {
-    marginTop: 5,
-    marginBottom: 5
-  }
-});
-
-function SettingsAboutTab(props) {
-  const { classes } = props;
+function SettingsAboutTab() {
   return (
     <React.Fragment>
-      <Card className={classes.cards}>
+      <Card>
         <CardContent>
           <Typography>PWA Quanto</Typography>
           <Typography>Version 1.0.0</Typography>
@@ -41,7 +31,7 @@ function SettingsAboutTab(props) {
           </Typography>
         </CardContent>
       </Card>
-      <Card className={classes.cards}>
+      <Card>
         <CardContent>
           <Typography>Credits</Typography>
           <Typography>
@@ -61,4 +51,4 @@ function SettingsAboutTab(props) {
   );
 }
 
-export default withStyles(styles)(SettingsAboutTab);
+export default SettingsAboutTab;

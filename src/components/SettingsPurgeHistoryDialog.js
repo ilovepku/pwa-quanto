@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { purgeHistory } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
@@ -28,7 +28,7 @@ class SettingsPurgeHistoryDialog extends Component {
     this.setState({ date: date.setHours(23, 59, 59, 999) });
   };
   render() {
-    const { purgeHistory, enqueueSnackbar, handleCloseEditDialog } = this.props;
+    const { purgeHistory, handleCloseDialog, enqueueSnackbar } = this.props;
     const { date } = this.state;
     return (
       <React.Fragment>
@@ -46,18 +46,18 @@ class SettingsPurgeHistoryDialog extends Component {
           </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button
             onClick={() => {
               purgeHistory(date);
-              handleCloseEditDialog();
+              handleCloseDialog();
               enqueueSnackbar("Successfully purged.", {
                 variant: "success"
               });
             }}
             color="secondary"
           >
-            Save
+            Purge
           </Button>
         </DialogActions>
       </React.Fragment>

@@ -33,9 +33,6 @@ const styles = () => ({
   listItem: {
     paddingTop: 0,
     paddingBottom: 0
-  },
-  view: {
-    marginBottom: "100px"
   }
 });
 
@@ -52,7 +49,6 @@ function CategoriesTabView(props) {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className={classes.view}
           >
             <List>
               {categories.activityIds.map((activityId, index) => {

@@ -2,8 +2,6 @@ import React from "react";
 
 import { connect } from "react-redux";
 
-import { withStyles } from "@material-ui/core/styles";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -17,12 +15,6 @@ import CallSplitIcon from "@material-ui/icons/CallSplit";
 
 import HistoryItemEditDialog from "./HistoryItemEditDialog";
 import HistoryItemSplitDialog from "./HistoryItemSplitDialog";
-
-const styles = () => ({
-  view: {
-    marginBottom: "100px"
-  }
-});
 
 const mapStateToProps = state => {
   return {
@@ -75,7 +67,7 @@ class HistoryTabViewNew extends React.Component {
   };
 
   render() {
-    const { history, classes } = this.props;
+    const { history } = this.props;
     const {
       editDialogOpen,
       splitDialogOpen,
@@ -135,7 +127,7 @@ class HistoryTabViewNew extends React.Component {
       .reverse();
     return (
       <React.Fragment>
-        <List className={classes.view}>{items}</List>
+        <List>{items}</List>
         <Dialog open={editDialogOpen} onClose={this.handleCloseDialog}>
           <HistoryItemEditDialog
             item={item}
@@ -159,4 +151,4 @@ class HistoryTabViewNew extends React.Component {
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(HistoryTabViewNew));
+export default connect(mapStateToProps)(HistoryTabViewNew);
