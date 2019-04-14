@@ -18,6 +18,8 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
+import { withSnackbar } from "notistack";
+
 import classNames from "classnames";
 
 import CategoriesInput from "./CategoriesInput";
@@ -51,11 +53,11 @@ const getListStyle = isDraggingOver => ({
 
 class CategoriesNestedLists extends React.Component {
   state = {
-    open: false
+    nestedListOpen: false
   };
 
-  handleClick = () => {
-    this.setState(state => ({ open: !state.open }));
+  handleNestedListOpen = () => {
+    this.setState(state => ({ nestedListOpen: !state.nestedListOpen }));
   };
 
   render() {
@@ -65,8 +67,10 @@ class CategoriesNestedLists extends React.Component {
       activity,
       details,
       deleteActivityName,
-      deleteDetailName
+      deleteDetailName,
+      enqueueSnackbar
     } = this.props;
+    const { nestedListOpen } = this.state;
     return (
       <Draggable draggableId={activity.id} index={index}>
         {(outterProvided, outterSnapshot) => (
@@ -94,18 +98,23 @@ class CategoriesNestedLists extends React.Component {
 
                     <ListItemIcon>
                       <DeleteIcon
-                        onClick={() => deleteActivityName(activity.id)}
+                        onClick={() => {
+                          deleteActivityName(activity.id);
+                          enqueueSnackbar("Activity name removed.", {
+                            variant: "success"
+                          });
+                        }}
                       />
                     </ListItemIcon>
 
-                    {this.state.open ? (
-                      <ExpandLess onClick={this.handleClick} />
+                    {nestedListOpen ? (
+                      <ExpandLess onClick={this.handleNestedListOpen} />
                     ) : (
-                      <ExpandMore onClick={this.handleClick} />
+                      <ExpandMore onClick={this.handleNestedListOpen} />
                     )}
                   </ListItem>
 
-                  <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                  <Collapse in={nestedListOpen} timeout="auto" unmountOnExit>
                     <List>
                       {details.map((detail, index) => (
                         <Draggable
@@ -140,12 +149,15 @@ class CategoriesNestedLists extends React.Component {
 
                                 <ListItemIcon aria-label="Delete">
                                   <DeleteIcon
-                                    onClick={() =>
+                                    onClick={() => {
                                       deleteDetailName({
                                         activityId: activity.id,
                                         detailId: detail.id
-                                      })
-                                    }
+                                      });
+                                      enqueueSnackbar("Detail name removed.", {
+                                        variant: "success"
+                                      });
+                                    }}
                                   />
                                 </ListItemIcon>
                               </ListItem>
@@ -181,9 +193,11 @@ class CategoriesNestedLists extends React.Component {
   }
 }
 
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(CategoriesNestedLists)
+export default withSnackbar(
+  withStyles(styles)(
+    connect(
+      null,
+      mapDispatchToProps
+    )(CategoriesNestedLists)
+  )
 );

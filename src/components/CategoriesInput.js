@@ -3,8 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { editActivityName, editDetailName } from "../redux/actions";
 
-import { withStyles } from "@material-ui/core/styles";
-
 import { withSnackbar } from "notistack";
 
 import TextField from "@material-ui/core/TextField";
@@ -12,10 +10,20 @@ import IconButton from "@material-ui/core/IconButton";
 
 import CreateIcon from "@material-ui/icons/Create";
 
+import { withStyles } from "@material-ui/core/styles";
+
 const styles = () => ({
   form: {
     display: "flex"
   }
+});
+
+const getEditIconColor = (value, name) =>
+  value !== name ? "primary" : "default";
+const getEditIconStyle = (value, name) => ({
+  color: value !== name ? "primary" : "default",
+  transition: "transform 0.5s",
+  transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
 const mapDispatchToProps = dispatch => {
@@ -34,42 +42,55 @@ class CategoriesInput extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.value === this.props.item.name) {
+    const { value } = this.state;
+    const {
+      item,
+      activityId,
+      editActivityName,
+      editDetailName,
+      enqueueSnackbar
+    } = this.props;
+    if (value === item.name) {
       // focus on text field if no changes have been made
       this.myTextField.focus();
     } else {
-      if (!this.state.value) {
-        this.props.enqueueSnackbar("Name cannot be empty.", {
+      if (!value) {
+        enqueueSnackbar("Name cannot be empty.", {
           variant: "error"
         });
       } else if (
-        this.state.value === "Interruption" ||
-        this.state.value === "-" ||
-        this.state.value === "Unsorted"
+        value === "Interruption" ||
+        value === "-" ||
+        value === "Unsorted"
       ) {
-        console.log("run");
-        this.props.enqueueSnackbar("This name is reserved.", {
+        enqueueSnackbar("This name is reserved.", {
           variant: "error"
         });
       } else {
         // check for item type: acitivty or detail
-        if (this.props.item.detailIds) {
+        if (item.detailIds) {
           // is activity
-          this.props.editActivityName({
-            activityId: this.props.item.id,
-            name: this.state.value
+          editActivityName({
+            activityId: item.id,
+            name: value
+          });
+          enqueueSnackbar("Activity name edited.", {
+            variant: "success"
           });
         } else {
           // is detail
-          this.props.editDetailName({
-            activityId: this.props.activityId,
-            detailId: this.props.item.id,
-            name: this.state.value
+          editDetailName({
+            activityId: activityId,
+            detailId: item.id,
+            name: value
+          });
+          enqueueSnackbar("Detail name edited.", {
+            variant: "success"
           });
         }
         // clear input after adding new entry
-        if (this.props.item.id === null) {
-          //this.setState({ value: null });
+        if (item.id === null) {
+          this.setState({ value: null });
           this.myFormRef.reset(); // manually reset form
         }
       }
@@ -77,7 +98,8 @@ class CategoriesInput extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, item } = this.props;
+    const { value } = this.state;
     return (
       <form
         onSubmit={event => this.handleSubmit(event)}
@@ -85,10 +107,9 @@ class CategoriesInput extends React.Component {
         ref={el => (this.myFormRef = el)} // ref for manually reset form
       >
         <TextField
-          inputRef={el => (this.myTextField = el)}
-          // ref for focus
-          defaultValue={this.state.value}
-          placeholder={!this.props.item.name ? "Add a new one here!" : null}
+          inputRef={el => (this.myTextField = el)} // ref for focus
+          defaultValue={value}
+          placeholder={!item.name ? "Add a new one here!" : null}
           onChange={event => this.handleChange(event)}
           margin={"dense"}
           variant="outlined"
@@ -98,16 +119,8 @@ class CategoriesInput extends React.Component {
           type="submit"
           aria-label="Edit"
           // temp workaround to animate this IconButton
-          color={
-            this.state.value !== this.props.item.name ? "primary" : "default"
-          }
-          style={{
-            transition: "transform 0.5s",
-            transform:
-              this.state.value !== this.props.item.name
-                ? "rotate(180deg)"
-                : "rotate(0deg)"
-          }}
+          color={getEditIconColor(value, item.name)}
+          style={getEditIconStyle(value, item.name)}
         >
           <CreateIcon />
         </IconButton>
