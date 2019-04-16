@@ -8,20 +8,6 @@ import SettingsGeneralTab from "./SettingsGeneralTab";
 import SettingsChartsTab from "./SettingsChartsTab";
 import SettingsAboutTab from "./SettingsAboutTab";
 
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiCard: {
-      root: {
-        marginTop: 5,
-        marginBottom: 5
-      }
-    }
-  },
-  typography: { useNextVariants: true }
-});
-
 class SettingsTabView extends Component {
   state = {
     tabIndex: 0
@@ -34,7 +20,7 @@ class SettingsTabView extends Component {
   render() {
     const { tabIndex } = this.state;
     return (
-      <MuiThemeProvider theme={theme}>
+      <React.Fragment>
         <AppBar position="static">
           <Tabs value={tabIndex} onChange={this.handleTabIndexChange} centered>
             <Tab label="General" />
@@ -45,7 +31,7 @@ class SettingsTabView extends Component {
         {tabIndex === 0 && <SettingsGeneralTab />}
         {tabIndex === 1 && <SettingsChartsTab />}
         {tabIndex === 2 && <SettingsAboutTab />}
-      </MuiThemeProvider>
+      </React.Fragment>
     );
   }
 }

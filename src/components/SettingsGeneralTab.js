@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import { displayNotification } from "../redux/actions";
 
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-
+import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
 import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
+import SettingsGeneralBackup from "./SettingsGeneralBackup";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -75,6 +75,8 @@ class SettingsGeneralTab extends React.Component {
             </Button>
           </CardActions>
         </Card>
+
+        <SettingsGeneralBackup />
 
         <Card>
           <CardContent>

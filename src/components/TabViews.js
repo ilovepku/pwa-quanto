@@ -1,6 +1,8 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -28,6 +30,26 @@ const styles = () => ({
   }
 });
 
+const theme = createMuiTheme({
+  overrides: {
+    MuiBottomNavigationAction: {
+      root: {
+        padding: 0,
+        "&$selected": {
+          paddingTop: 0
+        }
+      }
+    },
+    MuiCard: {
+      root: {
+        marginTop: 5,
+        marginBottom: 5
+      }
+    }
+  },
+  typography: { useNextVariants: true }
+});
+
 class TabViews extends React.Component {
   state = {
     tabIndex: 0
@@ -41,32 +63,51 @@ class TabViews extends React.Component {
     const { classes } = this.props;
     const { tabIndex } = this.state;
     return (
-      <React.Fragment>
-        <div className={classes.view}>
-          {tabIndex === 0 && <HistoryTabView />}
-          {tabIndex === 1 && <ChartsTabView />}
-          {tabIndex === 2 && <CategoriesTabView />}
-          {tabIndex === 3 && <SettingsTabView />}
-        </div>
+      <Router>
+        <MuiThemeProvider theme={theme}>
+          <div className={classes.view}>
+            <Route path="/" exact component={HistoryTabView} />
+            <Route path="/charts/" component={ChartsTabView} />
+            <Route path="/categories/" component={CategoriesTabView} />
+            <Route path="/settings/" component={SettingsTabView} />
+          </div>
 
-        <AppBar className={classes.appBar}>
-          <CurrentActivityToolBar />
+          <AppBar className={classes.appBar}>
+            <CurrentActivityToolBar />
 
-          <BottomNavigation
-            value={tabIndex}
-            onChange={this.handleTabIndexChange}
-            showLabels
-          >
-            <BottomNavigationAction label="HISTORY" icon={<HistoryIcon />} />
-            <BottomNavigationAction label="CHARTS" icon={<PieChartIcon />} />
-            <BottomNavigationAction
-              label="CATEGORIES"
-              icon={<CategoryIcon />}
-            />
-            <BottomNavigationAction label="SETTINGS" icon={<SettingsIcon />} />
-          </BottomNavigation>
-        </AppBar>
-      </React.Fragment>
+            <BottomNavigation
+              value={tabIndex}
+              onChange={this.handleTabIndexChange}
+              showLabels
+            >
+              <BottomNavigationAction
+                label="HISTORY"
+                icon={<HistoryIcon />}
+                component={Link}
+                to="/"
+              />
+              <BottomNavigationAction
+                label="CHARTS"
+                icon={<PieChartIcon />}
+                component={Link}
+                to="/charts"
+              />
+              <BottomNavigationAction
+                label="CATEGORIES"
+                icon={<CategoryIcon />}
+                component={Link}
+                to="/categories"
+              />
+              <BottomNavigationAction
+                label="SETTINGS"
+                icon={<SettingsIcon />}
+                component={Link}
+                to="/settings"
+              />
+            </BottomNavigation>
+          </AppBar>
+        </MuiThemeProvider>
+      </Router>
     );
   }
 }
