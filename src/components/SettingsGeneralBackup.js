@@ -1,6 +1,9 @@
 // Import FirebaseAuth and firebase.
 import React from "react";
 
+import { connect } from "react-redux";
+import { backup, restore } from "../redux/actions";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,6 +11,19 @@ import Button from "@material-ui/core/Button";
 
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { firebase, uiConfig } from "../global/firebase";
+
+const mapStateToProps = state => {
+  return {
+    history: state.history,
+    categories: state.categories
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    backup: payload => dispatch(backup(payload)),
+    restore: () => dispatch(restore())
+  };
+};
 
 class SettingsGeneralBackup extends React.Component {
   // The component's Local state.
@@ -28,6 +44,7 @@ class SettingsGeneralBackup extends React.Component {
   }
 
   render() {
+    const { history, categories, backup, restore } = this.props;
     if (!this.state.isSignedIn) {
       return (
         <Card>
@@ -50,12 +67,20 @@ class SettingsGeneralBackup extends React.Component {
           Welcome {firebase.auth().currentUser.displayName}! You can now backup
           or restore your activity history and custom categories!
         </CardContent>
+
         <CardActions>
           <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+          <Button onClick={() => backup({ history, categories })}>
+            Back-up
+          </Button>
+          <Button onClick={restore}>Restore</Button>
         </CardActions>
       </Card>
     );
   }
 }
 
-export default SettingsGeneralBackup;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsGeneralBackup);

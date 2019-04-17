@@ -6,12 +6,17 @@ import {
   DELETE_ACTIVITY,
   DISPLAY_NOTIFICATION,
   PURGE_HISTORY,
+  RESTORE_HISTORY,
   EDIT_ACTIVITY_NAME,
   EDIT_DETAIL_NAME,
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_CATEGORIES,
   DEFAULT_CATEGORIES,
+  RESTORE_CATEGORIES,
+  BACKUP,
+  BACKUP_ERROR,
+  RESTORE_ERROR,
   CHARTS_FILTER_SWITCH,
   CHARTS_FILTER_SET,
   PREV_CHARTS_FILTER,
@@ -54,6 +59,11 @@ export const purgeHistory = payload => ({
   payload
 });
 
+export const restoreHistory = payload => ({
+  type: RESTORE_HISTORY,
+  payload
+});
+
 // categories related
 export const editActivityName = payload => ({
   type: EDIT_ACTIVITY_NAME,
@@ -82,6 +92,10 @@ export const reorderCategories = payload => ({
 
 export const defaultCategories = () => ({
   type: DEFAULT_CATEGORIES
+});
+
+export const restoreCategories = () => ({
+  type: RESTORE_CATEGORIES
 });
 
 // settings related
@@ -115,3 +129,50 @@ export const delChartsExcludeKey = payload => ({
   type: DEL_CHARTS_EXCLUDE_KEY,
   payload
 });
+
+export const backup = payload => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const userId = getState().firebase.auth.uid;
+    firestore
+      .collection("backup")
+      .doc(userId)
+      .set({
+        history: payload.history,
+        categories: payload.categories,
+        createdAt: new Date()
+      })
+      .then(() => {
+        dispatch({ type: BACKUP });
+      })
+      .catch(err => {
+        dispatch({ type: BACKUP_ERROR, err });
+      });
+  };
+};
+
+export const restore = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const userId = getState().firebase.auth.uid;
+    firestore
+      .collection("backup")
+      .doc(userId)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          dispatch({ type: RESTORE_HISTORY, payload: doc.data().history });
+          dispatch({
+            type: RESTORE_CATEGORIES,
+            payload: doc.data().categories
+          });
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch(err => {
+        dispatch({ type: RESTORE_ERROR, err });
+      });
+  };
+};

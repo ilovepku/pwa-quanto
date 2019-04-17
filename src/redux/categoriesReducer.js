@@ -6,7 +6,8 @@ import {
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_CATEGORIES,
-  DEFAULT_CATEGORIES
+  DEFAULT_CATEGORIES,
+  RESTORE_CATEGORIES
 } from "./constants.js";
 
 import initialCategories from "../data/initialCategories";
@@ -181,9 +182,11 @@ export const categoriesReducer = (state = initialCategories, action = {}) => {
       return newState;
 
     case DEFAULT_CATEGORIES:
-      newState = initialCategories;
 
-      return newState;
+      return initialCategories;
+      
+    case RESTORE_CATEGORIES:
+      return action.payload;
 
     default:
       return state;

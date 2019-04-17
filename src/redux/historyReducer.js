@@ -7,7 +7,8 @@ import {
   SPLIT_ACTIVITY,
   DELETE_ACTIVITY,
   DISPLAY_NOTIFICATION,
-  PURGE_HISTORY
+  PURGE_HISTORY,
+  RESTORE_HISTORY
 } from "./constants.js";
 
 const initialHistory = [
@@ -150,6 +151,11 @@ export const historyReducer = (state = initialHistory, action = {}) => {
       if (newState.length === 0) newState = initialHistory;
 
       return newState;
+
+    case RESTORE_HISTORY:
+      return action.payload.map(item => {
+        return { ...item, datetime: item.datetime.toDate() };
+      });
 
     default:
       return state;
