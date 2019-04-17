@@ -1,32 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
-import { withStyles } from "@material-ui/core/styles";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
-import AppBar from "@material-ui/core/AppBar";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-
-import HistoryIcon from "@material-ui/icons/History";
-import PieChartIcon from "@material-ui/icons/PieChart";
-import CategoryIcon from "@material-ui/icons/Category";
-import SettingsIcon from "@material-ui/icons/Settings";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
-import CurrentActivityToolBar from "./CurrentActivityToolBar";
+
+import BottomAppBar from "./BottomAppBar";
+
+import { withStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const styles = () => ({
-  appBar: {
-    position: "fixed",
-    top: "auto",
-    bottom: 0
-  },
   view: {
-    marginBottom: "100px"
+    marginBottom: "110px"
   }
 });
 
@@ -51,17 +38,8 @@ const theme = createMuiTheme({
 });
 
 class TabViews extends React.Component {
-  state = {
-    tabIndex: 0
-  };
-
-  handleTabIndexChange = (event, tabIndex) => {
-    this.setState({ tabIndex });
-  };
-
   render() {
     const { classes } = this.props;
-    const { tabIndex } = this.state;
     return (
       <Router>
         <MuiThemeProvider theme={theme}>
@@ -71,41 +49,7 @@ class TabViews extends React.Component {
             <Route path="/categories/" component={CategoriesTabView} />
             <Route path="/settings/" component={SettingsTabView} />
           </div>
-
-          <AppBar className={classes.appBar}>
-            <CurrentActivityToolBar />
-
-            <BottomNavigation
-              value={tabIndex}
-              onChange={this.handleTabIndexChange}
-              showLabels
-            >
-              <BottomNavigationAction
-                label="HISTORY"
-                icon={<HistoryIcon />}
-                component={Link}
-                to="/"
-              />
-              <BottomNavigationAction
-                label="CHARTS"
-                icon={<PieChartIcon />}
-                component={Link}
-                to="/charts"
-              />
-              <BottomNavigationAction
-                label="CATEGORIES"
-                icon={<CategoryIcon />}
-                component={Link}
-                to="/categories"
-              />
-              <BottomNavigationAction
-                label="SETTINGS"
-                icon={<SettingsIcon />}
-                component={Link}
-                to="/settings"
-              />
-            </BottomNavigation>
-          </AppBar>
+          <BottomAppBar />
         </MuiThemeProvider>
       </Router>
     );
