@@ -13,7 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const styles = () => ({
   view: {
-    marginBottom: "110px"
+    paddingBottom: "95px"
   }
 });
 

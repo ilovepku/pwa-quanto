@@ -114,9 +114,10 @@ class ChartsTabView extends React.Component {
     // add name field for VictoryLegend data
     const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
     data = data.map(item => {
-      item.name = `${((item.y / dataSum) * 100).toFixed(2)}% ${duration2HHMM(
-        item.y
-      )} ${item.x}`;
+      item.name = `${
+        dataSum ? ((item.y / dataSum) * 100).toFixed(2) : 0
+      }% ${duration2HHMM(item.y)} ${item.x}`;
+      // fix for showing NaN when divided by 0
       return item;
     });
 
@@ -162,9 +163,9 @@ class ChartsTabView extends React.Component {
         <VictoryLegend
           height={225}
           // add left padding of 50 if legend has less than 2 columns
-          itemsPerRow={5}
-          centerTitle={data.length > 10 ? false : true}
-          borderPadding={{ left: data.length > 10 ? 0 : 50 }}
+          itemsPerRow={6}
+          centerTitle={data.length > 12 ? false : true}
+          borderPadding={{ left: data.length > 12 ? 0 : 50 }}
           gutter={0}
           title={
             !selectedActivity
