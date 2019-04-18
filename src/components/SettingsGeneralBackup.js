@@ -2,7 +2,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { backup, restore } from "../redux/actions";
+import { backup } from "../redux/actions";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -20,8 +20,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    backup: payload => dispatch(backup(payload)),
-    restore: () => dispatch(restore())
+    backup: payload => dispatch(backup(payload))
   };
 };
 
@@ -44,7 +43,12 @@ class SettingsGeneralBackup extends React.Component {
   }
 
   render() {
-    const { history, categories, backup, restore } = this.props;
+    const {
+      history,
+      categories,
+      backup,
+      handleOpenDialog
+    } = this.props;
     if (!this.state.isSignedIn) {
       return (
         <Card>
@@ -73,7 +77,9 @@ class SettingsGeneralBackup extends React.Component {
           <Button onClick={() => backup({ history, categories })}>
             Back-up
           </Button>
-          <Button onClick={restore}>Restore</Button>
+          <Button onClick={() => handleOpenDialog("restoreDialogOpen")}>
+            Restore
+          </Button>
         </CardActions>
       </Card>
     );

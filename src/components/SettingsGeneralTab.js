@@ -11,6 +11,7 @@ import Dialog from "@material-ui/core/Dialog";
 
 import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
 import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
+import SettingsRestoreDialog from "./SettingsRestoreDialog";
 import SettingsGeneralBackup from "./SettingsGeneralBackup";
 
 const mapDispatchToProps = dispatch => {
@@ -23,6 +24,7 @@ class SettingsGeneralTab extends React.Component {
   state = {
     purgeDialogOpen: false,
     defaultCategoriesDialogOpen: false,
+    restoreDialogOpen: false,
     disabled: Notification.permission === "granted" ? true : false
   };
 
@@ -35,7 +37,8 @@ class SettingsGeneralTab extends React.Component {
   handleCloseDialog = () => {
     this.setState({
       purgeDialogOpen: false,
-      defaultCategoriesDialogOpen: false
+      defaultCategoriesDialogOpen: false,
+      restoreDialogOpen: false
     });
   };
 
@@ -55,6 +58,7 @@ class SettingsGeneralTab extends React.Component {
     const {
       disabled,
       purgeDialogOpen,
+      restoreDialogOpen,
       defaultCategoriesDialogOpen
     } = this.state;
 
@@ -76,7 +80,7 @@ class SettingsGeneralTab extends React.Component {
           </CardActions>
         </Card>
 
-        <SettingsGeneralBackup />
+        <SettingsGeneralBackup handleOpenDialog={this.handleOpenDialog} />
 
         <Card>
           <CardContent>
@@ -113,6 +117,7 @@ class SettingsGeneralTab extends React.Component {
             handleCloseDialog={this.handleCloseDialog}
           />
         </Dialog>
+
         <Dialog
           open={defaultCategoriesDialogOpen}
           onClose={this.handleCloseDialog}
@@ -120,6 +125,10 @@ class SettingsGeneralTab extends React.Component {
           <SettingsDefaultCategoriesDialog
             handleCloseDialog={this.handleCloseDialog}
           />
+        </Dialog>
+
+        <Dialog open={restoreDialogOpen} onClose={this.handleCloseDialog}>
+          <SettingsRestoreDialog handleCloseDialog={this.handleCloseDialog} />
         </Dialog>
       </React.Fragment>
     );
