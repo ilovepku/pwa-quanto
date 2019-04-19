@@ -68,7 +68,7 @@ class HistoryItemEditDialog extends React.Component {
 
     this.setState({
       activity: event.target.value,
-      detail: detailList[0].name
+      detail: detailList.length ? detailList[0].name : "-" // fix for selecting activity with no detail
     });
   };
 
