@@ -8,7 +8,8 @@ import {
   NEXT_CHARTS_FILTER,
   CHARTS_EXCLUDE_SWITCH,
   ADD_CHARTS_EXCLUDE_KEY,
-  DEL_CHARTS_EXCLUDE_KEY
+  DEL_CHARTS_EXCLUDE_KEY,
+  RESTORE_SETTINGS
 } from "./constants.js";
 
 const initialSettings = {
@@ -95,6 +96,9 @@ export const settingsReducer = (state = initialSettings, action = {}) => {
         )
       };
       return newState;
+
+    case RESTORE_SETTINGS:
+      return action.payload;
 
     default:
       return state;

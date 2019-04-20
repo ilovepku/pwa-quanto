@@ -23,7 +23,8 @@ import {
   NEXT_CHARTS_FILTER,
   CHARTS_EXCLUDE_SWITCH,
   ADD_CHARTS_EXCLUDE_KEY,
-  DEL_CHARTS_EXCLUDE_KEY
+  DEL_CHARTS_EXCLUDE_KEY,
+  RESTORE_SETTINGS
 } from "./constants.js";
 
 // history related
@@ -140,6 +141,7 @@ export const backup = payload => {
       .set({
         history: payload.history,
         categories: payload.categories,
+        settings: payload.settings,
         createdAt: new Date()
       })
       .then(() => {
@@ -166,6 +168,10 @@ export const restore = () => {
             type: RESTORE_CATEGORIES,
             payload: doc.data().categories
           });
+          dispatch({
+            type: RESTORE_SETTINGS,
+            payload: doc.data().settings
+          });
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -176,3 +182,8 @@ export const restore = () => {
       });
   };
 };
+
+export const restoreSettings = payload => ({
+  type: RESTORE_SETTINGS,
+  payload
+});

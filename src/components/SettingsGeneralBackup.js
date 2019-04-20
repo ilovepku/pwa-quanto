@@ -15,7 +15,8 @@ import { firebase, uiConfig } from "../global/firebase";
 const mapStateToProps = state => {
   return {
     history: state.history,
-    categories: state.categories
+    categories: state.categories,
+    settings: state.settings
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -46,6 +47,7 @@ class SettingsGeneralBackup extends React.Component {
     const {
       history,
       categories,
+      settings,
       backup,
       handleOpenDialog
     } = this.props;
@@ -53,8 +55,8 @@ class SettingsGeneralBackup extends React.Component {
       return (
         <Card>
           <CardContent>
-            Sign in to backup or restore your activity history and custom
-            categories:
+            Sign in to backup or restore your activity history, custom
+            categories and settings:
           </CardContent>
           <CardActions>
             <StyledFirebaseAuth
@@ -69,12 +71,15 @@ class SettingsGeneralBackup extends React.Component {
       <Card>
         <CardContent>
           Welcome {firebase.auth().currentUser.displayName}! You can now backup
-          or restore your activity history and custom categories!
+          or restore your activity history, custom categories and settings!
         </CardContent>
 
         <CardActions>
           <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
-          <Button onClick={() => backup({ history, categories })}>
+          <Button
+            onClick={() => backup({ history, categories, settings })}
+            color="primary"
+          >
             Back-up
           </Button>
           <Button onClick={() => handleOpenDialog("restoreDialogOpen")}>

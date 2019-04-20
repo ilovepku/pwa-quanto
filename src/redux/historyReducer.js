@@ -153,9 +153,7 @@ export const historyReducer = (state = initialHistory, action = {}) => {
       return newState;
 
     case RESTORE_HISTORY:
-      return action.payload.map(item => {
-        return { ...item, datetime: item.datetime.toDate() };
-      });
+      return action.payload;
 
     default:
       return state;
