@@ -48,7 +48,7 @@ class SettingsChartsTab extends Component {
   }
 
   handleSubmit(event) {
-    const { settings, enqueueSnackbar } = this.props;
+    const { settings, addChartsExcludeKey, enqueueSnackbar } = this.props;
     const { value } = this.state;
     event.preventDefault();
     if (!value) {
