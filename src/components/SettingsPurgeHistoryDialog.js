@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { purgeHistory } from "../redux/actions";
@@ -31,7 +31,7 @@ class SettingsPurgeHistoryDialog extends Component {
     const { purgeHistory, handleCloseDialog, enqueueSnackbar } = this.props;
     const { date } = this.state;
     return (
-      <React.Fragment>
+      <Fragment>
         <DialogTitle>Purge History</DialogTitle>
         <DialogContent>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -60,7 +60,7 @@ class SettingsPurgeHistoryDialog extends Component {
             Purge
           </Button>
         </DialogActions>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { editActivityName, editDetailName } from "../redux/actions";
@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class CategoriesInput extends React.Component {
+class CategoriesInput extends Component {
   state = { value: this.props.item.name };
 
   handleChange(event) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { splitActivity } from "../redux/actions";
@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class HistoryItemSplitDialog extends React.Component {
+class HistoryItemSplitDialog extends Component {
   state = {
     datetime: new Date(this.props.datetime),
     // get mid point between start and end datetime
@@ -73,7 +73,7 @@ class HistoryItemSplitDialog extends React.Component {
     const { datetime, splitDatetime } = this.state;
 
     return (
-      <React.Fragment>
+      <Fragment>
         <DialogTitle>Split Activity</DialogTitle>
 
         <DialogContent>
@@ -118,7 +118,7 @@ class HistoryItemSplitDialog extends React.Component {
             Save
           </Button>
         </DialogActions>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

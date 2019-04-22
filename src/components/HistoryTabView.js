@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 
@@ -22,7 +22,7 @@ const mapStateToProps = state => {
   };
 };
 
-class HistoryTabViewNew extends React.Component {
+class HistoryTabViewNew extends Component {
   state = {
     editDialogOpen: false,
     splitDialogOpen: false,
@@ -126,7 +126,7 @@ class HistoryTabViewNew extends React.Component {
       .slice()
       .reverse();
     return (
-      <React.Fragment>
+      <Fragment>
         <List>{items}</List>
         <Dialog open={editDialogOpen} onClose={this.handleCloseDialog}>
           <HistoryItemEditDialog
@@ -146,7 +146,7 @@ class HistoryTabViewNew extends React.Component {
             handleCloseDialog={this.handleCloseDialog}
           />
         </Dialog>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import HistoryTabView from "./HistoryTabView";
@@ -37,7 +37,7 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-class TabViews extends React.Component {
+class TabViews extends Component {
   render() {
     const { classes } = this.props;
     return (

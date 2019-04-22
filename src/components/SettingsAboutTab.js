@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,7 +7,7 @@ import Link from "@material-ui/core/Link";
 
 function SettingsAboutTab() {
   return (
-    <React.Fragment>
+    <Fragment>
       <Card>
         <CardContent>
           <Typography>PWA Quanto</Typography>
@@ -47,7 +47,7 @@ function SettingsAboutTab() {
           <Typography>- victory for data visualization</Typography>
         </CardContent>
       </Card>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

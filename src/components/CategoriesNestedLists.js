@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { deleteActivityName, deleteDetailName } from "../redux/actions";
@@ -51,7 +51,7 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-class CategoriesNestedLists extends React.Component {
+class CategoriesNestedLists extends Component {
   state = {
     nestedListOpen: false
   };

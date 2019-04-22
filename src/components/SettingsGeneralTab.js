@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { displayNotification } from "../redux/actions";
@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class SettingsGeneralTab extends React.Component {
+class SettingsGeneralTab extends Component {
   state = {
     purgeDialogOpen: false,
     defaultCategoriesDialogOpen: false,
@@ -63,7 +63,7 @@ class SettingsGeneralTab extends React.Component {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <Fragment>
         <Card>
           <CardContent>
             Enable Notification to check/pause/add an activity without opening
@@ -130,7 +130,7 @@ class SettingsGeneralTab extends React.Component {
         <Dialog open={restoreDialogOpen} onClose={this.handleCloseDialog}>
           <SettingsRestoreDialog handleCloseDialog={this.handleCloseDialog} />
         </Dialog>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { restore } from "../redux/actions";
@@ -18,7 +18,7 @@ class SettingsRestoreDialog extends Component {
   render() {
     const { restore, handleCloseDialog } = this.props;
     return (
-      <React.Fragment>
+      <Fragment>
         <DialogTitle>Restore</DialogTitle>
         <DialogContent>Restore history and categories</DialogContent>
         <DialogActions>
@@ -33,7 +33,7 @@ class SettingsRestoreDialog extends Component {
             Restore
           </Button>
         </DialogActions>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import {
@@ -75,7 +75,7 @@ class SettingsChartsTab extends Component {
       enqueueSnackbar
     } = this.props;
     return (
-      <React.Fragment>
+      <Fragment>
         <Card>
           <CardContent>
             <FormControlLabel
@@ -172,7 +172,7 @@ class SettingsChartsTab extends Component {
             </div>
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

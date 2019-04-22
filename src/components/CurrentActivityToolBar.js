@@ -1,6 +1,4 @@
-// Todo: show activity & detail, elapsed time; implement interupt
-
-import React from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import {
@@ -42,7 +40,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class CurrentActivityToolBar extends React.Component {
+class CurrentActivityToolBar extends Component {
   state = {
     lastHistoryItemElapsed: 0
   };

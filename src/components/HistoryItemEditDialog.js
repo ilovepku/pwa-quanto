@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { saveActivity, deleteActivity } from "../redux/actions";
@@ -42,7 +42,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class HistoryItemEditDialog extends React.Component {
+class HistoryItemEditDialog extends Component {
   state = {
     datetime: new Date(this.props.item.datetime),
     nextItemDatetime: this.props.nextItemDatetime
@@ -199,7 +199,7 @@ class HistoryItemEditDialog extends React.Component {
     });
 
     return (
-      <React.Fragment>
+      <Fragment>
         <DialogTitle>Edit Activity Details</DialogTitle>
         <DialogContent>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -278,7 +278,7 @@ class HistoryItemEditDialog extends React.Component {
             Save
           </Button>
         </DialogActions>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -20,7 +20,7 @@ class SettingsTabView extends Component {
   render() {
     const { tabIndex } = this.state;
     return (
-      <React.Fragment>
+      <Fragment>
         <AppBar position="static">
           <Tabs value={tabIndex} onChange={this.handleTabIndexChange} centered>
             <Tab label="General" />
@@ -31,7 +31,7 @@ class SettingsTabView extends Component {
         {tabIndex === 0 && <SettingsGeneralTab />}
         {tabIndex === 1 && <SettingsChartsTab />}
         {tabIndex === 2 && <SettingsAboutTab />}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

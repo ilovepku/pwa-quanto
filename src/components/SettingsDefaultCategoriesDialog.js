@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import { defaultCategories } from "../redux/actions";
@@ -25,7 +25,7 @@ class SettingsDefaultCategoriesDialog extends Component {
       enqueueSnackbar
     } = this.props;
     return (
-      <React.Fragment>
+      <Fragment>
         <DialogTitle>Reset Default Categories</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -47,7 +47,7 @@ class SettingsDefaultCategoriesDialog extends Component {
             Reset
           </Button>
         </DialogActions>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

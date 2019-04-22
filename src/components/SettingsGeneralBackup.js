@@ -1,5 +1,5 @@
 // Import FirebaseAuth and firebase.
-import React from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { backup } from "../redux/actions";
@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class SettingsGeneralBackup extends React.Component {
+class SettingsGeneralBackup extends Component {
   // The component's Local state.
   state = {
     isSignedIn: false // Local signed-in state.

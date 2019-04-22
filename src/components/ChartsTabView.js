@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class ChartsTabView extends React.Component {
+class ChartsTabView extends Component {
   state = {
     selectedActivity: ""
   };
@@ -130,7 +130,7 @@ class ChartsTabView extends React.Component {
         1}/${new Date(settings.chartsFilterEnd).getDate()}`;
 
     return (
-      <React.Fragment>
+      <Fragment>
         <VictoryPie
           padAngle={3}
           innerRadius={100}
@@ -236,7 +236,7 @@ class ChartsTabView extends React.Component {
             </Fab>
           </div>
         )}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
