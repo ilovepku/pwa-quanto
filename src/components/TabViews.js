@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import HistoryTabView from "./HistoryTabView";
@@ -10,6 +10,8 @@ import BottomAppBar from "./BottomAppBar";
 
 import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+import Notifier from "./Notifier";
 
 const styles = () => ({
   view: {
@@ -37,23 +39,22 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-class TabViews extends Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <Router>
-        <MuiThemeProvider theme={theme}>
-          <div className={classes.view}>
-            <Route path="/" exact component={HistoryTabView} />
-            <Route path="/charts/" component={ChartsTabView} />
-            <Route path="/categories/" component={CategoriesTabView} />
-            <Route path="/settings/" component={SettingsTabView} />
-          </div>
-          <BottomAppBar />
-        </MuiThemeProvider>
-      </Router>
-    );
-  }
+function TabViews(props) {
+  const { classes } = props;
+  return (
+    <Router>
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.view}>
+          <Route path="/" exact component={HistoryTabView} />
+          <Route path="/charts/" component={ChartsTabView} />
+          <Route path="/categories/" component={CategoriesTabView} />
+          <Route path="/settings/" component={SettingsTabView} />
+        </div>
+        <BottomAppBar />
+        <Notifier />
+      </MuiThemeProvider>
+    </Router>
+  );
 }
 
 export default withStyles(styles)(TabViews);

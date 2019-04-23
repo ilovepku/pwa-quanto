@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 
 import { connect } from "react-redux";
 import { restore } from "../redux/actions";
@@ -14,28 +14,26 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class SettingsRestoreDialog extends Component {
-  render() {
-    const { restore, handleCloseDialog } = this.props;
-    return (
-      <Fragment>
-        <DialogTitle>Restore</DialogTitle>
-        <DialogContent>Restore history and categories</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button
-            onClick={() => {
-              restore();
-              handleCloseDialog();
-            }}
-            color="secondary"
-          >
-            Restore
-          </Button>
-        </DialogActions>
-      </Fragment>
-    );
-  }
+function SettingsRestoreDialog(props) {
+  const { restore, handleCloseDialog } = props;
+  return (
+    <Fragment>
+      <DialogTitle>Restore</DialogTitle>
+      <DialogContent>Restore history and categories</DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button
+          onClick={() => {
+            restore();
+            handleCloseDialog();
+          }}
+          color="secondary"
+        >
+          Restore
+        </Button>
+      </DialogActions>
+    </Fragment>
+  );
 }
 
 export default connect(

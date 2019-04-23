@@ -6,6 +6,7 @@ import localForage from "localforage";
 import { historyReducer } from "./historyReducer";
 import { categoriesReducer } from "./categoriesReducer";
 import { settingsReducer } from "./settingsReducer";
+import { notifierReducer } from "./notifierReducer";
 import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   history: historyReducer,
   categories: categoriesReducer,
   settings: settingsReducer,
+  notifier: notifierReducer,
   firestore: firestoreReducer,
   firebase: firebaseReducer
 });

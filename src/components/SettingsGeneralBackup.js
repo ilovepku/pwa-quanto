@@ -82,7 +82,10 @@ class SettingsGeneralBackup extends Component {
           >
             Back-up
           </Button>
-          <Button onClick={() => handleOpenDialog("restoreDialogOpen")}>
+          <Button
+            onClick={() => handleOpenDialog("restoreDialogOpen")}
+            color="secondary"
+          >
             Restore
           </Button>
         </CardActions>

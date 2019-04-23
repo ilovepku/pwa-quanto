@@ -24,7 +24,9 @@ import {
   CHARTS_EXCLUDE_SWITCH,
   ADD_CHARTS_EXCLUDE_KEY,
   DEL_CHARTS_EXCLUDE_KEY,
-  RESTORE_SETTINGS
+  RESTORE_SETTINGS,
+  ENQUEUE_SNACKBAR,
+  REMOVE_SNACKBAR
 } from "./constants.js";
 
 // history related
@@ -186,4 +188,18 @@ export const restore = () => {
 export const restoreSettings = payload => ({
   type: RESTORE_SETTINGS,
   payload
+});
+
+// Snackbar related
+export const enqueueSnackbar = notification => ({
+  type: ENQUEUE_SNACKBAR,
+  notification: {
+    key: new Date().getTime() + Math.random(),
+    ...notification
+  }
+});
+
+export const removeSnackbar = key => ({
+  type: REMOVE_SNACKBAR,
+  key
 });
