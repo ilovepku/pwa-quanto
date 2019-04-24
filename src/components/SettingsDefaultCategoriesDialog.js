@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 
 import { connect } from "react-redux";
-import { defaultCategories } from "../redux/actions";
+import { bindActionCreators } from "redux";
+import { defaultCategories, enqueueSnackbar } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -9,13 +10,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-import { withSnackbar } from "notistack";
-
-const mapDispatchToProps = dispatch => {
-  return {
-    defaultCategories: () => dispatch(defaultCategories())
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ defaultCategories, enqueueSnackbar }, dispatch);
 
 function SettingsDefaultCategoriesDialog(props) {
   const { defaultCategories, handleCloseDialog, enqueueSnackbar } = props;
@@ -33,8 +29,11 @@ function SettingsDefaultCategoriesDialog(props) {
           onClick={() => {
             defaultCategories();
             handleCloseDialog();
-            enqueueSnackbar("Successfully reset.", {
-              variant: "success"
+            enqueueSnackbar({
+              message: "Successfully reset.",
+              options: {
+                variant: "success"
+              }
             });
           }}
           color="secondary"
@@ -46,9 +45,7 @@ function SettingsDefaultCategoriesDialog(props) {
   );
 }
 
-export default withSnackbar(
-  connect(
-    null,
-    mapDispatchToProps
-  )(SettingsDefaultCategoriesDialog)
-);
+export default connect(
+  null,
+  mapDispatchToProps
+)(SettingsDefaultCategoriesDialog);

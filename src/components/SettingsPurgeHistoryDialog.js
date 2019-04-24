@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { purgeHistory } from "../redux/actions";
+import { bindActionCreators } from "redux";
+import { purgeHistory, enqueueSnackbar } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -12,13 +13,8 @@ import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { withSnackbar } from "notistack";
-
-const mapDispatchToProps = dispatch => {
-  return {
-    purgeHistory: payload => dispatch(purgeHistory(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ purgeHistory, enqueueSnackbar }, dispatch);
 
 class SettingsPurgeHistoryDialog extends Component {
   state = {
@@ -51,8 +47,11 @@ class SettingsPurgeHistoryDialog extends Component {
             onClick={() => {
               purgeHistory(date);
               handleCloseDialog();
-              enqueueSnackbar("Successfully purged.", {
-                variant: "success"
+              enqueueSnackbar({
+                message: "Successfully purged.",
+                options: {
+                  variant: "success"
+                }
               });
             }}
             color="secondary"
@@ -65,9 +64,7 @@ class SettingsPurgeHistoryDialog extends Component {
   }
 }
 
-export default withSnackbar(
-  connect(
-    null,
-    mapDispatchToProps
-  )(SettingsPurgeHistoryDialog)
-);
+export default connect(
+  null,
+  mapDispatchToProps
+)(SettingsPurgeHistoryDialog);

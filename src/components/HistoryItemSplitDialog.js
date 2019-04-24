@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { splitActivity } from "../redux/actions";
+import { bindActionCreators } from "redux";
+import { splitActivity, enqueueSnackbar } from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,18 +13,13 @@ import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DateTimePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { withSnackbar } from "notistack";
-
 const mapStateToProps = state => {
   return {
     categories: state.categories
   };
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    splitActivity: payload => dispatch(splitActivity(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ splitActivity, enqueueSnackbar }, dispatch);
 
 class HistoryItemSplitDialog extends Component {
   state = {
@@ -56,14 +52,20 @@ class HistoryItemSplitDialog extends Component {
       (nextItemDatetime && splitDatetime > nextItemDatetime) || // split time cannot be later than next entry's start time
       splitDatetime < datetime // split time cannot be earlier than current entry's start time
     ) {
-      enqueueSnackbar("Split time must be between 'Start' and 'End'.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Split time must be between 'Start' and 'End'.",
+        options: {
+          variant: "error"
+        }
       });
     } else {
       splitActivity({ splitDatetime, index });
       handleCloseDialog();
-      enqueueSnackbar("Activity splitted.", {
-        variant: "success"
+      enqueueSnackbar({
+        message: "Activity splitted.",
+        options: {
+          variant: "success"
+        }
       });
     }
   };
@@ -123,9 +125,7 @@ class HistoryItemSplitDialog extends Component {
   }
 }
 
-export default withSnackbar(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(HistoryItemSplitDialog)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HistoryItemSplitDialog);

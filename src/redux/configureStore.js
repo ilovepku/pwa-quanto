@@ -17,7 +17,8 @@ import { firebase } from "../global/firebase";
 
 const persistConfig = {
   key: "root",
-  storage: localForage
+  storage: localForage,
+  blacklist: ["notifier"]
 };
 
 const rootReducer = combineReducers({

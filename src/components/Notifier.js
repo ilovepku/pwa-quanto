@@ -31,17 +31,17 @@ class Notifier extends Component {
   }
 
   componentDidUpdate() {
-    const { notifications = [] } = this.props;
+    const { notifications = [], enqueueSnackbar } = this.props;
 
     notifications.forEach(notification => {
       // Do nothing if snackbar is already displayed
       if (this.displayed.includes(notification.key)) return;
       // Display snackbar using notistack
-      this.props.enqueueSnackbar(notification.message, notification.options);
+      enqueueSnackbar(notification.message, notification.options);
       // Keep track of snackbars that we've displayed
       this.storeDisplayed(notification.key);
       // Dispatch action to remove snackbar from redux store
-      this.props.removeSnackbar(notification.key);
+      removeSnackbar(notification.key);
     });
   }
 

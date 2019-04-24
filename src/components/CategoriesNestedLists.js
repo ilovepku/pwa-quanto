@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { deleteActivityName, deleteDetailName } from "../redux/actions";
+import { bindActionCreators } from "redux";
+import {
+  deleteActivityName,
+  deleteDetailName,
+  enqueueSnackbar
+} from "../redux/actions";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -18,18 +23,15 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-import { withSnackbar } from "notistack";
-
 import classNames from "classnames";
 
 import CategoriesInput from "./CategoriesInput";
 
-const mapDispatchToProps = dispatch => {
-  return {
-    deleteActivityName: payload => dispatch(deleteActivityName(payload)),
-    deleteDetailName: payload => dispatch(deleteDetailName(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    { deleteActivityName, deleteDetailName, enqueueSnackbar },
+    dispatch
+  );
 
 const styles = theme => ({
   nested: {
@@ -100,8 +102,11 @@ class CategoriesNestedLists extends Component {
                       <DeleteIcon
                         onClick={() => {
                           deleteActivityName(activity.id);
-                          enqueueSnackbar("Activity name removed.", {
-                            variant: "success"
+                          enqueueSnackbar({
+                            message: "Activity name removed.",
+                            options: {
+                              variant: "success"
+                            }
                           });
                         }}
                       />
@@ -154,8 +159,11 @@ class CategoriesNestedLists extends Component {
                                         activityId: activity.id,
                                         detailId: detail.id
                                       });
-                                      enqueueSnackbar("Detail name removed.", {
-                                        variant: "success"
+                                      enqueueSnackbar({
+                                        message: "Detail name removed.",
+                                        options: {
+                                          variant: "success"
+                                        }
                                       });
                                     }}
                                   />
@@ -193,11 +201,9 @@ class CategoriesNestedLists extends Component {
   }
 }
 
-export default withSnackbar(
-  withStyles(styles)(
-    connect(
-      null,
-      mapDispatchToProps
-    )(CategoriesNestedLists)
-  )
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(CategoriesNestedLists)
 );

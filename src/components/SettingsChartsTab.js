@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   chartsFilterSwitch,
   chartsFilterSet,
   chartsExcludeSwitch,
   addChartsExcludeKey,
-  delChartsExcludeKey
+  delChartsExcludeKey,
+  enqueueSnackbar
 } from "../redux/actions";
 
 import Card from "@material-ui/core/Card";
@@ -23,22 +25,23 @@ import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { withSnackbar } from "notistack";
-
 const mapStateToProps = state => {
   return {
     settings: state.settings
   };
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    chartsFilterSwitch: () => dispatch(chartsFilterSwitch()),
-    chartsFilterSet: payload => dispatch(chartsFilterSet(payload)),
-    chartsExcludeSwitch: () => dispatch(chartsExcludeSwitch()),
-    addChartsExcludeKey: payload => dispatch(addChartsExcludeKey(payload)),
-    delChartsExcludeKey: payload => dispatch(delChartsExcludeKey(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      chartsFilterSwitch,
+      chartsFilterSet,
+      chartsExcludeSwitch,
+      addChartsExcludeKey,
+      delChartsExcludeKey,
+      enqueueSnackbar
+    },
+    dispatch
+  );
 
 class SettingsChartsTab extends Component {
   state = { value: null };
@@ -52,12 +55,18 @@ class SettingsChartsTab extends Component {
     const { value } = this.state;
     event.preventDefault();
     if (!value) {
-      enqueueSnackbar("Keyword is empty", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Keyword is empty",
+        options: {
+          variant: "error"
+        }
       });
     } else if (settings.chartsExcludeList.includes(value)) {
-      enqueueSnackbar("Keyword already exists", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Keyword already exists",
+        options: {
+          variant: "error"
+        }
       });
     } else {
       addChartsExcludeKey(value);
@@ -84,8 +93,11 @@ class SettingsChartsTab extends Component {
                   checked={settings.chartsFilter}
                   onChange={() => {
                     if (settings.chartsFilterStart > settings.chartsFilterEnd) {
-                      enqueueSnackbar("End date earlier than start date.", {
-                        variant: "error"
+                      enqueueSnackbar({
+                        message: "End date earlier than start date.",
+                        options: {
+                          variant: "error"
+                        }
                       });
                     } else {
                       chartsFilterSwitch();
@@ -177,9 +189,7 @@ class SettingsChartsTab extends Component {
   }
 }
 
-export default withSnackbar(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SettingsChartsTab)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsChartsTab);

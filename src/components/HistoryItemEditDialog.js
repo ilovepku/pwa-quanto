@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
-import { saveActivity, deleteActivity } from "../redux/actions";
+import { bindActionCreators } from "redux";
+import {
+  saveActivity,
+  deleteActivity,
+  enqueueSnackbar
+} from "../redux/actions";
 
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -21,7 +26,6 @@ import { duration2HHMM } from "../global/duration2HHMM";
 
 import nanoid from "nanoid";
 
-import { withSnackbar } from "notistack";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
@@ -35,12 +39,11 @@ const mapStateToProps = state => {
     categories: state.categories
   };
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    saveActivity: payload => dispatch(saveActivity(payload)),
-    deleteActivity: payload => dispatch(deleteActivity(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    { saveActivity, deleteActivity, enqueueSnackbar },
+    dispatch
+  );
 
 class HistoryItemEditDialog extends Component {
   state = {
@@ -88,36 +91,51 @@ class HistoryItemEditDialog extends Component {
     const { datetime, nextItemDatetime, activity, detail } = this.state;
     if (lastItemDatetime && datetime < lastItemDatetime) {
       // new time cannot be earlier than previou entry's start time
-      enqueueSnackbar("Start time before last activity.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Start time before last activity.",
+        options: {
+          variant: "error"
+        }
       });
     } else if (
       nextItemDatetime &&
       datetime > nextItemDatetime // new time cannot be later than next entry's start time
     ) {
-      enqueueSnackbar("Start time after end time.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Start time after end time.",
+        options: {
+          variant: "error"
+        }
       });
     } else if (!nextItemDatetime && datetime > new Date()) {
       // new start time is in the future
-      enqueueSnackbar("Start time in the future.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "Start time in the future.",
+        options: {
+          variant: "error"
+        }
       });
     } else if (
       nextNextItemDatetime &&
       nextItemDatetime > nextNextItemDatetime
       // new end time cannot be earlier than start time of next next item
     ) {
-      enqueueSnackbar("End time after next activity.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "End time after next activity.",
+        options: {
+          variant: "error"
+        }
       });
     } else if (
       !nextNextItemDatetime &&
       nextItemDatetime > new Date()
       // new end time cannot be in the future
     ) {
-      enqueueSnackbar("End time in the future.", {
-        variant: "error"
+      enqueueSnackbar({
+        message: "End time in the future.",
+        options: {
+          variant: "error"
+        }
       });
     } else {
       saveActivity({
@@ -128,8 +146,11 @@ class HistoryItemEditDialog extends Component {
         index: index
       });
       handleCloseDialog();
-      enqueueSnackbar("Activity saved.", {
-        variant: "success"
+      enqueueSnackbar({
+        message: "Activity saved.",
+        options: {
+          variant: "success"
+        }
       });
     }
   };
@@ -145,11 +166,19 @@ class HistoryItemEditDialog extends Component {
     const { nextItemDatetime } = this.state;
     if (!lastItemDatetime && !nextItemDatetime) {
       // if is last entry
-      enqueueSnackbar("A new activity has been started.", {
-        variant: "warning"
+      enqueueSnackbar({
+        message: "A new activity has been started.",
+        options: {
+          variant: "warning"
+        }
       });
     } else {
-      enqueueSnackbar("Activity deleted.", { variant: "success" });
+      enqueueSnackbar({
+        message: "Activity deleted.",
+        options: {
+          variant: "success"
+        }
+      });
     }
     deleteActivity(index);
     handleCloseDialog();
@@ -283,11 +312,9 @@ class HistoryItemEditDialog extends Component {
   }
 }
 
-export default withSnackbar(
-  withStyles(styles)(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(HistoryItemEditDialog)
-  )
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HistoryItemEditDialog)
 );

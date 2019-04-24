@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { editActivityName, editDetailName } from "../redux/actions";
-
-import { withSnackbar } from "notistack";
+import { bindActionCreators } from "redux";
+import {
+  editActivityName,
+  editDetailName,
+  enqueueSnackbar
+} from "../redux/actions";
 
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
@@ -26,12 +29,11 @@ const getEditIconStyle = (value, name) => ({
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    editActivityName: payload => dispatch(editActivityName(payload)),
-    editDetailName: payload => dispatch(editDetailName(payload))
-  };
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    { editActivityName, editDetailName, enqueueSnackbar },
+    dispatch
+  );
 
 class CategoriesInput extends Component {
   state = { value: this.props.item.name };
@@ -55,17 +57,27 @@ class CategoriesInput extends Component {
       this.myTextField.focus();
     } else {
       if (!value) {
-        enqueueSnackbar("Name cannot be empty.", {
-          variant: "error"
+        enqueueSnackbar({
+          message: "Name cannot be empty.",
+          options: {
+            variant: "error"
+          }
         });
+        this.setState({ value: item.name });
+        this.myFormRef.reset();
       } else if (
         value === "Interruption" ||
         value === "-" ||
         value === "Unsorted"
       ) {
-        enqueueSnackbar("This name is reserved.", {
-          variant: "error"
+        enqueueSnackbar({
+          message: "This name is reserved.",
+          options: {
+            variant: "error"
+          }
         });
+        this.setState({ value: item.name });
+        this.myFormRef.reset();
       } else {
         // check for item type: acitivty or detail
         if (item.detailIds) {
@@ -74,8 +86,11 @@ class CategoriesInput extends Component {
             activityId: item.id,
             name: value
           });
-          enqueueSnackbar("Activity name edited.", {
-            variant: "success"
+          enqueueSnackbar({
+            message: "Activity name edited.",
+            options: {
+              variant: "success"
+            }
           });
         } else {
           // is detail
@@ -84,8 +99,11 @@ class CategoriesInput extends Component {
             detailId: item.id,
             name: value
           });
-          enqueueSnackbar("Detail name edited.", {
-            variant: "success"
+          enqueueSnackbar({
+            message: "Detail name edited.",
+            options: {
+              variant: "success"
+            }
           });
         }
         // clear input after adding new entry
@@ -129,11 +147,9 @@ class CategoriesInput extends Component {
   }
 }
 
-export default withSnackbar(
-  withStyles(styles)(
-    connect(
-      null,
-      mapDispatchToProps
-    )(CategoriesInput)
-  )
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(CategoriesInput)
 );
