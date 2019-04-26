@@ -14,9 +14,6 @@ import {
   REORDER_CATEGORIES,
   DEFAULT_CATEGORIES,
   RESTORE_CATEGORIES,
-  BACKUP,
-  BACKUP_ERROR,
-  RESTORE_ERROR,
   CHARTS_FILTER_SWITCH,
   CHARTS_FILTER_SET,
   PREV_CHARTS_FILTER,
@@ -97,8 +94,9 @@ export const defaultCategories = () => ({
   type: DEFAULT_CATEGORIES
 });
 
-export const restoreCategories = () => ({
-  type: RESTORE_CATEGORIES
+export const restoreCategories = payload => ({
+  type: RESTORE_CATEGORIES,
+  payload
 });
 
 // settings related
@@ -147,40 +145,24 @@ export const backup = payload => {
         createdAt: new Date()
       })
       .then(() => {
-        dispatch({ type: BACKUP });
+        dispatch(
+          enqueueSnackbar({
+            message: "Backup complete.",
+            options: {
+              variant: "success"
+            }
+          })
+        );
       })
-      .catch(err => {
-        dispatch({ type: BACKUP_ERROR, err });
-      });
-  };
-};
-
-export const restore = () => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firestore = getFirestore();
-    const userId = getState().firebase.auth.uid;
-    firestore
-      .collection("backup")
-      .doc(userId)
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          dispatch({ type: RESTORE_HISTORY, payload: doc.data().history });
-          dispatch({
-            type: RESTORE_CATEGORIES,
-            payload: doc.data().categories
-          });
-          dispatch({
-            type: RESTORE_SETTINGS,
-            payload: doc.data().settings
-          });
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      })
-      .catch(err => {
-        dispatch({ type: RESTORE_ERROR, err });
+      .catch(() => {
+        dispatch(
+          enqueueSnackbar({
+            message: "Backup error.",
+            options: {
+              variant: "error"
+            }
+          })
+        );
       });
   };
 };

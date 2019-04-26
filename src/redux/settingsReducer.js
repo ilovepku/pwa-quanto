@@ -1,7 +1,4 @@
 import {
-  BACKUP,
-  BACKUP_ERROR,
-  RESTORE_ERROR,
   CHARTS_FILTER_SWITCH,
   CHARTS_FILTER_SET,
   PREV_CHARTS_FILTER,
@@ -23,17 +20,6 @@ const initialSettings = {
 export const settingsReducer = (state = initialSettings, action = {}) => {
   let newState;
   switch (action.type) {
-    case BACKUP:
-      console.log("backup completed");
-      return state;
-
-    case BACKUP_ERROR:
-      console.log("backup error", action.err);
-      return state;
-
-    case RESTORE_ERROR:
-      console.log("restore error", action.err);
-      return state;
 
     case CHARTS_FILTER_SWITCH:
       newState = {

@@ -182,9 +182,8 @@ export const categoriesReducer = (state = initialCategories, action = {}) => {
       return newState;
 
     case DEFAULT_CATEGORIES:
-
       return initialCategories;
-      
+
     case RESTORE_CATEGORIES:
       return action.payload;
 
