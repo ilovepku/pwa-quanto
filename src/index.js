@@ -10,8 +10,6 @@ import Button from "@material-ui/core/Button";
 
 import { SnackbarProvider } from "notistack";
 
-import "./index.css";
-
 import TabViews from "./components/TabViews";
 
 import * as serviceWorker from "./serviceWorker";

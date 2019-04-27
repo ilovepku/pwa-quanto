@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 
-import List from "@material-ui/core/List";
+/* import List from "@material-ui/core/List"; */
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,11 +10,22 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+
 import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 
 import HistoryItemEditDialog from "./HistoryItemEditDialog";
 import HistoryItemSplitDialog from "./HistoryItemSplitDialog";
+
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = () => ({
+  autoSizer: {
+    height: "100vh"
+  }
+});
 
 const mapStateToProps = state => {
   return {
@@ -67,7 +78,7 @@ class HistoryTabViewNew extends Component {
   };
 
   render() {
-    const { history } = this.props;
+    const { history, classes } = this.props;
     const {
       editDialogOpen,
       splitDialogOpen,
@@ -77,57 +88,71 @@ class HistoryTabViewNew extends Component {
       nextItemDatetime,
       nextNextItemDatetime
     } = this.state;
-    const items = history
-      .map((item, index) => (
-        <ListItem
-          divider
-          key={"history-" + index}
-          onClick={() =>
-            this.handleOpenEditDialog(
-              item,
-              index,
-              history[index - 1] ? new Date(history[index - 1].datetime) : null,
-              history[index + 1] ? new Date(history[index + 1].datetime) : null,
-              history[index + 2] ? new Date(history[index + 2].datetime) : null
-            )
-          }
-        >
-          <ListItemIcon>
-            <CreateIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={new Date(item.datetime).toLocaleDateString("en-US", {
+
+    const Row = ({ index, style }) => (
+      <ListItem
+        divider
+        key={"history-" + index}
+        onClick={() =>
+          this.handleOpenEditDialog(
+            history[index],
+            index,
+            history[index - 1] ? new Date(history[index - 1].datetime) : null,
+            history[index + 1] ? new Date(history[index + 1].datetime) : null,
+            history[index + 2] ? new Date(history[index + 2].datetime) : null
+          )
+        }
+      >
+        <ListItemIcon>
+          <CreateIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={new Date(history[index].datetime).toLocaleDateString(
+            "en-US",
+            {
               year: "numeric",
               month: "numeric",
               day: "numeric",
               hour: "numeric",
               minute: "numeric",
               hour12: false
-            })}
-            secondary={`${item.activity}: ${item.detail}`}
-          />
-          <ListItemSecondaryAction
-            onClick={() =>
-              this.handleOpenSplitDialog(
-                item,
-                index,
-                history[index + 1]
-                  ? new Date(history[index + 1].datetime)
-                  : null
-              )
             }
-          >
-            <IconButton aria-label="Edit">
-              <CallSplitIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))
-      .slice()
-      .reverse();
+          )}
+          secondary={`${history[index].activity}: ${history[index].detail}`}
+        />
+        <ListItemSecondaryAction
+          onClick={() =>
+            this.handleOpenSplitDialog(
+              history[index],
+              index,
+              history[index + 1] ? new Date(history[index + 1].datetime) : null
+            )
+          }
+        >
+          <IconButton aria-label="Edit">
+            <CallSplitIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    );
+
     return (
       <Fragment>
-        <List>{items}</List>
+        <div className={classes.autoSizer}>
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                itemCount={history.length}
+                itemSize={35}
+                width={width}
+              >
+                {Row}
+              </List>
+            )}
+          </AutoSizer>
+        </div>
+
         <Dialog open={editDialogOpen} onClose={this.handleCloseDialog}>
           <HistoryItemEditDialog
             item={item}
@@ -151,4 +176,4 @@ class HistoryTabViewNew extends Component {
   }
 }
 
-export default connect(mapStateToProps)(HistoryTabViewNew);
+export default withStyles(styles)(connect(mapStateToProps)(HistoryTabViewNew));
