@@ -91,15 +91,16 @@ class HistoryTabViewNew extends Component {
 
     const Row = ({ index, style }) => (
       <ListItem
+        ContainerComponent={"div"}
         divider
         key={"history-" + index}
         onClick={() =>
           this.handleOpenEditDialog(
             history[index],
             index,
-            history[index - 1] ? new Date(history[index - 1].datetime) : null,
             history[index + 1] ? new Date(history[index + 1].datetime) : null,
-            history[index + 2] ? new Date(history[index + 2].datetime) : null
+            history[index - 1] ? new Date(history[index - 1].datetime) : null,
+            history[index - 2] ? new Date(history[index - 2].datetime) : null
           )
         }
       >
@@ -125,7 +126,7 @@ class HistoryTabViewNew extends Component {
             this.handleOpenSplitDialog(
               history[index],
               index,
-              history[index + 1] ? new Date(history[index + 1].datetime) : null
+              history[index - 1] ? new Date(history[index - 1].datetime) : null
             )
           }
         >
@@ -144,7 +145,7 @@ class HistoryTabViewNew extends Component {
               <List
                 height={height}
                 itemCount={history.length}
-                itemSize={35}
+                itemSize={45}
                 width={width}
               >
                 {Row}

@@ -24,12 +24,12 @@ export const historyReducer = (state = initialHistory, action = {}) => {
   switch (action.type) {
     case ADD_ACTIVITY:
       newState = [
-        ...state,
         {
           datetime: new Date(),
           activity: "Unsorted",
           detail: "-"
-        }
+        },
+        ...state
       ];
       return newState;
 
@@ -37,25 +37,25 @@ export const historyReducer = (state = initialHistory, action = {}) => {
       if (
         // if current activity is interruption, ends interruption
         state.length &&
-        state[state.length - 1].activity === "Interruption"
+        state[0].activity === "Interruption"
       ) {
         newState = [
-          ...state,
           {
             datetime: new Date(),
-            activity: state[state.length - 2].activity,
-            detail: state[state.length - 2].detail
-          }
+            activity: state[1].activity,
+            detail: state[1].detail
+          },
+          ...state
         ];
       } else {
         // if current activity is not interruption, starts interruption
         newState = [
-          ...state,
           {
             datetime: new Date(),
             activity: "Interruption",
             detail: "-"
-          }
+          },
+          ...state
         ];
       }
 
@@ -70,7 +70,7 @@ export const historyReducer = (state = initialHistory, action = {}) => {
             activity: action.payload.activity,
             detail: action.payload.detail
           };
-        } else if (index === action.payload.index + 1) {
+        } else if (index === action.payload.index - 1) {
           return {
             ...item,
             datetime: action.payload.nextItemDatetime
@@ -83,26 +83,25 @@ export const historyReducer = (state = initialHistory, action = {}) => {
 
     case SPLIT_ACTIVITY:
       newState = [
-        ...state.slice(0, action.payload.index + 1),
+        ...state.slice(0, action.payload.index),
         {
           datetime: action.payload.splitDatetime,
           activity: "Unsorted",
           detail: "-"
         },
-        ...state.slice(action.payload.index + 1)
+        ...state.slice(action.payload.index)
       ];
       return newState;
 
     case DELETE_ACTIVITY:
       newState = state.filter((item, index) => index !== action.payload);
-      console.log(newState);
       if (newState.length === 0) newState = initialHistory;
       return newState;
 
     case DISPLAY_NOTIFICATION:
       if (Notification.permission === "granted") {
         // get last history item
-        const lastHistoryItem = state[state.length - 1];
+        const lastHistoryItem = state[0];
         const duration = duration2HHMM(
           Math.floor(
             (new Date() - new Date(lastHistoryItem.datetime)) / 1000 / 60

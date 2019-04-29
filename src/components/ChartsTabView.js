@@ -58,25 +58,33 @@ class ChartsTabView extends Component {
         )
       : history.slice();
 
-    // fix for first activty started before settings.chartsFilterStart
+    // fix for oldest activty started before settings.chartsFilterStart
     if (
       settings.chartsFilter &&
       filteredHistory.length &&
-      new Date(filteredHistory[0].datetime).getTime() >
-        settings.chartsFilterStart && // first filtered activity started later than chartsFilterStart
-      history.indexOf(filteredHistory[0]) > 0 // first filtered activity is not the first activity in history
+      new Date(filteredHistory[filteredHistory.length - 1].datetime).getTime() >
+        settings.chartsFilterStart && // oldest filtered activity started later than chartsFilterStart
+      history.indexOf(filteredHistory[filteredHistory.length - 1]) <
+        history.length - 1 // oldest filtered activity is not the oldest activity in history
     ) {
-      filteredHistory.unshift(
-        Object.assign({}, history[history.indexOf(filteredHistory[0]) - 1]) // copy the object to prevent modifiying history at the same time
+      filteredHistory.push(
+        Object.assign(
+          {},
+          history[
+            history.indexOf(filteredHistory[filteredHistory.length - 1]) + 1
+          ]
+        ) // copy the object to prevent modifiying history at the same time
       );
-      filteredHistory[0].datetime = new Date(settings.chartsFilterStart);
+      filteredHistory[filteredHistory.length - 1].datetime = new Date(
+        settings.chartsFilterStart
+      );
     }
 
     // generate history arr with duration property (calculated from started)
     let durationHistory = filteredHistory.map((item, index) => {
       const nextDatetime =
-        index !== filteredHistory.length - 1
-          ? new Date(filteredHistory[index + 1].datetime)
+        index !== 0
+          ? new Date(filteredHistory[index - 1].datetime)
           : settings.chartsFilter
           ? new Date(settings.chartsFilterEnd)
           : new Date();
