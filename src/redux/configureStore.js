@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import localForage from "localforage";
 
@@ -34,11 +35,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(
   persistedReducer,
-  compose(
+  composeWithDevTools(
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
     reduxFirestore(firebase),
-    reactReduxFirebase(firebase),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    reactReduxFirebase(firebase)
   )
 );
+
 export const persistor = persistStore(store);
