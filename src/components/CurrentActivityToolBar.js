@@ -87,7 +87,7 @@ class CurrentActivityToolBar extends Component {
   render() {
     const { classes, history, addActivity, interruptActivity } = this.props;
     const { lastHistoryItemElapsed } = this.state;
-    const lastHistoryItem = history[history.length - 1];
+    const lastHistoryItem = history[0];
 
     return (
       <Toolbar className={classes.toolBar}>
