@@ -8,16 +8,9 @@ import SettingsTabView from "./SettingsTabView";
 
 import BottomAppBar from "./BottomAppBar";
 
-import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import Notifier from "./Notifier";
-
-const styles = () => ({
-  view: {
-    paddingBottom: "95px"
-  }
-});
 
 const theme = createMuiTheme({
   overrides: {
@@ -39,17 +32,15 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-function TabViews(props) {
-  const { classes } = props;
+function TabViews() {
   return (
     <Router>
       <MuiThemeProvider theme={theme}>
-        <div className={classes.view}>
-          <Route path="/" exact component={HistoryTabView} />
-          <Route path="/charts/" component={ChartsTabView} />
-          <Route path="/categories/" component={CategoriesTabView} />
-          <Route path="/settings/" component={SettingsTabView} />
-        </div>
+        <Route path="/" exact component={HistoryTabView} />
+        <Route path="/charts/" component={ChartsTabView} />
+        <Route path="/categories/" component={CategoriesTabView} />
+        <Route path="/settings/" component={SettingsTabView} />
+
         <BottomAppBar />
         <Notifier />
       </MuiThemeProvider>
@@ -57,4 +48,4 @@ function TabViews(props) {
   );
 }
 
-export default withStyles(styles)(TabViews);
+export default TabViews;

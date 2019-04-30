@@ -6,8 +6,6 @@ import { connect } from "react-redux";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 
 import { FixedSizeList as List } from "react-window";
@@ -23,7 +21,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   autoSizer: {
-    height: "100vh"
+    height: "80vh"
   }
 });
 
@@ -90,23 +88,25 @@ class HistoryTabViewNew extends Component {
     } = this.state;
 
     const Row = ({ index, style }) => (
-      <ListItem
-        ContainerComponent={"div"}
+      <ListItem        
+        style={style}
+        dense
         divider
         key={"history-" + index}
-        onClick={() =>
-          this.handleOpenEditDialog(
-            history[index],
-            index,
-            history[index + 1] ? new Date(history[index + 1].datetime) : null,
-            history[index - 1] ? new Date(history[index - 1].datetime) : null,
-            history[index - 2] ? new Date(history[index - 2].datetime) : null
-          )
-        }
       >
-        <ListItemIcon>
-          <CreateIcon />
+        <ListItemIcon
+          aria-label="Split"
+          onClick={() =>
+            this.handleOpenSplitDialog(
+              history[index],
+              index,
+              history[index - 1] ? new Date(history[index - 1].datetime) : null
+            )
+          }
+        >
+          <CallSplitIcon />
         </ListItemIcon>
+
         <ListItemText
           primary={new Date(history[index].datetime).toLocaleDateString(
             "en-US",
@@ -121,19 +121,21 @@ class HistoryTabViewNew extends Component {
           )}
           secondary={`${history[index].activity}: ${history[index].detail}`}
         />
-        <ListItemSecondaryAction
+
+        <ListItemIcon
+          aria-label="Edit"
           onClick={() =>
-            this.handleOpenSplitDialog(
+            this.handleOpenEditDialog(
               history[index],
               index,
-              history[index - 1] ? new Date(history[index - 1].datetime) : null
+              history[index + 1] ? new Date(history[index + 1].datetime) : null,
+              history[index - 1] ? new Date(history[index - 1].datetime) : null,
+              history[index - 2] ? new Date(history[index - 2].datetime) : null
             )
           }
         >
-          <IconButton aria-label="Edit">
-            <CallSplitIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
+          <CreateIcon />
+        </ListItemIcon>
       </ListItem>
     );
 

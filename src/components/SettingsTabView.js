@@ -8,6 +8,19 @@ import SettingsGeneralTab from "./SettingsGeneralTab";
 import SettingsChartsTab from "./SettingsChartsTab";
 import SettingsAboutTab from "./SettingsAboutTab";
 
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = () => ({
+  view: {
+    paddingTop: "45px",
+    paddingBottom: "95px"
+  },
+  appBar: {
+    position: "fixed",
+    top: 0
+  }
+});
+
 class SettingsTabView extends Component {
   state = {
     tabIndex: 0
@@ -18,22 +31,25 @@ class SettingsTabView extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     const { tabIndex } = this.state;
     return (
       <Fragment>
-        <AppBar position="static">
+        <AppBar className={classes.appBar}>
           <Tabs value={tabIndex} onChange={this.handleTabIndexChange} centered>
             <Tab label="General" />
             <Tab label="Charts" />
             <Tab label="About" />
           </Tabs>
         </AppBar>
-        {tabIndex === 0 && <SettingsGeneralTab />}
-        {tabIndex === 1 && <SettingsChartsTab />}
-        {tabIndex === 2 && <SettingsAboutTab />}
+        <div className={classes.view}>
+          {tabIndex === 0 && <SettingsGeneralTab />}
+          {tabIndex === 1 && <SettingsChartsTab />}
+          {tabIndex === 2 && <SettingsAboutTab />}
+        </div>
       </Fragment>
     );
   }
 }
 
-export default SettingsTabView;
+export default withStyles(styles)(SettingsTabView);

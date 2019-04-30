@@ -30,6 +30,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 const styles = () => ({
+  view: {
+    paddingBottom: "95px"
+  },
   listItem: {
     paddingTop: 0,
     paddingBottom: 0
@@ -49,6 +52,7 @@ function CategoriesTabView(props) {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
+            className={classes.view}
           >
             <List>
               {categories.activityIds.map((activityId, index) => {
