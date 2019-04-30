@@ -48,7 +48,7 @@ class CurrentActivityToolBar extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { history } = nextProps;
     this.loopingUpdateElapsedAndDisplayNotifcation(
-      history[history.length - 1].datetime
+      history[0].datetime
       // last history item start datetime
     );
   }
@@ -56,7 +56,7 @@ class CurrentActivityToolBar extends Component {
   componentDidMount() {
     const { history } = this.props;
     this.loopingUpdateElapsedAndDisplayNotifcation(
-      history[history.length - 1].datetime
+      history[0].datetime
       // last history item start datetime
     );
   }
