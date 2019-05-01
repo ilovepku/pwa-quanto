@@ -82,12 +82,19 @@ class ChartsTabView extends Component {
 
     // generate history arr with duration property (calculated from started)
     let durationHistory = filteredHistory.map((item, index) => {
-      const nextDatetime =
+      let nextDatetime =
         index !== 0
           ? new Date(filteredHistory[index - 1].datetime)
-          : settings.chartsFilter
-          ? new Date(settings.chartsFilterEnd)
           : new Date();
+
+      // check if nextDatetime started after settings.chartsFilterEnd
+      if (
+        settings.chartsFilter &&
+        settings.chartsFilterEnd <= new Date(nextDatetime).getTime()
+      ) {
+        nextDatetime = settings.chartsFilterEnd;
+      }
+
       return {
         activity: item.activity,
         detail: item.detail,
