@@ -59,7 +59,7 @@ const initialData = {
     },
     "activity-5": {
       id: "activity-5",
-      name: "Houework",
+      name: "Housework",
       detailIds: []
     },
     "activity-6": {
