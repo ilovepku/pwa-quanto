@@ -10,7 +10,7 @@ import PieChartIcon from "@material-ui/icons/PieChart";
 import CategoryIcon from "@material-ui/icons/Category";
 import SettingsIcon from "@material-ui/icons/Settings";
 
-import CurrentActivityToolBar from "./CurrentActivityToolBar";
+import CurrentActivityCard from "./CurrentActivityCard";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -29,8 +29,7 @@ function BottomAppBar(props) {
   } = props;
   return (
     <AppBar className={classes.appBar}>
-      <CurrentActivityToolBar />
-
+      <CurrentActivityCard />
       <BottomNavigation showLabels value={router2index(pathname)}>
         <BottomNavigationAction
           label="HISTORY"

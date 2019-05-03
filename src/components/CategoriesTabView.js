@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => {
 
 const styles = () => ({
   view: {
-    paddingBottom: "95px"
+    paddingBottom: "110px"
   },
   listItem: {
     paddingTop: 0,

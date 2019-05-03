@@ -16,7 +16,7 @@ import { duration2HHMM } from "../global/duration2HHMM";
 const styles = () => ({
   fabs: {
     position: "absolute",
-    bottom: 115,
+    bottom: 125,
     right: 10
   }
 });

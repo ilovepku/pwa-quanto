@@ -12,8 +12,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   view: {
-    paddingTop: "45px",
-    paddingBottom: "95px"
+    paddingTop: "40px",
+    paddingBottom: "110px"
   },
   appBar: {
     position: "fixed",

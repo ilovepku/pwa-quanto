@@ -7,10 +7,9 @@ import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
 
 import BottomAppBar from "./BottomAppBar";
+import Notifier from "./Notifier";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
-import Notifier from "./Notifier";
 
 const theme = createMuiTheme({
   overrides: {
@@ -26,6 +25,12 @@ const theme = createMuiTheme({
       root: {
         marginTop: 5,
         marginBottom: 5
+      }
+    },
+    MuiList: {
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0
       }
     }
   },
