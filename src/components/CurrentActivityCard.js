@@ -16,7 +16,27 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
 import { duration2HHMM } from "../global/duration2HHMM";
 
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  MuiThemeProvider,
+  createMuiTheme
+} from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiSvgIcon: {
+      root: {
+        fill: "#f8f8fa"
+      },
+      colorSecondary: {
+        fill: "#BB4D4C"
+      }
+    }
+  },
+  typography: {
+    useNextVariants: true
+  }
+});
 
 const styles = () => ({
   card: {
@@ -31,7 +51,10 @@ const styles = () => ({
   },
   addIcon: {
     height: 38,
-    width: 38
+    width: 38,
+    background: "linear-gradient(315deg, #CFB53B 0%, #C19A6B 74%)",
+    borderRadius: "50%",
+    boxShadow: "0 0 10px #AFAFAF"
   }
 });
 
@@ -98,29 +121,31 @@ class CurrentActivityCard extends Component {
     const lastHistoryItem = history[0];
 
     return (
-      <div className={classes.card}>
-        <div className={classes.content}>
-          <Typography component="h6" variant="h6">
-            {`Elapsed: ${lastHistoryItemElapsed}`}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
-          </Typography>
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.card}>
+          <div className={classes.content}>
+            <Typography variant="h6" color="inherit">
+              {`Elapsed: ${lastHistoryItemElapsed}`}
+            </Typography>
+            <Typography variant="subtitle1" color="inherit">
+              {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
+            </Typography>
+          </div>
+          <div className={classes.controls}>
+            <IconButton aria-label="Add" onClick={addActivity}>
+              <AddIcon className={classes.addIcon} />
+            </IconButton>
+            <IconButton aria-label="Interrupt" onClick={interruptActivity}>
+              {lastHistoryItem.activity === "Interruption" ? (
+                // if current activity is interruption, show play button; else show pause button
+                <PlayArrowIcon color="secondary" />
+              ) : (
+                <PauseIcon />
+              )}
+            </IconButton>
+          </div>
         </div>
-        <div className={classes.controls}>
-          <IconButton aria-label="Add" onClick={addActivity}>
-            <AddIcon className={classes.addIcon} />
-          </IconButton>
-          <IconButton aria-label="Interrupt" onClick={interruptActivity}>
-            {lastHistoryItem.activity === "Interruption" ? (
-              // if current activity is interruption, show play button; else show pause button
-              <PlayArrowIcon color="secondary" />
-            ) : (
-              <PauseIcon />
-            )}
-          </IconButton>
-        </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -13,11 +13,18 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   overrides: {
+    MuiBottomNavigation: {
+      root: {
+        backgroundColor: "#f8f8fa"
+      }
+    },
     MuiBottomNavigationAction: {
       root: {
         padding: 0,
+        color: "#989898",
         "&$selected": {
-          paddingTop: 0
+          paddingTop: 0,
+          color: "#96774c" 
         }
       }
     },

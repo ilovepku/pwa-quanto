@@ -22,6 +22,12 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = () => ({
   autoSizer: {
     height: "80vh"
+  },
+  splitIcon: {
+    fill: "#857541"
+  },
+  editIcon: {
+    fill: "#557F2F"
   }
 });
 
@@ -88,12 +94,7 @@ class HistoryTabViewNew extends Component {
     } = this.state;
 
     const Row = ({ index, style }) => (
-      <ListItem        
-        style={style}
-        dense
-        divider
-        key={"history-" + index}
-      >
+      <ListItem style={style} dense divider key={"history-" + index}>
         <ListItemIcon
           aria-label="Split"
           onClick={() =>
@@ -104,7 +105,7 @@ class HistoryTabViewNew extends Component {
             )
           }
         >
-          <CallSplitIcon />
+          <CallSplitIcon classes={{ root: classes.splitIcon }} />
         </ListItemIcon>
 
         <ListItemText
@@ -134,7 +135,7 @@ class HistoryTabViewNew extends Component {
             )
           }
         >
-          <CreateIcon />
+          <CreateIcon classes={{ root: classes.editIcon }} />
         </ListItemIcon>
       </ListItem>
     );

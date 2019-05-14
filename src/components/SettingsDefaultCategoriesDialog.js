@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch =>
 function SettingsDefaultCategoriesDialog(props) {
   const { defaultCategories, handleCloseDialog, enqueueSnackbar } = props;
   return (
-    <Fragment>
+    <div className="dialog-container">
       <DialogTitle>Reset Default Categories</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -41,7 +41,7 @@ function SettingsDefaultCategoriesDialog(props) {
           Reset
         </Button>
       </DialogActions>
-    </Fragment>
+    </div>
   );
 }
 
