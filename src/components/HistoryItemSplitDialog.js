@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -75,7 +75,7 @@ class HistoryItemSplitDialog extends Component {
     const { datetime, splitDatetime } = this.state;
 
     return (
-      <Fragment>
+      <div className="dialog-container">
         <DialogTitle>Split Activity</DialogTitle>
 
         <DialogContent>
@@ -120,7 +120,7 @@ class HistoryItemSplitDialog extends Component {
             Save
           </Button>
         </DialogActions>
-      </Fragment>
+      </div>
     );
   }
 }

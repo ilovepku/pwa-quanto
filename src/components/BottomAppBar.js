@@ -18,7 +18,10 @@ const styles = () => ({
   appBar: {
     position: "fixed",
     top: "auto",
-    bottom: 0
+    bottom: 0,
+    background:
+      "linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 90%) #7a7a7a",
+    backgroundBlendMode: "multiply,multiply"
   }
 });
 

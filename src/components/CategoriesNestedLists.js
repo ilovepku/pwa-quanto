@@ -39,7 +39,15 @@ const styles = theme => ({
   },
   listItem: {
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    background: "linear-gradient(75deg, #F9FCFF 0%, #EBEBEB 74%)",
+    boxShadow: "10px 5px 15px #e5e6eb"
+  },
+  dragIcon: {
+    fill: "#857541"
+  },
+  deleteIcon: {
+    fill: "#6a6c6e"
   }
 });
 
@@ -86,14 +94,14 @@ class CategoriesNestedLists extends Component {
                 >
                   <ListItem
                     divider
-                    className={classes.listItem}
+                    classes={{ root: classes.listItem }}
                     style={getItemStyle(outterSnapshot.isDragging)}
                   >
                     <ListItemIcon
                       {...outterProvided.dragHandleProps}
                       aria-label="Drag"
                     >
-                      <DragIndicatorIcon />
+                      <DragIndicatorIcon classes={{ root: classes.dragIcon }} />
                     </ListItemIcon>
 
                     <CategoriesInput item={activity} />
@@ -109,6 +117,7 @@ class CategoriesNestedLists extends Component {
                             }
                           });
                         }}
+                        classes={{ root: classes.deleteIcon }}
                       />
                     </ListItemIcon>
 
@@ -144,7 +153,9 @@ class CategoriesNestedLists extends Component {
                                   {...provided.dragHandleProps}
                                   aria-label="Drag"
                                 >
-                                  <DragIndicatorIcon />
+                                  <DragIndicatorIcon
+                                    classes={{ root: classes.dragIcon }}
+                                  />
                                 </ListItemIcon>
 
                                 <CategoriesInput
@@ -166,6 +177,7 @@ class CategoriesNestedLists extends Component {
                                         }
                                       });
                                     }}
+                                    classes={{ root: classes.deleteIcon }}
                                   />
                                 </ListItemIcon>
                               </ListItem>

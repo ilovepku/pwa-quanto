@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -60,7 +60,7 @@ class SettingsRestoreDialog extends Component {
   render() {
     const { handleCloseDialog } = this.props;
     return (
-      <Fragment>
+      <div className="dialog-container">
         <DialogTitle>Restore</DialogTitle>
         <DialogContent>
           <p>Your last backup was made at:</p>
@@ -83,7 +83,7 @@ class SettingsRestoreDialog extends Component {
             Restore
           </Button>
         </DialogActions>
-      </Fragment>
+      </div>
     );
   }
 }

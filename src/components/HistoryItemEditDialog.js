@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -228,7 +228,7 @@ class HistoryItemEditDialog extends Component {
     });
 
     return (
-      <Fragment>
+      <div className="dialog-container">
         <DialogTitle>Edit Activity Details</DialogTitle>
         <DialogContent>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -307,7 +307,7 @@ class HistoryItemEditDialog extends Component {
             Save
           </Button>
         </DialogActions>
-      </Fragment>
+      </div>
     );
   }
 }

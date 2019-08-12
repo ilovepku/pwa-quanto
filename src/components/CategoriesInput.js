@@ -18,7 +18,10 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = () => ({
   form: {
     display: "flex"
-  }
+  },
+  editIcon: {
+    fill: "#557F2F" //rgb(160,82,45) 
+  },
 });
 
 const getEditIconColor = (value, name) =>
@@ -140,7 +143,7 @@ class CategoriesInput extends Component {
           color={getEditIconColor(value, item.name)}
           style={getEditIconStyle(value, item.name)}
         >
-          <CreateIcon />
+          <CreateIcon classes={{ root: classes.editIcon }} />
         </IconButton>
       </form>
     );
