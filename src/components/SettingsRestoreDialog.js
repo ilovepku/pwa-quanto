@@ -1,5 +1,7 @@
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -9,8 +11,10 @@ import {
   enqueueSnackbar
 } from "../redux/actions";
 
+// libs
 import { firebase } from "../global/firebase";
 
+// material ui
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";

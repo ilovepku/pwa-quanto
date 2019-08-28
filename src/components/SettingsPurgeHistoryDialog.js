@@ -1,16 +1,20 @@
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { purgeHistory, enqueueSnackbar } from "../redux/actions";
 
+// material ui
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
+
+// libs
 import DateFnsUtils from "@date-io/date-fns";
 
 const mapDispatchToProps = dispatch =>

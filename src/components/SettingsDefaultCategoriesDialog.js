@@ -1,9 +1,12 @@
+// react
 import React from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { defaultCategories, enqueueSnackbar } from "../redux/actions";
 
+// material ui
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";

@@ -1,5 +1,7 @@
+// react
 import React, { Component, Fragment } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -11,6 +13,7 @@ import {
   enqueueSnackbar
 } from "../redux/actions";
 
+// material ui
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -19,11 +22,11 @@ import Chip from "@material-ui/core/Chip";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-
 import AddIcon from "@material-ui/icons/Add";
-
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
+
+// libs
 import DateFnsUtils from "@date-io/date-fns";
 
 const theme = createMuiTheme({

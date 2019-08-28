@@ -2,27 +2,28 @@
 import React, { useState, useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { enqueueSnackbar } from "../redux/actions";
 
+// material ui
 import { withStyles } from "@material-ui/core/styles";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
-
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
+// libs
 import { Droppable, Draggable } from "react-beautiful-dnd";
-
 import classNames from "classnames";
 
+// components
 import CategoriesInput from "./CategoriesInput";
 
 const mapDispatchToProps = dispatch =>

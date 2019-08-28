@@ -1,13 +1,16 @@
+// react
 import React from "react";
+import CategoriesContextProvider from "../contexts/categoriesContext";
 
+// material ui
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 
+// snackbar
 import { SnackbarProvider } from "notistack";
 
+// components
 import TabViews from "./TabViews";
-
-import CategoriesContextProvider from "../contexts/categoriesContext";
 
 const styles = {
   success: { backgroundColor: "#6FAC9B" },

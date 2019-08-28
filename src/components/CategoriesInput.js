@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 
-// snackbar
+// libs
 import { useSnackbar } from "notistack";
 
 const styles = () => ({

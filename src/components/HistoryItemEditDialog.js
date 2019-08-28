@@ -1,5 +1,7 @@
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -8,25 +10,25 @@ import {
   enqueueSnackbar
 } from "../redux/actions";
 
+// material ui
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Input from "@material-ui/core/Input";
-
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DateTimePicker } from "material-ui-pickers";
+
+// lib
+import nanoid from "nanoid";
 import DateFnsUtils from "@date-io/date-fns";
 
+// functions
 import { duration2HHMM } from "../global/duration2HHMM";
-
-import nanoid from "nanoid";
-
-import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   formControl: {

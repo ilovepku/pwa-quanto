@@ -1,16 +1,20 @@
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { splitActivity, enqueueSnackbar } from "../redux/actions";
 
+// material ui
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DateTimePicker } from "material-ui-pickers";
+
+// libs
 import DateFnsUtils from "@date-io/date-fns";
 
 const mapStateToProps = state => {

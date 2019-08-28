@@ -1,23 +1,23 @@
+// react
 import React, { Component, Fragment } from "react";
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
+// redux
 import { connect } from "react-redux";
 
-/* import List from "@material-ui/core/List"; */
+// material ui
+import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Dialog from "@material-ui/core/Dialog";
-
-import { FixedSizeList as List } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-
 import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 
+// components
 import HistoryItemEditDialog from "./HistoryItemEditDialog";
 import HistoryItemSplitDialog from "./HistoryItemSplitDialog";
-
-import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   autoSizer: {

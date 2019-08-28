@@ -1,16 +1,20 @@
+// react
 import React, { Component, Fragment } from "react";
 
-import { withStyles } from "@material-ui/core/styles";
-
+// redux
 import { connect } from "react-redux";
 import { prevChartsFilter, nextChartsFilter } from "../redux/actions";
 
+// material ui
+import { withStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 
+// libs
 import { VictoryPie, VictoryLegend } from "victory";
 
+// function
 import { duration2HHMM } from "../global/duration2HHMM";
 
 const styles = () => ({

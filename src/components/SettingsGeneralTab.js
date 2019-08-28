@@ -1,14 +1,18 @@
+// react
 import React, { Component, Fragment } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { displayNotification } from "../redux/actions";
 
+// material ui
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
+// components
 import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
 import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
 import SettingsRestoreDialog from "./SettingsRestoreDialog";

@@ -1,8 +1,13 @@
+// react
 import { Component } from "react";
+
+//redux
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withSnackbar } from "notistack";
 import { removeSnackbar } from "../redux/actions";
+
+// libs
+import { withSnackbar } from "notistack";
 
 const mapStateToProps = store => ({
   notifications: store.notifier.notifications

@@ -1,14 +1,17 @@
-// Import FirebaseAuth and firebase.
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import { backup } from "../redux/actions";
 
+// material ui
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
+// libs
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { firebase, uiConfig } from "../global/firebase";
 

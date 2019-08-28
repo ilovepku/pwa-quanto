@@ -1,5 +1,7 @@
+// react
 import React, { Component } from "react";
 
+// redux
 import { connect } from "react-redux";
 import {
   addActivity,
@@ -7,20 +9,20 @@ import {
   displayNotification
 } from "../redux/actions";
 
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-
-import AddIcon from "@material-ui/icons/Add";
-import PauseIcon from "@material-ui/icons/Pause";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-
-import { duration2HHMM } from "../global/duration2HHMM";
-
+// material ui
 import {
   withStyles,
   MuiThemeProvider,
   createMuiTheme
 } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import AddIcon from "@material-ui/icons/Add";
+import PauseIcon from "@material-ui/icons/Pause";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+
+// functions
+import { duration2HHMM } from "../global/duration2HHMM";
 
 const theme = createMuiTheme({
   overrides: {
