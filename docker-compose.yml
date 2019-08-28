@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  pwa-quanto:
+    container_name: pwa-quanto-container
+    build: .
+    command: npm start
+    working_dir: /user/src/pwa-quanto
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./://user/src/pwa-quanto
