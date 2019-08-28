@@ -1,27 +1,23 @@
-import React, { Component } from "react";
+// react
+import React, { useState, useContext, useRef } from "react";
+import { CategoriesContext } from "../contexts/categoriesContext";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import {
-  editActivityName,
-  editDetailName,
-  enqueueSnackbar
-} from "../redux/actions";
-
+// material ui
+import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
-
 import CreateIcon from "@material-ui/icons/Create";
 
-import { withStyles } from "@material-ui/core/styles";
+// snackbar
+import { useSnackbar } from "notistack";
 
 const styles = () => ({
   form: {
     display: "flex"
   },
   editIcon: {
-    fill: "#557F2F" //rgb(160,82,45) 
-  },
+    fill: "#557F2F" //rgb(160,82,45)
+  }
 });
 
 const getEditIconColor = (value, name) =>
@@ -32,127 +28,101 @@ const getEditIconStyle = (value, name) => ({
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    { editActivityName, editDetailName, enqueueSnackbar },
-    dispatch
-  );
-
-class CategoriesInput extends Component {
-  state = { value: this.props.item.name };
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    const { value } = this.state;
-    const {
-      item,
-      activityId,
-      editActivityName,
-      editDetailName,
-      enqueueSnackbar
-    } = this.props;
-    if (value === item.name) {
-      // focus on text field if no changes have been made
-      this.myTextField.focus();
+const CategoriesInput = props => {
+  const { classes, item } = props;
+  const { dispatch } = useContext(CategoriesContext);
+  const [category, setCategory] = useState(props.item.name);
+  const { enqueueSnackbar } = useSnackbar();
+  const inputRef = useRef(null);
+  const formRef = useRef(null);
+  const handleChange = e => {
+    setCategory(e.target.value);
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    const { item, activityId } = props;
+    if (category === item.name) {
+      // focus on text field if no changes have been made (reack hooks solution)
+      inputRef.current.focus();
     } else {
-      if (!value) {
-        enqueueSnackbar({
-          message: "Name cannot be empty.",
-          options: {
-            variant: "error"
-          }
+      if (!category) {
+        enqueueSnackbar("Name cannot be empty.", {
+          variant: "error"
         });
-        this.setState({ value: item.name });
-        this.myFormRef.reset();
+        setCategory(item.name);
+        formRef.current.reset();
       } else if (
-        value === "Interruption" ||
-        value === "-" ||
-        value === "Unsorted"
+        category === "Interruption" ||
+        category === "-" ||
+        category === "Unsorted"
       ) {
-        enqueueSnackbar({
-          message: "This name is reserved.",
-          options: {
-            variant: "error"
-          }
+        enqueueSnackbar("This name is reserved.", {
+          variant: "error"
         });
-        this.setState({ value: item.name });
-        this.myFormRef.reset();
+        setCategory(item.name);
+        formRef.current.reset();
       } else {
         // check for item type: acitivty or detail
         if (item.detailIds) {
           // is activity
-          editActivityName({
-            activityId: item.id,
-            name: value
-          });
-          enqueueSnackbar({
-            message: "Activity name edited.",
-            options: {
-              variant: "success"
+          dispatch({
+            type: "EDIT_ACTIVITY_NAME",
+            payload: {
+              activityId: item.id,
+              name: category
             }
+          });
+          enqueueSnackbar("Activity name edited.", {
+            variant: "success"
           });
         } else {
           // is detail
-          editDetailName({
-            activityId: activityId,
-            detailId: item.id,
-            name: value
-          });
-          enqueueSnackbar({
-            message: "Detail name edited.",
-            options: {
-              variant: "success"
+          dispatch({
+            type: "EDIT_DETAIL_NAME",
+            payload: {
+              activityId: activityId,
+              detailId: item.id,
+              name: category
             }
+          });
+          enqueueSnackbar("Detail name edited.", {
+            variant: "success"
           });
         }
         // clear input after adding new entry
         if (item.id === null) {
-          this.setState({ value: null });
-          this.myFormRef.reset(); // manually reset form
+          setCategory("");
+          formRef.current.reset(); // manually reset form
         }
       }
     }
-  }
+  };
+  return (
+    <form
+      onSubmit={event => handleSubmit(event)}
+      className={classes.form}
+      ref={formRef} // ref for manually reset form
+    >
+      <TextField
+        inputRef={inputRef} // ref for focusing upon first clicking submit
+        defaultValue={category}
+        placeholder={!item.name ? "Add a new one here!" : null}
+        onChange={e => handleChange(e)} // to-check: can do onChange={handleChange}?
+        margin={"dense"}
+        variant="outlined"
+      />
 
-  render() {
-    const { classes, item } = this.props;
-    const { value } = this.state;
-    return (
-      <form
-        onSubmit={event => this.handleSubmit(event)}
-        className={classes.form}
-        ref={el => (this.myFormRef = el)} // ref for manually reset form
+      <IconButton
+        type="submit"
+        aria-label="Edit"
+        // temp workaround to animate this IconButton
+        color={getEditIconColor(category, item.name)}
+        style={getEditIconStyle(category, item.name)}
       >
-        <TextField
-          inputRef={el => (this.myTextField = el)} // ref for focus
-          defaultValue={value}
-          placeholder={!item.name ? "Add a new one here!" : null}
-          onChange={event => this.handleChange(event)}
-          margin={"dense"}
-          variant="outlined"
-        />
+        <CreateIcon classes={{ root: classes.editIcon }} />
+      </IconButton>
+    </form>
+  );
+};
 
-        <IconButton
-          type="submit"
-          aria-label="Edit"
-          // temp workaround to animate this IconButton
-          color={getEditIconColor(value, item.name)}
-          style={getEditIconStyle(value, item.name)}
-        >
-          <CreateIcon classes={{ root: classes.editIcon }} />
-        </IconButton>
-      </form>
-    );
-  }
-}
-
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(CategoriesInput)
-);
+export default withStyles(styles)(CategoriesInput);

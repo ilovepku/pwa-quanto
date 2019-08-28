@@ -1,4 +1,4 @@
-const initialData = {
+const initialCategories = {
   details: {
     "detail-1": { id: "detail-1", name: "Reading" },
     "detail-2": { id: "detail-2", name: "Meetings" },
@@ -90,4 +90,4 @@ const initialData = {
   ]
 };
 
-export default initialData;
+export default initialCategories;

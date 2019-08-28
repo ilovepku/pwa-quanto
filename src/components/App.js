@@ -7,6 +7,8 @@ import { SnackbarProvider } from "notistack";
 
 import TabViews from "./TabViews";
 
+import CategoriesContextProvider from "../contexts/categoriesContext";
+
 const styles = {
   success: { backgroundColor: "#6FAC9B" },
   error: { backgroundColor: "#BB4D4C" },
@@ -28,17 +30,22 @@ function App(props) {
         vertical: "bottom",
         horizontal: "left"
       }}
-      action={[
+      action={key => (
         <Button
           key="snackBarButton"
           size="small"
           classes={{ root: classes.label }}
+          /* onClick={() => { // to-do: dismiss button
+            props.closeSnackbar(key);
+          }} */
         >
           {"Dismiss"}
         </Button>
-      ]}
+      )}
     >
-      <TabViews />
+      <CategoriesContextProvider>
+        <TabViews />
+      </CategoriesContextProvider>
     </SnackbarProvider>
   );
 }

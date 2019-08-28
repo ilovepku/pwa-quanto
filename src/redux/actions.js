@@ -7,11 +7,6 @@ import {
   DISPLAY_NOTIFICATION,
   PURGE_HISTORY,
   RESTORE_HISTORY,
-  EDIT_ACTIVITY_NAME,
-  EDIT_DETAIL_NAME,
-  DELETE_ACTIVITY_NAME,
-  DELETE_DETAIL_NAME,
-  REORDER_CATEGORIES,
   DEFAULT_CATEGORIES,
   RESTORE_CATEGORIES,
   CHARTS_FILTER_SWITCH,
@@ -65,31 +60,6 @@ export const restoreHistory = payload => ({
 });
 
 // categories related
-export const editActivityName = payload => ({
-  type: EDIT_ACTIVITY_NAME,
-  payload
-});
-
-export const editDetailName = payload => ({
-  type: EDIT_DETAIL_NAME,
-  payload
-});
-
-export const deleteActivityName = payload => ({
-  type: DELETE_ACTIVITY_NAME,
-  payload
-});
-
-export const deleteDetailName = payload => ({
-  type: DELETE_DETAIL_NAME,
-  payload
-});
-
-export const reorderCategories = payload => ({
-  type: REORDER_CATEGORIES,
-  payload
-});
-
 export const defaultCategories = () => ({
   type: DEFAULT_CATEGORIES
 });
