@@ -1,10 +1,6 @@
 // react
-import React from "react";
-
-// redux
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { defaultCategories, enqueueSnackbar } from "../redux/actions";
+import React, { useContext } from "react";
+import { CategoriesContext } from "../contexts/categoriesContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -13,11 +9,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ defaultCategories, enqueueSnackbar }, dispatch);
+// libs
+import { useSnackbar } from "notistack";
 
-function SettingsDefaultCategoriesDialog(props) {
-  const { defaultCategories, handleCloseDialog, enqueueSnackbar } = props;
+const SettingsDefaultCategoriesDialog = props => {
+  const { handleCloseDialog } = props;
+  const { dispatch } = useContext(CategoriesContext);
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <div className="dialog-container">
       <DialogTitle>Reset Default Categories</DialogTitle>
@@ -30,13 +28,10 @@ function SettingsDefaultCategoriesDialog(props) {
         <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button
           onClick={() => {
-            defaultCategories();
+            dispatch({ type: "DEFAULT_CATEGORIES" });
             handleCloseDialog();
-            enqueueSnackbar({
-              message: "Successfully reset.",
-              options: {
-                variant: "success"
-              }
+            enqueueSnackbar("Successfully reset.", {
+              variant: "success"
             });
           }}
           color="secondary"
@@ -46,9 +41,6 @@ function SettingsDefaultCategoriesDialog(props) {
       </DialogActions>
     </div>
   );
-}
+};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SettingsDefaultCategoriesDialog);
+export default SettingsDefaultCategoriesDialog;

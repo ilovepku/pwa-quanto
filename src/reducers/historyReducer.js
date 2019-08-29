@@ -19,7 +19,7 @@ const initialHistory = [
   }
 ];
 
-export const historyReducer = (state = initialHistory, action = {}) => {
+export const historyReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case ADD_ACTIVITY:

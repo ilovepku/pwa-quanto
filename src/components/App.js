@@ -1,6 +1,8 @@
 // react
 import React from "react";
+import SettingsContextProvider from "../contexts/settingsContext";
 import CategoriesContextProvider from "../contexts/categoriesContext";
+import HistoryContextProvider from "../contexts/historyContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -46,9 +48,13 @@ function App(props) {
         </Button>
       )}
     >
-      <CategoriesContextProvider>
-        <TabViews />
-      </CategoriesContextProvider>
+      <SettingsContextProvider>
+        <CategoriesContextProvider>
+          <HistoryContextProvider>
+            <TabViews />
+          </HistoryContextProvider>
+        </CategoriesContextProvider>
+      </SettingsContextProvider>
     </SnackbarProvider>
   );
 }

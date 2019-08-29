@@ -2,11 +2,6 @@
 import React, { useState, useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 
-// redux
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { enqueueSnackbar } from "../redux/actions";
-
 // material ui
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -22,12 +17,10 @@ import AddIcon from "@material-ui/icons/Add";
 // libs
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import classNames from "classnames";
+import { useSnackbar } from "notistack";
 
 // components
 import CategoriesInput from "./CategoriesInput";
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ enqueueSnackbar }, dispatch);
 
 const styles = theme => ({
   nested: {
@@ -58,7 +51,8 @@ const getListStyle = isDraggingOver => ({
 });
 
 const CategoriesNestedLists = props => {
-  const { classes, index, activity, details, enqueueSnackbar } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const { classes, index, activity, details } = props;
   const [nestedListOpen, setNestedListOpen] = useState(false);
   const { dispatch } = useContext(CategoriesContext);
   const toggleNestedListOpen = () => {
@@ -96,11 +90,8 @@ const CategoriesNestedLists = props => {
                           type: "DELETE_ACTIVITY_NAME",
                           payload: activity.id
                         });
-                        enqueueSnackbar({
-                          message: "Activity name removed.",
-                          options: {
-                            variant: "success"
-                          }
+                        enqueueSnackbar("Activity name removed.", {
+                          variant: "success"
                         });
                       }}
                       classes={{ root: classes.deleteIcon }}
@@ -159,11 +150,8 @@ const CategoriesNestedLists = props => {
                                         detailId: detail.id
                                       }
                                     });
-                                    enqueueSnackbar({
-                                      message: "Detail name removed.",
-                                      options: {
-                                        variant: "success"
-                                      }
+                                    enqueueSnackbar("Detail name removed.", {
+                                      variant: "success"
                                     });
                                   }}
                                   classes={{ root: classes.deleteIcon }}
@@ -201,9 +189,4 @@ const CategoriesNestedLists = props => {
   );
 };
 
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(CategoriesNestedLists)
-);
+export default withStyles(styles)(CategoriesNestedLists);

@@ -1,17 +1,6 @@
 // react
-import React, { Component, Fragment } from "react";
-
-// redux
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import {
-  chartsFilterSwitch,
-  chartsFilterSet,
-  chartsExcludeSwitch,
-  addChartsExcludeKey,
-  delChartsExcludeKey,
-  enqueueSnackbar
-} from "../redux/actions";
+import React, { Fragment, useContext, useState, useRef } from "react";
+import { SettingsContext } from "../contexts/settingsContext";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -28,6 +17,7 @@ import { DatePicker } from "material-ui-pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";
+import { useSnackbar } from "notistack";
 
 const theme = createMuiTheme({
   overrides: {
@@ -45,178 +35,145 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-const mapStateToProps = state => {
-  return {
-    settings: state.settings
+const SettingsChartsTab = props => {
+  const [value, setValue] = useState(null);
+  const { settings, dispatch } = useContext(SettingsContext);
+  const formRef = useRef(null);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleTextFieldChange = e => {
+    setValue(e.target.value);
   };
-};
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      chartsFilterSwitch,
-      chartsFilterSet,
-      chartsExcludeSwitch,
-      addChartsExcludeKey,
-      delChartsExcludeKey,
-      enqueueSnackbar
-    },
-    dispatch
-  );
 
-class SettingsChartsTab extends Component {
-  state = { value: null };
-
-  handleTextFieldChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    const { settings, addChartsExcludeKey, enqueueSnackbar } = this.props;
-    const { value } = this.state;
-    event.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
     if (!value) {
-      enqueueSnackbar({
-        message: "Keyword is empty",
-        options: {
-          variant: "error"
-        }
+      enqueueSnackbar("Keyword is empty.", {
+        variant: "error"
       });
     } else if (settings.chartsExcludeList.includes(value)) {
-      enqueueSnackbar({
-        message: "Keyword already exists",
-        options: {
-          variant: "error"
-        }
+      enqueueSnackbar("Keyword already exists.", {
+        variant: "error"
       });
     } else {
-      addChartsExcludeKey(value);
-      this.myFormRef.reset(); // manually reset form
+      dispatch({ type: "ADD_CHARTS_EXCLUDE_KEY", payload: value });
+      formRef.current.reset(); // manually reset form
     }
-  }
+  };
+  return (
+    <Fragment>
+      <Card>
+        <CardContent>
+          <MuiThemeProvider theme={theme}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={settings.chartsFilter}
+                  onChange={() => {
+                    if (settings.chartsFilterStart > settings.chartsFilterEnd) {
+                      enqueueSnackbar("End date earlier than start date.", {
+                        variant: "error"
+                      });
+                    } else {
+                      dispatch({ type: "CHARTS_EXCLUDE_SWITCH" });
+                    }
+                  }}
+                  value="chartsFilterSwitch"
+                  color="primary"
+                />
+              }
+              label="Only include activities from"
+            />
 
-  render() {
-    const {
-      settings,
-      chartsFilterSwitch,
-      chartsFilterSet,
-      chartsExcludeSwitch,
-      delChartsExcludeKey,
-      enqueueSnackbar
-    } = this.props;
-    return (
-      <Fragment>
-        <Card>
-          <CardContent>
-            <MuiThemeProvider theme={theme}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={settings.chartsFilter}
-                    onChange={() => {
-                      if (
-                        settings.chartsFilterStart > settings.chartsFilterEnd
-                      ) {
-                        enqueueSnackbar({
-                          message: "End date earlier than start date.",
-                          options: {
-                            variant: "error"
-                          }
-                        });
-                      } else {
-                        chartsFilterSwitch();
-                      }
-                    }}
-                    value="chartsFilterSwitch"
-                    color="primary"
-                  />
-                }
-                label="Only include activities from"
-              />
-
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  openTo="day"
-                  label="Start"
-                  format="yyyy/MM/dd"
-                  value={new Date(settings.chartsFilterStart)}
-                  onChange={date =>
-                    chartsFilterSet({
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                openTo="day"
+                label="Start"
+                format="yyyy/MM/dd"
+                value={new Date(settings.chartsFilterStart)}
+                onChange={date =>
+                  dispatch({
+                    type: "CHARTS_FILTER_SET",
+                    payload: {
                       type: "chartsFilterStart",
                       date: date.setHours(0, 0, 0, 0)
-                    })
-                  }
-                  showTodayButton
-                />
-                <DatePicker
-                  margin="dense"
-                  openTo="day"
-                  label="End"
-                  format="yyyy/MM/dd"
-                  value={new Date(settings.chartsFilterEnd)}
-                  onChange={date =>
-                    chartsFilterSet({
+                    }
+                  })
+                }
+                showTodayButton
+              />
+              <DatePicker
+                margin="dense"
+                openTo="day"
+                label="End"
+                format="yyyy/MM/dd"
+                value={new Date(settings.chartsFilterEnd)}
+                onChange={date =>
+                  dispatch({
+                    type: "CHARTS_FILTER_SET",
+                    payload: {
                       type: "chartsFilterEnd",
                       date: date.setHours(23, 59, 59, 999)
-                    })
-                  }
-                  showTodayButton
-                />
-              </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent>
-            <MuiThemeProvider theme={theme}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={settings.chartsExclude}
-                    onChange={chartsExcludeSwitch}
-                    value="chartsExcludeSwitch"
-                    color="primary"
-                  />
+                    }
+                  })
                 }
-                label="Excluded listed from charts"
+                showTodayButton
               />
-              <form
-                onSubmit={event => this.handleSubmit(event)}
-                ref={el => (this.myFormRef = el)} // ref for manually reset form
-              >
-                <TextField
-                  inputRef={el => (this.myTextField = el)}
-                  // ref for focus
-                  placeholder={"Add a new one here!"}
-                  onChange={event => this.handleTextFieldChange(event)}
+            </MuiPickersUtilsProvider>
+          </MuiThemeProvider>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <MuiThemeProvider theme={theme}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={settings.chartsExclude}
+                  onChange={dispatch({ type: "CHARTS_EXCLUDE_SWITCH" })}
+                  value="chartsExcludeSwitch"
+                  color="primary"
                 />
+              }
+              label="Excluded listed from charts"
+            />
+            <form
+              onSubmit={event => handleSubmit(event)}
+              ref={formRef} // ref for manually reset form
+            >
+              <TextField
+                placeholder={"Add a new one here!"}
+                onChange={event => handleTextFieldChange(event)}
+              />
 
-                <IconButton type="submit" aria-label="add" color="primary">
-                  <AddIcon />
-                </IconButton>
-              </form>
-              <div>
-                {settings.chartsExcludeList.length
-                  ? settings.chartsExcludeList.map((item, index) => {
-                      return (
-                        <Chip
-                          key={"chartsExcludeKey-" + index}
-                          label={item}
-                          onDelete={() => delChartsExcludeKey(index)}
-                        />
-                      );
-                    })
-                  : "List is currently empty."}
-              </div>
-            </MuiThemeProvider>
-          </CardContent>
-        </Card>
-      </Fragment>
-    );
-  }
-}
+              <IconButton type="submit" aria-label="add" color="primary">
+                <AddIcon />
+              </IconButton>
+            </form>
+            <div>
+              {settings.chartsExcludeList.length
+                ? settings.chartsExcludeList.map((item, index) => {
+                    return (
+                      <Chip
+                        key={"chartsExcludeKey-" + index}
+                        label={item}
+                        onDelete={() =>
+                          dispatch({
+                            type: "DEL_CHARTS_EXCLUDE_KEY",
+                            payload: index
+                          })
+                        }
+                      />
+                    );
+                  })
+                : "List is currently empty."}
+            </div>
+          </MuiThemeProvider>
+        </CardContent>
+      </Card>
+    </Fragment>
+  );
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SettingsChartsTab);
+export default SettingsChartsTab;

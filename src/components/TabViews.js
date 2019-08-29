@@ -11,7 +11,6 @@ import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
-import Notifier from "./Notifier";
 
 const theme = createMuiTheme({
   overrides: {
@@ -56,7 +55,6 @@ function TabViews() {
         <Route path="/settings/" component={SettingsTabView} />
 
         <BottomAppBar />
-        <Notifier />
       </MuiThemeProvider>
     </Router>
   );

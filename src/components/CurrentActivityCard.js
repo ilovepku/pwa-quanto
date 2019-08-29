@@ -1,13 +1,6 @@
 // react
-import React, { Component } from "react";
-
-// redux
-import { connect } from "react-redux";
-import {
-  addActivity,
-  interruptActivity,
-  displayNotification
-} from "../redux/actions";
+import React, { useState, useContext, useEffect } from "react";
+import { HistoryContext } from "../contexts/historyContext";
 
 // material ui
 import {
@@ -60,101 +53,68 @@ const styles = () => ({
   }
 });
 
-const mapStateToProps = state => {
-  return {
-    history: state.history
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    addActivity: () => dispatch(addActivity()),
-    interruptActivity: () => dispatch(interruptActivity()),
-    displayNotification: () => dispatch(displayNotification())
-  };
-};
-
-class CurrentActivityCard extends Component {
-  state = {
-    lastHistoryItemElapsed: 0
-  };
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { history } = nextProps;
-    this.loopingUpdateElapsedAndDisplayNotifcation(
-      history[0].datetime
-      // last history item start datetime
+const CurrentActivityCard = props => {
+  const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState(0);
+  const { history, dispatch } = useContext(HistoryContext);
+  useEffect(() => {
+    function updateElapsedAndDisplayNotifcation(datetime) {
+      setLastHistoryItemElapsed(
+        duration2HHMM(Math.floor((new Date() - new Date(datetime)) / 1000 / 60))
+      );
+      dispatch({ type: "DISPLAY_NOTIFICATION" });
+    }
+    function loopingUpdateElapsedAndDisplayNotifcation(datetime) {
+      // update toolbar elpased and display notification once
+      updateElapsedAndDisplayNotifcation(datetime);
+      // clearInterval and set new Interval to update toolbar elapsed and display notifcation every minute
+      clearInterval(intervalID);
+      intervalID = setInterval(() => {
+        updateElapsedAndDisplayNotifcation(datetime);
+      }, 1000 * 60);
+    }
+    let intervalID;
+    loopingUpdateElapsedAndDisplayNotifcation(
+      history[0].datetime // last history item start datetime
     );
-  }
-
-  componentDidMount() {
-    const { history } = this.props;
-    this.loopingUpdateElapsedAndDisplayNotifcation(
-      history[0].datetime
-      // last history item start datetime
-    );
-  }
-
-  loopingUpdateElapsedAndDisplayNotifcation(datetime) {
-    // update toolbar elpased and display notification once
-    this.updateElapsedAndDisplayNotifcation(datetime);
-    // clearInterval and set new Interval to update toolbar elapsed and display notifcation every minute
-    clearInterval(this.intervalID);
-    this.intervalID = setInterval(() => {
-      this.updateElapsedAndDisplayNotifcation(datetime);
-    }, 1000 * 60);
-  }
-
-  updateElapsedAndDisplayNotifcation(datetime) {
-    this.setState({
-      lastHistoryItemElapsed: duration2HHMM(
-        Math.floor((new Date() - new Date(datetime)) / 1000 / 60)
-      )
-    });
-    this.props.displayNotification();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
-  }
-
-  render() {
-    const { classes, history, addActivity, interruptActivity } = this.props;
-    const { lastHistoryItemElapsed } = this.state;
-    const lastHistoryItem = history[0];
-
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.card}>
-          <div className={classes.content}>
-            <Typography variant="h6" color="inherit">
-              {`Elapsed: ${lastHistoryItemElapsed}`}
-            </Typography>
-            <Typography variant="subtitle1" color="inherit">
-              {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
-            </Typography>
-          </div>
-          <div className={classes.controls}>
-            <IconButton aria-label="Add" onClick={addActivity}>
-              <AddIcon className={classes.addIcon} />
-            </IconButton>
-            <IconButton aria-label="Interrupt" onClick={interruptActivity}>
-              {lastHistoryItem.activity === "Interruption" ? (
-                // if current activity is interruption, show play button; else show pause button
-                <PlayArrowIcon color="secondary" />
-              ) : (
-                <PauseIcon />
-              )}
-            </IconButton>
-          </div>
+    return () => {
+      clearInterval(intervalID);
+    };
+  });
+  const { classes } = props;
+  const lastHistoryItem = history[0];
+  return (
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.card}>
+        <div className={classes.content}>
+          <Typography variant="h6" color="inherit">
+            {`Elapsed: ${lastHistoryItemElapsed}`}
+          </Typography>
+          <Typography variant="subtitle1" color="inherit">
+            {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
+          </Typography>
         </div>
-      </MuiThemeProvider>
-    );
-  }
-}
+        <div className={classes.controls}>
+          <IconButton
+            aria-label="Add"
+            onClick={() => dispatch({ type: "ADD_ACTIVITY" })}
+          >
+            <AddIcon className={classes.addIcon} />
+          </IconButton>
+          <IconButton
+            aria-label="Interrupt"
+            onClick={() => dispatch({ type: "INTERRUPT_ACTIVITY" })}
+          >
+            {lastHistoryItem.activity === "Interruption" ? (
+              // if current activity is interruption, show play button; else show pause button
+              <PlayArrowIcon color="secondary" />
+            ) : (
+              <PauseIcon />
+            )}
+          </IconButton>
+        </div>
+      </div>
+    </MuiThemeProvider>
+  );
+};
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CurrentActivityCard)
-);
+export default withStyles(styles)(CurrentActivityCard);

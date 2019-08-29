@@ -1,9 +1,6 @@
 // react
-import React, { Component, Fragment } from "react";
-
-// redux
-import { connect } from "react-redux";
-import { displayNotification } from "../redux/actions";
+import React, { Fragment, useState, useContext } from "react";
+import { HistoryContext } from "../contexts/historyContext";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -18,128 +15,92 @@ import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
 import SettingsRestoreDialog from "./SettingsRestoreDialog";
 import SettingsGeneralBackup from "./SettingsGeneralBackup";
 
-const mapDispatchToProps = dispatch => {
-  return {
-    displayNotification: () => dispatch(displayNotification())
-  };
-};
+const SettingsGeneralTab = () => {
+  const { dispatch } = useContext(HistoryContext);
+  const [purgeDialogOpen, setPurgeDialogOpen] = useState(false);
+  const [
+    defaultCategoriesDialogOpen,
+    setDefaultCategoriesDialogOpen
+  ] = useState(false);
+  const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
+  const [disabled, setDisabled] = useState(
+    Notification.permission === "granted" ? true : false
+  );
 
-class SettingsGeneralTab extends Component {
-  state = {
-    purgeDialogOpen: false,
-    defaultCategoriesDialogOpen: false,
-    restoreDialogOpen: false,
-    disabled: Notification.permission === "granted" ? true : false
-  };
-
-  handleOpenDialog = dialog => {
-    this.setState({
-      [dialog]: true
-    });
+  const handleCloseDialog = () => {
+    setPurgeDialogOpen(false);
+    setDefaultCategoriesDialogOpen(false);
+    setRestoreDialogOpen(false);
   };
 
-  handleCloseDialog = () => {
-    this.setState({
-      purgeDialogOpen: false,
-      defaultCategoriesDialogOpen: false,
-      restoreDialogOpen: false
-    });
-  };
-
-  handlePermissionRequestClick() {
-    const { displayNotification } = this.props;
+  const handlePermissionRequestClick = () => {
     Notification.requestPermission(result => {
       if (result === "granted") {
-        displayNotification();
-        this.setState({
-          disabled: true
-        });
+        dispatch({ TYPE: "DISPLAY_NOTIFICATION" });
+        setDisabled(true);
       }
     });
-  }
+  };
 
-  render() {
-    const {
-      disabled,
-      purgeDialogOpen,
-      restoreDialogOpen,
-      defaultCategoriesDialogOpen
-    } = this.state;
+  return (
+    <Fragment>
+      <Card>
+        <CardContent>
+          Enable Notification to check/pause/add an activity without opening the
+          app or even unlocking your device).
+        </CardContent>
+        <CardActions>
+          <Button
+            disabled={disabled}
+            color="primary"
+            onClick={() => handlePermissionRequestClick()}
+          >
+            {disabled ? "Notification Enabled" : "Enable Notification"}
+          </Button>
+        </CardActions>
+      </Card>
 
-    return (
-      <Fragment>
-        <Card>
-          <CardContent>
-            Enable Notification to check/pause/add an activity without opening
-            the app or even unlocking your device).
-          </CardContent>
-          <CardActions>
-            <Button
-              disabled={disabled}
-              color="primary"
-              onClick={() => this.handlePermissionRequestClick()}
-            >
-              {disabled ? "Notification Enabled" : "Enable Notification"}
-            </Button>
-          </CardActions>
-        </Card>
+      <SettingsGeneralBackup setRestoreDialogOpen={setRestoreDialogOpen} />
 
-        <SettingsGeneralBackup handleOpenDialog={this.handleOpenDialog} />
+      <Card>
+        <CardContent>
+          Delete all history entries on and before a certain date of your choice
+          (a new activity will be started if all history entries are purged).
+        </CardContent>
+        <CardActions>
+          <Button color="secondary" onClick={() => setPurgeDialogOpen(true)}>
+            Purge History
+          </Button>
+        </CardActions>
+      </Card>
 
-        <Card>
-          <CardContent>
-            Delete all history entries on and before a certain date of your
-            choice (a new activity will be started if all history entries are
-            purged).
-          </CardContent>
-          <CardActions>
-            <Button
-              color="secondary"
-              onClick={() => this.handleOpenDialog("purgeDialogOpen")}
-            >
-              Purge History
-            </Button>
-          </CardActions>
-        </Card>
+      <Card>
+        <CardContent>Restore default categories</CardContent>
+        <CardActions>
+          <Button
+            color="secondary"
+            onClick={() => setDefaultCategoriesDialogOpen(true)}
+          >
+            DEFAULT CATEGORIES
+          </Button>
+        </CardActions>
+      </Card>
 
-        <Card>
-          <CardContent>Restore default categories</CardContent>
-          <CardActions>
-            <Button
-              color="secondary"
-              onClick={() =>
-                this.handleOpenDialog("defaultCategoriesDialogOpen")
-              }
-            >
-              DEFAULT CATEGORIES
-            </Button>
-          </CardActions>
-        </Card>
+      <Dialog open={purgeDialogOpen} onClose={handleCloseDialog}>
+        <SettingsPurgeHistoryDialog handleCloseDialog={handleCloseDialog} />
+      </Dialog>
 
-        <Dialog open={purgeDialogOpen} onClose={this.handleCloseDialog}>
-          <SettingsPurgeHistoryDialog
-            handleCloseDialog={this.handleCloseDialog}
-          />
-        </Dialog>
+      <Dialog open={defaultCategoriesDialogOpen} onClose={handleCloseDialog}>
+        <SettingsDefaultCategoriesDialog
+          handleCloseDialog={handleCloseDialog}
+        />
+      </Dialog>
 
-        <Dialog
-          open={defaultCategoriesDialogOpen}
-          onClose={this.handleCloseDialog}
-        >
-          <SettingsDefaultCategoriesDialog
-            handleCloseDialog={this.handleCloseDialog}
-          />
-        </Dialog>
+      <Dialog open={restoreDialogOpen} onClose={handleCloseDialog}>
+        <SettingsRestoreDialog handleCloseDialog={handleCloseDialog} />
+      </Dialog>
+    </Fragment>
+  );
+};
 
-        <Dialog open={restoreDialogOpen} onClose={this.handleCloseDialog}>
-          <SettingsRestoreDialog handleCloseDialog={this.handleCloseDialog} />
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(SettingsGeneralTab);
+export default SettingsGeneralTab;

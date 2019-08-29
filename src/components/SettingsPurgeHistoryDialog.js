@@ -1,10 +1,6 @@
 // react
-import React, { Component } from "react";
-
-// redux
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { purgeHistory, enqueueSnackbar } from "../redux/actions";
+import React, { useState, useContext } from "react";
+import { HistoryContext } from "../contexts/historyContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -16,59 +12,49 @@ import { DatePicker } from "material-ui-pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";
+import { useSnackbar } from "notistack";
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ purgeHistory, enqueueSnackbar }, dispatch);
+const SettingsPurgeHistoryDialog = props => {
+  const { handleCloseDialog } = props;
+  const [date, setDate] = useState(new Date());
+  const { dispatch } = useContext(HistoryContext);
+  const { enqueueSnackbar } = useSnackbar();
 
-class SettingsPurgeHistoryDialog extends Component {
-  state = {
-    date: new Date()
+  const handleDateChange = date => {
+    setDate(date.setHours(23, 59, 59, 999));
   };
-  handleDateChange = date => {
-    this.setState({ date: date.setHours(23, 59, 59, 999) });
-  };
-  render() {
-    const { purgeHistory, handleCloseDialog, enqueueSnackbar } = this.props;
-    const { date } = this.state;
-    return (
-      <div className="dialog-container">
-        <DialogTitle>Purge History</DialogTitle>
-        <DialogContent>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              openTo="day"
-              label="Purge on and before:"
-              format="yyyy/MM/dd"
-              value={date}
-              onChange={this.handleDateChange}
-              showTodayButton
-            />
-          </MuiPickersUtilsProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button
-            onClick={() => {
-              purgeHistory(date);
-              handleCloseDialog();
-              enqueueSnackbar({
-                message: "Successfully purged.",
-                options: {
-                  variant: "success"
-                }
-              });
-            }}
-            color="secondary"
-          >
-            Purge
-          </Button>
-        </DialogActions>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="dialog-container">
+      <DialogTitle>Purge History</DialogTitle>
+      <DialogContent>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+            openTo="day"
+            label="Purge on and before:"
+            format="yyyy/MM/dd"
+            value={date}
+            onChange={handleDateChange}
+            showTodayButton
+          />
+        </MuiPickersUtilsProvider>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button
+          onClick={() => {
+            dispatch({ type: "PURGE_HISTORY", payload: date });
+            handleCloseDialog();
+            enqueueSnackbar("Successfully purged.", {
+              variant: "success"
+            });
+          }}
+          color="secondary"
+        >
+          Purge
+        </Button>
+      </DialogActions>
+    </div>
+  );
+};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SettingsPurgeHistoryDialog);
+export default SettingsPurgeHistoryDialog;
