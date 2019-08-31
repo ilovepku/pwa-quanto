@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -19,7 +20,6 @@ import { DateTimePicker } from "@material-ui/pickers";
 // lib
 import nanoid from "nanoid";
 import DateFnsUtils from "@date-io/date-fns";
-import { useSnackbar } from "notistack";
 
 // functions
 import { duration2HHMM } from "../global/duration2HHMM";
@@ -35,7 +35,7 @@ const HistoryItemEditDialog = props => {
 
   const { categories } = useContext(CategoriesContext);
   const { dispatch } = useContext(HistoryContext);
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbarContext = useContext(SnackbarContext);
 
   const [datetime, setDatetime] = useState(new Date(props.item.datetime));
   const [nextItemDatetime, setNextItemDatetime] = useState(
@@ -66,36 +66,56 @@ const HistoryItemEditDialog = props => {
     } = props;
     if (lastItemDatetime && datetime < lastItemDatetime) {
       // new time cannot be earlier than previou entry's start time
-      enqueueSnackbar("Start time before last activity.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Start time before last activity.",
+          variant: "error"
+        }
       });
     } else if (
       nextItemDatetime &&
       datetime > nextItemDatetime // new time cannot be later than next entry's start time
     ) {
-      enqueueSnackbar("Start time after end time.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Start time after end time.",
+          variant: "error"
+        }
       });
     } else if (!nextItemDatetime && datetime > new Date()) {
       // new start time is in the future
-      enqueueSnackbar("Start time in the future.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Start time in the future.",
+          variant: "error"
+        }
       });
     } else if (
       nextNextItemDatetime &&
       nextItemDatetime > nextNextItemDatetime
       // new end time cannot be earlier than start time of next next item
     ) {
-      enqueueSnackbar("End time after next activity.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "End time after next activity.",
+          variant: "error"
+        }
       });
     } else if (
       !nextNextItemDatetime &&
       nextItemDatetime > new Date()
       // new end time cannot be in the future
     ) {
-      enqueueSnackbar("End time in the future.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "End time in the future.",
+          variant: "error"
+        }
       });
     } else {
       dispatch({
@@ -110,8 +130,12 @@ const HistoryItemEditDialog = props => {
       });
 
       handleCloseDialog();
-      enqueueSnackbar("Activity saved.", {
-        variant: "success"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Activity saved.",
+          variant: "success"
+        }
       });
     }
   };
@@ -120,12 +144,20 @@ const HistoryItemEditDialog = props => {
     const { index, lastItemDatetime, handleCloseDialog } = props;
     if (!lastItemDatetime && !nextItemDatetime) {
       // if is last entry
-      enqueueSnackbar("A new activity has been started.", {
-        variant: "warning"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "A new activity has been started.",
+          variant: "warning"
+        }
       });
     } else {
-      enqueueSnackbar("Activity deleted.", {
-        variant: "success"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Activity deleted.",
+          variant: "success"
+        }
       });
     }
     dispatch({ type: "DELETE_ACTIVITY", payload: index });

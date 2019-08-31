@@ -1,6 +1,7 @@
 // react
 import React, { useState, useContext } from "react";
 import { HistoryContext } from "../contexts/historyContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -12,13 +13,12 @@ import { DatePicker } from "@material-ui/pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";
-import { useSnackbar } from "notistack";
 
 const SettingsPurgeHistoryDialog = props => {
   const { handleCloseDialog } = props;
   const [date, setDate] = useState(new Date());
   const { dispatch } = useContext(HistoryContext);
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbarContext = useContext(SnackbarContext);
 
   const handleDateChange = date => {
     setDate(date.setHours(23, 59, 59, 999));
@@ -44,8 +44,12 @@ const SettingsPurgeHistoryDialog = props => {
           onClick={() => {
             dispatch({ type: "PURGE_HISTORY", payload: date });
             handleCloseDialog();
-            enqueueSnackbar("Successfully purged.", {
-              variant: "success"
+            snackbarContext.dispatch({
+              type: "OPEN_SNACKBAR",
+              payload: {
+                msg: "Successfully purged.",
+                variant: "success"
+              }
             });
           }}
           color="secondary"

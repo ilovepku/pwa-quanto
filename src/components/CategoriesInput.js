@@ -1,16 +1,13 @@
 // react
 import React, { useState, useContext, useRef } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
-import Button from "@material-ui/core/Button";
-
-// libs
-import { useSnackbar } from "notistack";
 
 const styles = () => ({
   form: {
@@ -32,21 +29,10 @@ const getEditIconStyle = (value, name) => ({
 const CategoriesInput = props => {
   const { classes, item } = props;
   const { dispatch } = useContext(CategoriesContext);
+  const snackbarContext = useContext(SnackbarContext);
   const [category, setCategory] = useState(props.item.name);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const inputRef = useRef(null);
   const formRef = useRef(null);
-
-  // action for snackbars
-  const action = key => (
-    <Button
-      onClick={() => {
-        closeSnackbar(key);
-      }}
-    >
-      {"Dismiss"}
-    </Button>
-  );
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,7 +42,10 @@ const CategoriesInput = props => {
       inputRef.current.focus();
     } else {
       if (!category) {
-        enqueueSnackbar("Name cannot be empty.", { action, variant: "error" });
+        snackbarContext.dispatch({
+          type: "OPEN_SNACKBAR",
+          payload: { msg: "Name cannot be empty.", variant: "error" }
+        });
         setCategory(item.name);
         formRef.current.reset();
       } else if (
@@ -64,7 +53,10 @@ const CategoriesInput = props => {
         category === "-" ||
         category === "Unsorted"
       ) {
-        enqueueSnackbar("This name is reserved.", { action, variant: "error" });
+        snackbarContext.dispatch({
+          type: "OPEN_SNACKBAR",
+          payload: { msg: "This name is reserved.", variant: "error" }
+        });
         setCategory(item.name);
         formRef.current.reset();
       } else {
@@ -78,9 +70,9 @@ const CategoriesInput = props => {
               name: category
             }
           });
-          enqueueSnackbar("Activity name edited.", {
-            action,
-            variant: "success"
+          snackbarContext.dispatch({
+            type: "OPEN_SNACKBAR",
+            payload: { msg: "Activity name edited.", variant: "success" }
           });
         } else {
           // is detail
@@ -92,9 +84,9 @@ const CategoriesInput = props => {
               name: category
             }
           });
-          enqueueSnackbar("Detail name edited.", {
-            action,
-            variant: "success"
+          snackbarContext.dispatch({
+            type: "OPEN_SNACKBAR",
+            payload: { msg: "Detail name edited.", variant: "success" }
           });
         }
         // clear input after adding new entry

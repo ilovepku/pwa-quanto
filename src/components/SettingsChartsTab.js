@@ -1,6 +1,7 @@
 // react
 import React, { Fragment, useContext, useState, useRef } from "react";
 import { SettingsContext } from "../contexts/settingsContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -17,7 +18,6 @@ import { DatePicker } from "@material-ui/pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";
-import { useSnackbar } from "notistack";
 
 const theme = createMuiTheme({
   overrides: {
@@ -38,18 +38,26 @@ const theme = createMuiTheme({
 const SettingsChartsTab = props => {
   const [value, setValue] = useState(null);
   const { settings, dispatch } = useContext(SettingsContext);
+  const snackbarContext = useContext(SnackbarContext);
   const formRef = useRef(null);
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = e => {
     e.preventDefault();
     if (!value) {
-      enqueueSnackbar("Keyword is empty.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Keyword is empty.",
+          variant: "error"
+        }
       });
     } else if (settings.chartsExcludeList.includes(value)) {
-      enqueueSnackbar("Keyword already exists.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Keyword already exists.",
+          variant: "error"
+        }
       });
     } else {
       dispatch({ type: "ADD_CHARTS_EXCLUDE_KEY", payload: value });
@@ -67,8 +75,12 @@ const SettingsChartsTab = props => {
                   checked={settings.chartsFilter}
                   onChange={() => {
                     if (settings.chartsFilterStart > settings.chartsFilterEnd) {
-                      enqueueSnackbar("End date earlier than start date.", {
-                        variant: "error"
+                      snackbarContext.dispatch({
+                        type: "OPEN_SNACKBAR",
+                        payload: {
+                          msg: "End date earlier than start date.",
+                          variant: "error"
+                        }
                       });
                     } else {
                       dispatch({ type: "CHARTS_FILTER_SWITCH" });

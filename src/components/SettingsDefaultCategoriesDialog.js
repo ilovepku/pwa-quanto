@@ -1,6 +1,7 @@
 // react
 import React, { useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -9,13 +10,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-// libs
-import { useSnackbar } from "notistack";
-
 const SettingsDefaultCategoriesDialog = props => {
   const { handleCloseDialog } = props;
   const { dispatch } = useContext(CategoriesContext);
-  const { enqueueSnackbar } = useSnackbar();
+  const snackbarContext = useContext(SnackbarContext);
   return (
     <div className="dialog-container">
       <DialogTitle>Reset Default Categories</DialogTitle>
@@ -30,8 +28,12 @@ const SettingsDefaultCategoriesDialog = props => {
           onClick={() => {
             dispatch({ type: "DEFAULT_CATEGORIES" });
             handleCloseDialog();
-            enqueueSnackbar("Successfully reset.", {
-              variant: "success"
+            snackbarContext.dispatch({
+              type: "OPEN_SNACKBAR",
+              payload: {
+                msg: "Successfully reset.",
+                variant: "success"
+              }
             });
           }}
           color="secondary"

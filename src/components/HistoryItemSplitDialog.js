@@ -1,6 +1,7 @@
 // react
 import React, { useContext, useState } from "react";
 import { HistoryContext } from "../contexts/historyContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -11,14 +12,14 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { DateTimePicker } from "@material-ui/pickers";
 
 // libs
-import { useSnackbar } from "notistack";
 import DateFnsUtils from "@date-io/date-fns";
 
 const HistoryItemSplitDialog = props => {
   const { nextItemDatetime, handleCloseDialog } = props;
 
-  const { enqueueSnackbar } = useSnackbar();
   const { dispatch } = useContext(HistoryContext);
+  const snackbarContext = useContext(SnackbarContext);
+
   const [datetime] = useState(new Date(props.datetime));
   const [splitDatetime, setSplitDatetime] = useState(
     new Date(
@@ -37,14 +38,22 @@ const HistoryItemSplitDialog = props => {
       (nextItemDatetime && splitDatetime > nextItemDatetime) || // split time cannot be later than next entry's start time
       splitDatetime < datetime // split time cannot be earlier than current entry's start time
     ) {
-      enqueueSnackbar("Split time must be between 'Start' and 'End'.", {
-        variant: "error"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Split time must be between 'Start' and 'End'.",
+          variant: "error"
+        }
       });
     } else {
       dispatch({ type: "SPLIT_ACTIVITY", payload: { splitDatetime, index } });
       handleCloseDialog();
-      enqueueSnackbar("Activity splitted.", {
-        variant: "success"
+      snackbarContext.dispatch({
+        type: "OPEN_SNACKBAR",
+        payload: {
+          msg: "Activity splitted.",
+          variant: "success"
+        }
       });
     }
   };

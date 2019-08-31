@@ -1,12 +1,12 @@
 // react
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, /* useEffect ,*/ useContext } from "react";
 import { SettingsContext } from "../contexts/settingsContext";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // libs
-import { firebase } from "../global/firebase";
-import { useSnackbar } from "notistack";
+//import { firebase } from "../global/firebase";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -15,12 +15,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
 const SettingsRestoreDialog = props => {
-  const [backup, setBackup] = useState(null);
-  const { enqueueSnackbar } = useSnackbar();
-  const { dispatchSettings } = useContext(SettingsContext);
-  const { dispatchCategories } = useContext(CategoriesContext);
-  const { dispatchHistory } = useContext(HistoryContext);
-  useEffect(() => {
+  const [backup] = useState(null);
+  const settingsContext = useContext(SettingsContext);
+  const categoriesContext = useContext(CategoriesContext);
+  const historyContext = useContext(HistoryContext);
+  const snackbarContext = useContext(SnackbarContext);
+  /* useEffect(() => {
     firebase
       .firestore()
       .collection("backup")
@@ -31,19 +31,23 @@ const SettingsRestoreDialog = props => {
           setBackup(doc.data());
         }
       });
-  });
+  }); */
 
   const { handleCloseDialog } = props;
 
   const handleRestoreClick = () => {
-    dispatchHistory({ type: "RESTORE_HISTORY", payload: backup.history });
-    dispatchCategories({
+    historyContext.dispatch({ type: "RESTORE_HISTORY", payload: backup.history });
+    categoriesContext.dispatch({
       type: "RESTORE_CATEGORIES",
       payload: backup.categories
     });
-    dispatchSettings({ type: "RESTORE_SETTINGS", payload: backup.settings });
-    enqueueSnackbar("Successfully restored.", {
-      variant: "success"
+    settingsContext.dispatch({ type: "RESTORE_SETTINGS", payload: backup.settings });
+    snackbarContext.dispatch({
+      type: "OPEN_SNACKBAR",
+      payload: {
+        msg: "Successfully restored.",
+        variant: "success"
+      }
     });
   };
   return (

@@ -1,5 +1,5 @@
 // react
-import React, { useEffect, useState, useContext } from "react";
+import React, { /* useEffect, */ useState, useContext } from "react";
 import { SettingsContext } from "../contexts/settingsContext";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
@@ -11,17 +11,17 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
 // libs
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { firebase, uiConfig } from "../global/firebase";
+// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+// import { firebase, uiConfig } from "../global/firebase";
 
 const SettingsGeneralBackup = props => {
   const { setRestoreDialogOpen } = props;
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn/* , setIsSignedIn */] = useState(false);
   const { settings } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
   const { history } = useContext(HistoryContext);
   console.log(settings, categories, history); // to-do: delte this temp placehoder log
-  useEffect(() => {
+  /* useEffect(() => {
     // Listen to the Firebase Auth state and set the local state.
     const unregisterAuthObserver = firebase
       .auth()
@@ -30,7 +30,7 @@ const SettingsGeneralBackup = props => {
       // Make sure we un-register Firebase observers when the component unmounts.
       unregisterAuthObserver();
     };
-  });
+  }); */
   if (!isSignedIn) {
     return (
       <Card>
@@ -39,10 +39,10 @@ const SettingsGeneralBackup = props => {
           and settings:
         </CardContent>
         <CardActions>
-          <StyledFirebaseAuth
+          {/* <StyledFirebaseAuth
             uiConfig={uiConfig}
             firebaseAuth={firebase.auth()}
-          />
+          /> */}
         </CardActions>
       </Card>
     );
@@ -50,12 +50,12 @@ const SettingsGeneralBackup = props => {
   return (
     <Card>
       <CardContent>
-        Welcome {firebase.auth().currentUser.displayName}! You can now backup or
+        Welcome {/* firebase.auth().currentUser.displayName */}! You can now backup or
         restore your activity history, custom categories and settings!
       </CardContent>
 
       <CardActions>
-        <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+        <Button /* onClick={() => firebase.auth().signOut()} */>Sign-out</Button>
         <Button // to-do: not yet implemented with new context api
           /* onClick={() => backup({ history, categories, settings })} */ color="primary"
         >

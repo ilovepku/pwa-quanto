@@ -1,6 +1,7 @@
 // react
 import React, { useState, useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -17,7 +18,6 @@ import AddIcon from "@material-ui/icons/Add";
 // libs
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import classNames from "classnames";
-import { useSnackbar } from "notistack";
 
 // components
 import CategoriesInput from "./CategoriesInput";
@@ -51,10 +51,10 @@ const getListStyle = isDraggingOver => ({
 });
 
 const CategoriesNestedLists = props => {
-  const { enqueueSnackbar } = useSnackbar();
   const { classes, index, activity, details } = props;
   const [nestedListOpen, setNestedListOpen] = useState(false);
   const { dispatch } = useContext(CategoriesContext);
+  const snackbarContext = useContext(SnackbarContext);
   const toggleNestedListOpen = () => {
     setNestedListOpen(!nestedListOpen);
   };
@@ -90,8 +90,12 @@ const CategoriesNestedLists = props => {
                           type: "DELETE_ACTIVITY_NAME",
                           payload: activity.id
                         });
-                        enqueueSnackbar("Activity name removed.", {
-                          variant: "success"
+                        snackbarContext.dispatch({
+                          type: "OPEN_SNACKBAR",
+                          payload: {
+                            msg: "Activity name removed.",
+                            variant: "success"
+                          }
                         });
                       }}
                       classes={{ root: classes.deleteIcon }}
@@ -150,8 +154,12 @@ const CategoriesNestedLists = props => {
                                         detailId: detail.id
                                       }
                                     });
-                                    enqueueSnackbar("Detail name removed.", {
-                                      variant: "success"
+                                    snackbarContext.dispatch({
+                                      type: "OPEN_SNACKBAR",
+                                      payload: {
+                                        msg: "Detail name removed.",
+                                        variant: "success"
+                                      }
                                     });
                                   }}
                                   classes={{ root: classes.deleteIcon }}

@@ -71,17 +71,11 @@ function SettingsAboutTab(props) {
           <Typography>
             <strong>- @material-ui</strong> for UI components
             <br />
-            <strong>- localforage</strong> for offline storage
-            <br />
             <strong>- nanoid</strong> as ID generator
-            <br />
-            <strong>- notistack</strong> for notification snackbars
             <br />
             <strong>- react-beautiful-dnd</strong> for drag and drop lists
             <br />
-            <strong>- create-react-app, redux, react-redux</strong>
-            <br />
-            <strong>- redux-persist</strong> to persist redux store
+            <strong>- create-react-app</strong>
             <br />
             <strong>- victory</strong> for data visualization
           </Typography>

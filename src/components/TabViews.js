@@ -1,6 +1,7 @@
 // react
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { HistoryContext } from "../contexts/historyContext";
 
 // material ui
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -11,7 +12,7 @@ import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
-import { HistoryContext } from "../contexts/historyContext";
+import SnackbarNotifier from "./SnackbarNotifier";
 
 const theme = createMuiTheme({
   overrides: {
@@ -70,6 +71,7 @@ function TabViews() {
         <Route path="/settings/" component={SettingsTabView} />
 
         <BottomAppBar />
+        <SnackbarNotifier />
       </MuiThemeProvider>
     </Router>
   );
