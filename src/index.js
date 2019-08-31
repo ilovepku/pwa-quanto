@@ -7,18 +7,6 @@ import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
 
-// yet to be implemented with context
-/* if ("serviceWorker" in navigator) {
-  // Handler for messages coming from the service worker
-  navigator.serviceWorker.addEventListener("message", event => {
-    if (event.data === "interrupt") {
-      store.dispatch(interruptActivity());
-    } else if (event.data === "new") {
-      store.dispatch(addActivity());
-    }
-  });
-} */
-
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change

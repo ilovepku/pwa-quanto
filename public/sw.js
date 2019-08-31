@@ -31,7 +31,6 @@ if ("function" === typeof importScripts) {
   }
 }
 
-
 // This service worker file is effectively a 'no-op' that will reset any
 // previous service worker registered for the same host:port combination.
 // In the production build, this file is replaced with an actual service worker

@@ -12,8 +12,8 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { DatePicker } from "material-ui-pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DatePicker } from "@material-ui/pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";
@@ -40,10 +40,6 @@ const SettingsChartsTab = props => {
   const { settings, dispatch } = useContext(SettingsContext);
   const formRef = useRef(null);
   const { enqueueSnackbar } = useSnackbar();
-
-  const handleTextFieldChange = e => {
-    setValue(e.target.value);
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -75,7 +71,7 @@ const SettingsChartsTab = props => {
                         variant: "error"
                       });
                     } else {
-                      dispatch({ type: "CHARTS_EXCLUDE_SWITCH" });
+                      dispatch({ type: "CHARTS_FILTER_SWITCH" });
                     }
                   }}
                   value="chartsFilterSwitch"
@@ -87,7 +83,7 @@ const SettingsChartsTab = props => {
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker
-                openTo="day"
+                openTo="date"
                 label="Start"
                 format="yyyy/MM/dd"
                 value={new Date(settings.chartsFilterStart)}
@@ -104,7 +100,7 @@ const SettingsChartsTab = props => {
               />
               <DatePicker
                 margin="dense"
-                openTo="day"
+                openTo="date"
                 label="End"
                 format="yyyy/MM/dd"
                 value={new Date(settings.chartsFilterEnd)}
@@ -131,7 +127,9 @@ const SettingsChartsTab = props => {
               control={
                 <Switch
                   checked={settings.chartsExclude}
-                  onChange={dispatch({ type: "CHARTS_EXCLUDE_SWITCH" })}
+                  onChange={() => {
+                    dispatch({ type: "CHARTS_EXCLUDE_SWITCH" });
+                  }}
                   value="chartsExcludeSwitch"
                   color="primary"
                 />
@@ -144,7 +142,7 @@ const SettingsChartsTab = props => {
             >
               <TextField
                 placeholder={"Add a new one here!"}
-                onChange={event => handleTextFieldChange(event)}
+                onChange={e => setValue(e.target.value)}
               />
 
               <IconButton type="submit" aria-label="add" color="primary">

@@ -5,7 +5,6 @@ import CategoriesContextProvider from "../contexts/categoriesContext";
 import HistoryContextProvider from "../contexts/historyContext";
 
 // material ui
-import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 
 // snackbar
@@ -35,18 +34,6 @@ function App(props) {
         vertical: "bottom",
         horizontal: "left"
       }}
-      action={key => (
-        <Button
-          key="snackBarButton"
-          size="small"
-          classes={{ root: classes.label }}
-          /* onClick={() => { // to-do: dismiss button
-            props.closeSnackbar(key);
-          }} */
-        >
-          {"Dismiss"}
-        </Button>
-      )}
     >
       <SettingsContextProvider>
         <CategoriesContextProvider>

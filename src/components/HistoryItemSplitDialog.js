@@ -7,8 +7,8 @@ import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { DateTimePicker } from "material-ui-pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DateTimePicker } from "@material-ui/pickers";
 
 // libs
 import { useSnackbar } from "notistack";
@@ -19,8 +19,8 @@ const HistoryItemSplitDialog = props => {
 
   const { enqueueSnackbar } = useSnackbar();
   const { dispatch } = useContext(HistoryContext);
-  const [datetime, setDatetime] = useState(new Date(props.datetime));
-  const [splitDatetime] = useState(
+  const [datetime] = useState(new Date(props.datetime));
+  const [splitDatetime, setSplitDatetime] = useState(
     new Date(
       (new Date(datetime).getTime() +
         (nextItemDatetime
@@ -29,10 +29,6 @@ const HistoryItemSplitDialog = props => {
         2
     )
   ); // get mid point between start and end datetime
-
-  const handleSplitDateChange = datetime => {
-    setDatetime(datetime);
-  };
 
   const handleActivitySplit = () => {
     const { index } = props;
@@ -62,7 +58,6 @@ const HistoryItemSplitDialog = props => {
           <DateTimePicker
             format="yyyy/MM/dd HH:mm"
             value={datetime}
-            onChange={handleSplitDateChange /* delete this? */}
             label="Start"
             disabled
           />
@@ -75,7 +70,7 @@ const HistoryItemSplitDialog = props => {
             ampm={false}
             openTo="minutes"
             value={splitDatetime}
-            onChange={handleSplitDateChange}
+            onChange={setSplitDatetime}
             label="Split At"
             showTodayButton
           />
@@ -87,7 +82,6 @@ const HistoryItemSplitDialog = props => {
             format="yyyy/MM/dd HH:mm"
             value={nextItemDatetime ? nextItemDatetime : new Date()}
             label="End"
-            onChange={handleSplitDateChange /* delete this? */}
             disabled
           />
         </MuiPickersUtilsProvider>

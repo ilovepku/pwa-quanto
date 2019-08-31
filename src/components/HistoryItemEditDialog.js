@@ -13,8 +13,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Input from "@material-ui/core/Input";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { DateTimePicker } from "material-ui-pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DateTimePicker } from "@material-ui/pickers";
 
 // lib
 import nanoid from "nanoid";
@@ -55,10 +55,6 @@ const HistoryItemEditDialog = props => {
 
     setActivity(e.target.value);
     setDetail(detailList.length ? detailList[0].name : "-"); // fix for selecting activity with no detail
-  };
-
-  const handleDetailChange = e => {
-    setDetail(e.target.value);
   };
 
   const handleActivitySave = () => {
@@ -184,9 +180,10 @@ const HistoryItemEditDialog = props => {
             ampm={false}
             openTo="minutes"
             value={datetime}
-            onChange={datetime => setDatetime(datetime)}
+            onChange={setDatetime}
             label="Start"
             showTodayButton
+            todayLabel="Now"
           />
         </MuiPickersUtilsProvider>
 
@@ -199,9 +196,10 @@ const HistoryItemEditDialog = props => {
               ampm={false}
               openTo="minutes"
               value={nextItemDatetime}
-              onChange={datetime => setNextItemDatetime(datetime)}
+              onChange={setNextItemDatetime}
               label="End"
               showTodayButton
+              todayLabel="Now"
             />
           </MuiPickersUtilsProvider>
         )}
@@ -233,7 +231,7 @@ const HistoryItemEditDialog = props => {
           <InputLabel htmlFor="detail">Detail</InputLabel>
           <NativeSelect
             value={detail}
-            onChange={handleDetailChange}
+            onChange={e => setDetail(e.target.value)}
             input={<Input name="detail" id="detail" />}
           >
             {detailNameListItems}

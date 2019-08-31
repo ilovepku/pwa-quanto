@@ -217,7 +217,7 @@ const ChartsTabView = props => {
           <Fab
             aria-label="Previous"
             size="small"
-            onClick={dispatch({ type: "PREV_CHARTS_FILTER" })}
+            onClick={() => dispatch({ type: "PREV_CHARTS_FILTER" })}
           >
             <SkipPreviousIcon />
           </Fab>
@@ -225,7 +225,7 @@ const ChartsTabView = props => {
           <Fab
             aria-label="Next"
             size="small"
-            onClick={dispatch({ type: "NEXT_CHARTS_FILTER" })}
+            onClick={() => dispatch({ type: "NEXT_CHARTS_FILTER" })}
           >
             <SkipNextIcon />
           </Fab>

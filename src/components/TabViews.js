@@ -1,5 +1,5 @@
 // react
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 // material ui
@@ -11,6 +11,7 @@ import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
+import { HistoryContext } from "../contexts/historyContext";
 
 const theme = createMuiTheme({
   overrides: {
@@ -46,6 +47,20 @@ const theme = createMuiTheme({
 });
 
 function TabViews() {
+  const { dispatch } = useContext(HistoryContext);
+
+  // listen for clicks on push notifications
+  if ("serviceWorker" in navigator) {
+    // Handler for messages coming from the service worker
+    navigator.serviceWorker.addEventListener("message", e => {
+      if (e.data === "interrupt") {
+        dispatch({ type: "INTERRUPT_ACTIVITY" });
+      } else if (e.data === "new") {
+        //dispatch({ type: "ADD_ACTIVITY" });
+        console.log("add");
+      }
+    });
+  }
   return (
     <Router>
       <MuiThemeProvider theme={theme}>

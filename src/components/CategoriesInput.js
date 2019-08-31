@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
+import Button from "@material-ui/core/Button";
 
 // libs
 import { useSnackbar } from "notistack";
@@ -32,12 +33,21 @@ const CategoriesInput = props => {
   const { classes, item } = props;
   const { dispatch } = useContext(CategoriesContext);
   const [category, setCategory] = useState(props.item.name);
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const inputRef = useRef(null);
   const formRef = useRef(null);
-  const handleChange = e => {
-    setCategory(e.target.value);
-  };
+
+  // action for snackbars
+  const action = key => (
+    <Button
+      onClick={() => {
+        closeSnackbar(key);
+      }}
+    >
+      {"Dismiss"}
+    </Button>
+  );
+
   const handleSubmit = e => {
     e.preventDefault();
     const { item, activityId } = props;
@@ -46,9 +56,7 @@ const CategoriesInput = props => {
       inputRef.current.focus();
     } else {
       if (!category) {
-        enqueueSnackbar("Name cannot be empty.", {
-          variant: "error"
-        });
+        enqueueSnackbar("Name cannot be empty.", { action, variant: "error" });
         setCategory(item.name);
         formRef.current.reset();
       } else if (
@@ -56,9 +64,7 @@ const CategoriesInput = props => {
         category === "-" ||
         category === "Unsorted"
       ) {
-        enqueueSnackbar("This name is reserved.", {
-          variant: "error"
-        });
+        enqueueSnackbar("This name is reserved.", { action, variant: "error" });
         setCategory(item.name);
         formRef.current.reset();
       } else {
@@ -73,6 +79,7 @@ const CategoriesInput = props => {
             }
           });
           enqueueSnackbar("Activity name edited.", {
+            action,
             variant: "success"
           });
         } else {
@@ -86,6 +93,7 @@ const CategoriesInput = props => {
             }
           });
           enqueueSnackbar("Detail name edited.", {
+            action,
             variant: "success"
           });
         }
@@ -107,7 +115,7 @@ const CategoriesInput = props => {
         inputRef={inputRef} // ref for focusing upon first clicking submit
         defaultValue={category}
         placeholder={!item.name ? "Add a new one here!" : null}
-        onChange={e => handleChange(e)} // to-check: can do onChange={handleChange}?
+        onChange={e => setCategory(e.target.value)}
         margin={"dense"}
         variant="outlined"
       />

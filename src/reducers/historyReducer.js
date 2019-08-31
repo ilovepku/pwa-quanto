@@ -148,7 +148,6 @@ export const historyReducer = (state, action) => {
         return new Date(item.datetime).getTime() >= action.payload;
       });
       if (newState.length === 0) newState = initialHistory;
-
       return newState;
 
     case RESTORE_HISTORY:
