@@ -50,17 +50,17 @@ const theme = createMuiTheme({
 function TabViews() {
   const { dispatch } = useContext(HistoryContext);
 
-  // listen for clicks on push notifications
+  // respond to interaction with push notification
   if ("serviceWorker" in navigator) {
     // Handler for messages coming from the service worker
-    navigator.serviceWorker.addEventListener("message", e => {
-      if (e.data === "interrupt") {
+    const channel = new BroadcastChannel("service-worker-channel");
+    channel.onmessage = msg => {
+      if (msg.data === "interrupt") {
         dispatch({ type: "INTERRUPT_ACTIVITY" });
-      } else if (e.data === "new") {
-        //dispatch({ type: "ADD_ACTIVITY" });
-        console.log("add");
+      } else if (msg.data === "new") {
+        dispatch({ type: "ADD_ACTIVITY" });
       }
-    });
+    };
   }
   return (
     <Router>

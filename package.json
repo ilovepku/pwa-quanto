@@ -23,23 +23,24 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-sw": "node ./src/sw-build.js",
-    "clean-cra-sw": "del build\\precache-manifest.*.js && del build\\service-worker.js",
-    "build": "react-scripts build && npm run build-sw && npm run clean-cra-sw",
+    "build": "react-scripts build",
+    "build-sw": "workbox injectManifest workbox-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "redux-devtools-extension": "^2.13.8",
-    "workbox-build": "^4.3.1"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

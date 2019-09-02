@@ -17,7 +17,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 // libs
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import classNames from "classnames";
+import clsx from "clsx";
 
 // components
 import CategoriesInput from "./CategoriesInput";
@@ -124,10 +124,7 @@ const CategoriesNestedLists = props => {
                           >
                             <ListItem
                               divider
-                              className={classNames(
-                                classes.nested,
-                                classes.listItem
-                              )}
+                              className={clsx(classes.nested, classes.listItem)}
                               style={getItemStyle(snapshot.isDragging)}
                             >
                               <ListItemIcon
@@ -176,7 +173,7 @@ const CategoriesNestedLists = props => {
                     {/* the listItem to add a new detail */}
                     <ListItem
                       divider
-                      className={classNames(classes.nested, classes.listItem)}
+                      className={clsx(classes.nested, classes.listItem)}
                     >
                       <ListItemIcon>
                         <AddIcon />
