@@ -1,33 +1,20 @@
-import React from "react";
+// react
+import React, { useContext } from "react";
+import { CategoriesContext } from "../contexts/categoriesContext";
 
-import { connect } from "react-redux";
-
+// material ui
 import { withStyles } from "@material-ui/core/styles";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-
 import AddIcon from "@material-ui/icons/Add";
 
+// react-beautiful-dnd
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+// components
 import CategoriesNestedLists from "./CategoriesNestedLists";
 import CategoriesInput from "./CategoriesInput";
-
-import { reorderCategories } from "../redux/actions";
-
-const mapStateToProps = state => {
-  return {
-    categories: state.categories
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    reorderCategories: payload => dispatch(reorderCategories(payload))
-  };
-};
 
 const styles = () => ({
   view: {
@@ -40,9 +27,12 @@ const styles = () => ({
 });
 
 function CategoriesTabView(props) {
-  const { classes, categories, reorderCategories } = props;
+  const { categories, dispatch } = useContext(CategoriesContext);
+  const { classes } = props;
   return (
-    <DragDropContext onDragEnd={reorderCategories}>
+    <DragDropContext
+      onDragEnd={payload => dispatch({ type: "REORDER_CATEGORIES", payload })}
+    >
       <Droppable
         droppableId="all-activities"
         direction="vertical"
@@ -90,9 +80,4 @@ function CategoriesTabView(props) {
   );
 }
 
-export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CategoriesTabView)
-);
+export default withStyles(styles)(CategoriesTabView);

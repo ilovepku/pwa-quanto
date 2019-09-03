@@ -19,7 +19,7 @@ const initialHistory = [
   }
 ];
 
-export const historyReducer = (state = initialHistory, action = {}) => {
+export const historyReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case ADD_ACTIVITY:
@@ -148,7 +148,6 @@ export const historyReducer = (state = initialHistory, action = {}) => {
         return new Date(item.datetime).getTime() >= action.payload;
       });
       if (newState.length === 0) newState = initialHistory;
-
       return newState;
 
     case RESTORE_HISTORY:

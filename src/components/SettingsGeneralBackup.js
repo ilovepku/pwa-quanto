@@ -1,58 +1,78 @@
-// Import FirebaseAuth and firebase.
-import React, { Component } from "react";
+// react
+import React, { Fragment, useEffect, useState, useContext } from "react";
+import { SettingsContext } from "../contexts/settingsContext";
+import { CategoriesContext } from "../contexts/categoriesContext";
+import { HistoryContext } from "../contexts/historyContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
-import { connect } from "react-redux";
-import { backup } from "../redux/actions";
-
+// material ui
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
+// libs
+import firebase from "../global/firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { firebase, uiConfig } from "../global/firebase";
 
-const mapStateToProps = state => {
-  return {
-    history: state.history,
-    categories: state.categories,
-    settings: state.settings
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    backup: payload => dispatch(backup(payload))
-  };
+const firebaseUiConfig = {
+  signInSuccessUrl: "/settings",
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
 };
 
-class SettingsGeneralBackup extends Component {
-  // The component's Local state.
-  state = {
-    isSignedIn: false // Local signed-in state.
-  };
+const SettingsGeneralBackup = props => {
+  const { setRestoreDialogOpen } = props;
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const { settings } = useContext(SettingsContext);
+  const { categories } = useContext(CategoriesContext);
+  const { history } = useContext(HistoryContext);
+  const { dispatch } = useContext(SnackbarContext);
 
-  // Listen to the Firebase Auth state and set the local state.
-  componentDidMount() {
-    this.unregisterAuthObserver = firebase
+  useEffect(() => {
+    // Listen to the Firebase Auth state and set the local state.
+    const unregisterAuthObserver = firebase
       .auth()
-      .onAuthStateChanged(user => this.setState({ isSignedIn: !!user }));
-  }
+      .onAuthStateChanged(user => setIsSignedIn(!!user));
+    return () => {
+      // Make sure we un-register Firebase observers when the component unmounts.
+      unregisterAuthObserver();
+    };
+  }, []); // [] to run effect only once
 
-  // Make sure we un-register Firebase observers when the component unmounts.
-  componentWillUnmount() {
-    this.unregisterAuthObserver();
-  }
+  const backup = () => {
+    const user = firebase.auth().currentUser;
 
-  render() {
-    const {
-      history,
-      categories,
-      settings,
-      backup,
-      handleOpenDialog
-    } = this.props;
-    if (!this.state.isSignedIn) {
-      return (
+    if (user) {
+      firebase
+        .firestore()
+        .collection("backup")
+        .doc(user.uid)
+        .set({
+          history: history,
+          categories: categories,
+          settings: settings,
+          createdAt: new Date()
+        })
+        .then(() => {
+          dispatch({
+            type: "OPEN_SNACKBAR",
+            payload: { msg: "Backup complete.", variant: "success" }
+          });
+        })
+        .catch(() => {
+          dispatch({
+            type: "OPEN_SNACKBAR",
+            payload: { msg: "Backup error, try again later.", variant: "error" }
+          });
+        });
+    } else {
+      console.log("No user is signed in.");
+    }
+  };
+
+  return (
+    <Fragment>
+      {!isSignedIn ? (
         <Card>
           <CardContent>
             Sign in to backup or restore your activity history, custom
@@ -60,41 +80,35 @@ class SettingsGeneralBackup extends Component {
           </CardContent>
           <CardActions>
             <StyledFirebaseAuth
-              uiConfig={uiConfig}
+              uiConfig={firebaseUiConfig}
               firebaseAuth={firebase.auth()}
             />
           </CardActions>
         </Card>
-      );
-    }
-    return (
-      <Card>
-        <CardContent>
-          Welcome {firebase.auth().currentUser.displayName}! You can now backup
-          or restore your activity history, custom categories and settings!
-        </CardContent>
+      ) : (
+        <Card>
+          <CardContent>
+            Welcome {firebase.auth().currentUser.displayName}! You can now
+            backup or restore your activity history, custom categories and
+            settings!
+          </CardContent>
 
-        <CardActions>
-          <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
-          <Button
-            onClick={() => backup({ history, categories, settings })}
-            color="primary"
-          >
-            Back-up
-          </Button>
-          <Button
-            onClick={() => handleOpenDialog("restoreDialogOpen")}
-            color="secondary"
-          >
-            Restore
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-}
+          <CardActions>
+            <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+            <Button onClick={backup} color="primary">
+              Back-up
+            </Button>
+            <Button
+              onClick={() => setRestoreDialogOpen(true)}
+              color="secondary"
+            >
+              Restore
+            </Button>
+          </CardActions>
+        </Card>
+      )}
+    </Fragment>
+  );
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SettingsGeneralBackup);
+export default SettingsGeneralBackup;

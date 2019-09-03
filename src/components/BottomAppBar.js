@@ -1,18 +1,19 @@
+// react
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
+// material ui
+import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-
 import HistoryIcon from "@material-ui/icons/History";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import CategoryIcon from "@material-ui/icons/Category";
 import SettingsIcon from "@material-ui/icons/Settings";
 
+// components
 import CurrentActivityCard from "./CurrentActivityCard";
-
-import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   appBar: {

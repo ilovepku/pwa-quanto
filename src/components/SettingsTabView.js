@@ -1,18 +1,20 @@
+// react
 import React, { Component } from "react";
 
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-
-import SettingsGeneralTab from "./SettingsGeneralTab";
-import SettingsChartsTab from "./SettingsChartsTab";
-import SettingsAboutTab from "./SettingsAboutTab";
-
+// material ui
 import {
   withStyles,
   MuiThemeProvider,
   createMuiTheme
 } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+
+// components
+import SettingsGeneralTab from "./SettingsGeneralTab";
+import SettingsChartsTab from "./SettingsChartsTab";
+import SettingsAboutTab from "./SettingsAboutTab";
 
 const theme = createMuiTheme({
   overrides: {
@@ -59,9 +61,6 @@ const theme = createMuiTheme({
         padding: "10px"
       }
     }
-  },
-  typography: {
-    useNextVariants: true
   }
 });
 

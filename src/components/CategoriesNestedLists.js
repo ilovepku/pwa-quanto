@@ -1,41 +1,30 @@
-import React, { Component } from "react";
+// react
+import React, { useState, useContext } from "react";
+import { CategoriesContext } from "../contexts/categoriesContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import {
-  deleteActivityName,
-  deleteDetailName,
-  enqueueSnackbar
-} from "../redux/actions";
-
+// material ui
 import { withStyles } from "@material-ui/core/styles";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
-
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
+// libs
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import clsx from "clsx";
 
-import classNames from "classnames";
-
+// components
 import CategoriesInput from "./CategoriesInput";
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    { deleteActivityName, deleteDetailName, enqueueSnackbar },
-    dispatch
-  );
 
 const styles = theme => ({
   nested: {
-    paddingLeft: theme.spacing.unit * 4
+    paddingLeft: theme.spacing(4)
   },
   listItem: {
     paddingTop: 0,
@@ -61,161 +50,148 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-class CategoriesNestedLists extends Component {
-  state = {
-    nestedListOpen: false
+const CategoriesNestedLists = props => {
+  const { classes, index, activity, details } = props;
+  const [nestedListOpen, setNestedListOpen] = useState(false);
+  const { dispatch } = useContext(CategoriesContext);
+  const snackbarContext = useContext(SnackbarContext);
+  const toggleNestedListOpen = () => {
+    setNestedListOpen(!nestedListOpen);
   };
-
-  handleNestedListOpen = () => {
-    this.setState(state => ({ nestedListOpen: !state.nestedListOpen }));
-  };
-
-  render() {
-    const {
-      classes,
-      index,
-      activity,
-      details,
-      deleteActivityName,
-      deleteDetailName,
-      enqueueSnackbar
-    } = this.props;
-    const { nestedListOpen } = this.state;
-    return (
-      <Draggable draggableId={activity.id} index={index}>
-        {(outterProvided, outterSnapshot) => (
-          <div {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
-            <Droppable droppableId={activity.id} type="detail">
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={getListStyle(snapshot.isDraggingOver)}
+  return (
+    <Draggable draggableId={activity.id} index={index}>
+      {(outterProvided, outterSnapshot) => (
+        <div {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
+          <Droppable droppableId={activity.id} type="detail">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+                <ListItem
+                  divider
+                  classes={{ root: classes.listItem }}
+                  style={getItemStyle(outterSnapshot.isDragging)}
                 >
-                  <ListItem
-                    divider
-                    classes={{ root: classes.listItem }}
-                    style={getItemStyle(outterSnapshot.isDragging)}
+                  <ListItemIcon
+                    {...outterProvided.dragHandleProps}
+                    aria-label="Drag"
                   >
-                    <ListItemIcon
-                      {...outterProvided.dragHandleProps}
-                      aria-label="Drag"
-                    >
-                      <DragIndicatorIcon classes={{ root: classes.dragIcon }} />
-                    </ListItemIcon>
+                    <DragIndicatorIcon classes={{ root: classes.dragIcon }} />
+                  </ListItemIcon>
 
-                    <CategoriesInput item={activity} />
+                  <CategoriesInput item={activity} />
 
-                    <ListItemIcon>
-                      <DeleteIcon
-                        onClick={() => {
-                          deleteActivityName(activity.id);
-                          enqueueSnackbar({
-                            message: "Activity name removed.",
-                            options: {
-                              variant: "success"
-                            }
-                          });
-                        }}
-                        classes={{ root: classes.deleteIcon }}
-                      />
-                    </ListItemIcon>
+                  <ListItemIcon>
+                    <DeleteIcon
+                      onClick={() => {
+                        dispatch({
+                          type: "DELETE_ACTIVITY_NAME",
+                          payload: activity.id
+                        });
+                        snackbarContext.dispatch({
+                          type: "OPEN_SNACKBAR",
+                          payload: {
+                            msg: "Activity name removed.",
+                            variant: "success"
+                          }
+                        });
+                      }}
+                      classes={{ root: classes.deleteIcon }}
+                    />
+                  </ListItemIcon>
 
-                    {nestedListOpen ? (
-                      <ExpandLess onClick={this.handleNestedListOpen} />
-                    ) : (
-                      <ExpandMore onClick={this.handleNestedListOpen} />
-                    )}
-                  </ListItem>
+                  {nestedListOpen ? (
+                    <ExpandLess onClick={toggleNestedListOpen} />
+                  ) : (
+                    <ExpandMore onClick={toggleNestedListOpen} />
+                  )}
+                </ListItem>
 
-                  <Collapse in={nestedListOpen} timeout="auto" unmountOnExit>
-                    <List>
-                      {details.map((detail, index) => (
-                        <Draggable
-                          key={detail.id}
-                          draggableId={detail.id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <div
-                              {...provided.draggableProps}
-                              ref={provided.innerRef}
+                <Collapse in={nestedListOpen} timeout="auto" unmountOnExit>
+                  <List>
+                    {details.map((detail, index) => (
+                      <Draggable
+                        key={detail.id}
+                        draggableId={detail.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            {...provided.draggableProps}
+                            ref={provided.innerRef}
+                          >
+                            <ListItem
+                              divider
+                              className={clsx(classes.nested, classes.listItem)}
+                              style={getItemStyle(snapshot.isDragging)}
                             >
-                              <ListItem
-                                divider
-                                className={classNames(
-                                  classes.nested,
-                                  classes.listItem
-                                )}
-                                style={getItemStyle(snapshot.isDragging)}
+                              <ListItemIcon
+                                {...provided.dragHandleProps}
+                                aria-label="Drag"
                               >
-                                <ListItemIcon
-                                  {...provided.dragHandleProps}
-                                  aria-label="Drag"
-                                >
-                                  <DragIndicatorIcon
-                                    classes={{ root: classes.dragIcon }}
-                                  />
-                                </ListItemIcon>
-
-                                <CategoriesInput
-                                  item={detail}
-                                  activityId={activity.id}
+                                <DragIndicatorIcon
+                                  classes={{ root: classes.dragIcon }}
                                 />
+                              </ListItemIcon>
 
-                                <ListItemIcon aria-label="Delete">
-                                  <DeleteIcon
-                                    onClick={() => {
-                                      deleteDetailName({
+                              <CategoriesInput
+                                item={detail}
+                                activityId={activity.id}
+                              />
+
+                              <ListItemIcon aria-label="Delete">
+                                <DeleteIcon
+                                  onClick={() => {
+                                    dispatch({
+                                      type: "DELETE_DETAIL_NAME",
+                                      payload: {
                                         activityId: activity.id,
                                         detailId: detail.id
-                                      });
-                                      enqueueSnackbar({
-                                        message: "Detail name removed.",
-                                        options: {
-                                          variant: "success"
-                                        }
-                                      });
-                                    }}
-                                    classes={{ root: classes.deleteIcon }}
-                                  />
-                                </ListItemIcon>
-                              </ListItem>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                                      }
+                                    });
+                                    snackbarContext.dispatch({
+                                      type: "OPEN_SNACKBAR",
+                                      payload: {
+                                        msg: "Detail name removed.",
+                                        variant: "success"
+                                      }
+                                    });
+                                  }}
+                                  classes={{ root: classes.deleteIcon }}
+                                />
+                              </ListItemIcon>
+                            </ListItem>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
 
-                      {provided.placeholder}
+                    {provided.placeholder}
 
-                      {/* the listItem to add a new detail */}
-                      <ListItem
-                        divider
-                        className={classNames(classes.nested, classes.listItem)}
-                      >
-                        <ListItemIcon>
-                          <AddIcon />
-                        </ListItemIcon>
-                        <CategoriesInput
-                          item={{ id: null, name: null }} // pass in empty object to add a new detail
-                          activityId={activity.id}
-                        />
-                      </ListItem>
-                    </List>
-                  </Collapse>
-                </div>
-              )}
-            </Droppable>
-          </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+                    {/* the listItem to add a new detail */}
+                    <ListItem
+                      divider
+                      className={clsx(classes.nested, classes.listItem)}
+                    >
+                      <ListItemIcon>
+                        <AddIcon />
+                      </ListItemIcon>
+                      <CategoriesInput
+                        item={{ id: null, name: null }} // pass in empty object to add a new detail
+                        activityId={activity.id}
+                      />
+                    </ListItem>
+                  </List>
+                </Collapse>
+              </div>
+            )}
+          </Droppable>
+        </div>
+      )}
+    </Draggable>
+  );
+};
 
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(CategoriesNestedLists)
-);
+export default withStyles(styles)(CategoriesNestedLists);

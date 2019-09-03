@@ -1,4 +1,5 @@
 import nanoid from "nanoid";
+import initialCategories from "../data/initialCategories";
 
 import {
   EDIT_ACTIVITY_NAME,
@@ -6,13 +7,11 @@ import {
   DELETE_ACTIVITY_NAME,
   DELETE_DETAIL_NAME,
   REORDER_CATEGORIES,
-  DEFAULT_CATEGORIES,
-  RESTORE_CATEGORIES
+  DEFAULT_CATEGORIES, // to-do
+  RESTORE_CATEGORIES // to-do
 } from "./constants.js";
 
-import initialCategories from "../data/initialCategories";
-
-export const categoriesReducer = (state = initialCategories, action = {}) => {
+export const categoriesReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case EDIT_ACTIVITY_NAME:

@@ -1,15 +1,17 @@
+// react
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+// material ui
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+// components
+import BottomAppBar from "./BottomAppBar";
 import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
-
-import BottomAppBar from "./BottomAppBar";
-import Notifier from "./Notifier";
-
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import SnackbarNotifier from "./SnackbarNotifier";
 
 const theme = createMuiTheme({
   overrides: {
@@ -24,7 +26,7 @@ const theme = createMuiTheme({
         color: "#989898",
         "&$selected": {
           paddingTop: 0,
-          color: "#96774c" 
+          color: "#96774c"
         }
       }
     },
@@ -40,8 +42,7 @@ const theme = createMuiTheme({
         paddingBottom: 0
       }
     }
-  },
-  typography: { useNextVariants: true }
+  }
 });
 
 function TabViews() {
@@ -54,7 +55,7 @@ function TabViews() {
         <Route path="/settings/" component={SettingsTabView} />
 
         <BottomAppBar />
-        <Notifier />
+        <SnackbarNotifier />
       </MuiThemeProvider>
     </Router>
   );

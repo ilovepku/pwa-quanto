@@ -1,20 +1,19 @@
-import React from "react";
+// react
+import React, { useContext } from "react";
+import { CategoriesContext } from "../contexts/categoriesContext";
+import { SnackbarContext } from "../contexts/snackbarContext";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { defaultCategories, enqueueSnackbar } from "../redux/actions";
-
+// material ui
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ defaultCategories, enqueueSnackbar }, dispatch);
-
-function SettingsDefaultCategoriesDialog(props) {
-  const { defaultCategories, handleCloseDialog, enqueueSnackbar } = props;
+const SettingsDefaultCategoriesDialog = props => {
+  const { handleCloseDialog } = props;
+  const { dispatch } = useContext(CategoriesContext);
+  const snackbarContext = useContext(SnackbarContext);
   return (
     <div className="dialog-container">
       <DialogTitle>Reset Default Categories</DialogTitle>
@@ -27,11 +26,12 @@ function SettingsDefaultCategoriesDialog(props) {
         <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button
           onClick={() => {
-            defaultCategories();
+            dispatch({ type: "DEFAULT_CATEGORIES" });
             handleCloseDialog();
-            enqueueSnackbar({
-              message: "Successfully reset.",
-              options: {
+            snackbarContext.dispatch({
+              type: "OPEN_SNACKBAR",
+              payload: {
+                msg: "Successfully reset.",
                 variant: "success"
               }
             });
@@ -43,9 +43,6 @@ function SettingsDefaultCategoriesDialog(props) {
       </DialogActions>
     </div>
   );
-}
+};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SettingsDefaultCategoriesDialog);
+export default SettingsDefaultCategoriesDialog;

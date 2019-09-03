@@ -1,15 +1,16 @@
+// react
 import React from "react";
 
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+// material ui
 import {
   withStyles,
   MuiThemeProvider,
   createMuiTheme
 } from "@material-ui/core/styles";
-
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import EmailIcon from "@material-ui/icons/Email";
 import WebIcon from "@material-ui/icons/Web";
@@ -24,9 +25,6 @@ const theme = createMuiTheme({
         fontSize: "20px"
       }
     }
-  },
-  typography: {
-    useNextVariants: true
   }
 });
 
@@ -70,17 +68,11 @@ function SettingsAboutTab(props) {
           <Typography>
             <strong>- @material-ui</strong> for UI components
             <br />
-            <strong>- localforage</strong> for offline storage
-            <br />
             <strong>- nanoid</strong> as ID generator
-            <br />
-            <strong>- notistack</strong> for notification snackbars
             <br />
             <strong>- react-beautiful-dnd</strong> for drag and drop lists
             <br />
-            <strong>- create-react-app, redux, react-redux</strong>
-            <br />
-            <strong>- redux-persist</strong> to persist redux store
+            <strong>- create-react-app</strong>
             <br />
             <strong>- victory</strong> for data visualization
           </Typography>

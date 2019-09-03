@@ -9,18 +9,9 @@ import {
   RESTORE_SETTINGS
 } from "./constants.js";
 
-const initialSettings = {
-  chartsFilter: false,
-  chartsFilterStart: new Date().setHours(0, 0, 0, 0),
-  chartsFilterEnd: new Date().setHours(23, 59, 59, 999),
-  chartsExclude: false,
-  chartsExcludeList: ["Unsorted"]
-};
-
-export const settingsReducer = (state = initialSettings, action = {}) => {
+export const settingsReducer = (state, action) => {
   let newState;
   switch (action.type) {
-
     case CHARTS_FILTER_SWITCH:
       newState = {
         ...state,
