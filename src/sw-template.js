@@ -14,6 +14,7 @@ self.addEventListener(
     } else {
       clients.openWindow("/");
     }
+    channel.close();
   },
   false
 );

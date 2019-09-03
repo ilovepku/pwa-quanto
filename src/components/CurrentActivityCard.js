@@ -27,9 +27,6 @@ const theme = createMuiTheme({
         fill: "#BB4D4C"
       }
     }
-  },
-  typography: {
-    useNextVariants: true
   }
 });
 

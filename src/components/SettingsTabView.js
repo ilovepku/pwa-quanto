@@ -61,9 +61,6 @@ const theme = createMuiTheme({
         padding: "10px"
       }
     }
-  },
-  typography: {
-    useNextVariants: true
   }
 });
 

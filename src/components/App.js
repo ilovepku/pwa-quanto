@@ -1,24 +1,24 @@
 // react
-import React from "react";
-import SettingsContextProvider from "../contexts/settingsContext";
-import CategoriesContextProvider from "../contexts/categoriesContext";
-import HistoryContextProvider from "../contexts/historyContext";
-import SnackbarContextProvider from "../contexts/snackbarContext";
+import React, { useContext } from "react";
+import { HistoryContext } from "../contexts/historyContext";
 
 // components
 import TabViews from "./TabViews";
 
 function App() {
-  return (
-    <SettingsContextProvider>
-      <CategoriesContextProvider>
-        <HistoryContextProvider>
-          <SnackbarContextProvider>
-            <TabViews />
-          </SnackbarContextProvider>
-        </HistoryContextProvider>
-      </CategoriesContextProvider>
-    </SettingsContextProvider>
-  );
+  const { dispatch } = useContext(HistoryContext);
+
+  // respond to interaction with push notification
+  const channel = new BroadcastChannel("service-worker-channel");
+  channel.onmessage = msg => {
+    console.log("msg received", msg);
+    if (msg.data === "interrupt") {
+      dispatch({ type: "INTERRUPT_ACTIVITY" });
+    } else if (msg.data === "new") {
+      dispatch({ type: "ADD_ACTIVITY" });
+    }
+    channel.close();
+  };
+  return <TabViews />;
 }
 export default App;

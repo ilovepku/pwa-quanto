@@ -25,9 +25,6 @@ const theme = createMuiTheme({
         fontSize: "20px"
       }
     }
-  },
-  typography: {
-    useNextVariants: true
   }
 });
 

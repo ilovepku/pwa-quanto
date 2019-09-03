@@ -33,8 +33,7 @@ const theme = createMuiTheme({
         color: "#2f4353"
       }
     }
-  },
-  typography: { useNextVariants: true }
+  }
 });
 
 const SettingsChartsTab = () => {

@@ -1,7 +1,6 @@
 // react
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { HistoryContext } from "../contexts/historyContext";
 
 // material ui
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -43,25 +42,10 @@ const theme = createMuiTheme({
         paddingBottom: 0
       }
     }
-  },
-  typography: { useNextVariants: true }
+  }
 });
 
 function TabViews() {
-  const { dispatch } = useContext(HistoryContext);
-
-  // respond to interaction with push notification
-  if ("serviceWorker" in navigator) {
-    // Handler for messages coming from the service worker
-    const channel = new BroadcastChannel("service-worker-channel");
-    channel.onmessage = msg => {
-      if (msg.data === "interrupt") {
-        dispatch({ type: "INTERRUPT_ACTIVITY" });
-      } else if (msg.data === "new") {
-        dispatch({ type: "ADD_ACTIVITY" });
-      }
-    };
-  }
   return (
     <Router>
       <MuiThemeProvider theme={theme}>
