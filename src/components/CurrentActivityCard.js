@@ -79,7 +79,7 @@ const CurrentActivityCard = props => {
     return () => {
       clearInterval(intervalID);
     };
-  });
+  }, [history, dispatch]); // "history" to run effect on history change, "dispatch" to supress missing dependency warning
   const { classes } = props;
   const lastHistoryItem = history[0];
   return (

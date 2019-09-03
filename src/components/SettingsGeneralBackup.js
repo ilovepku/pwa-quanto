@@ -37,7 +37,7 @@ const SettingsGeneralBackup = props => {
       // Make sure we un-register Firebase observers when the component unmounts.
       unregisterAuthObserver();
     };
-  }, [isSignedIn]);
+  }, []); // [] to run effect only once
 
   const backup = () => {
     const user = firebase.auth().currentUser;
