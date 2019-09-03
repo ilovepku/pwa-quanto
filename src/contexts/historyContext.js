@@ -20,6 +20,17 @@ const HistoryContextProvider = props => {
   useEffect(() => {
     localStorage.setItem("history", JSON.stringify(history));
   }, [history]);
+
+  // push notification action handler: dispatch with history context
+  useEffect(() => {
+    const channel = new BroadcastChannel("service-worker-channel");
+    channel.onmessage = msg => {
+      if (msg.data === "new") dispatch({ type: "ADD_ACTIVITY" });
+      if (msg.data === "interrupt") dispatch({ type: "INTERRUPT_ACTIVITY" });
+    };
+    return channel.close;
+  }, [dispatch]);
+
   return (
     <HistoryContext.Provider value={{ history, dispatch }}>
       {props.children}
