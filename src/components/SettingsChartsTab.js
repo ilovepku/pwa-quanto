@@ -22,8 +22,10 @@ import DateFnsUtils from "@date-io/date-fns";
 const theme = createMuiTheme({
   overrides: {
     MuiSwitch: {
-      iconChecked: {
-        color: "#deb887"
+      root: {
+        "&$checked": {
+          color: "#deb887"
+        }
       }
     },
     MuiIconButton: {
@@ -35,7 +37,7 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-const SettingsChartsTab = props => {
+const SettingsChartsTab = () => {
   const [value, setValue] = useState(null);
   const { settings, dispatch } = useContext(SettingsContext);
   const snackbarContext = useContext(SnackbarContext);
