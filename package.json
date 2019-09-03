@@ -25,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-sw": "workbox injectManifest workbox-config.js",
+    "run-build-with-sw": "react-scripts build && workbox injectManifest workbox-config.js && serve -s build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -7,13 +7,8 @@ self.addEventListener(
   "notificationclick",
   e => {
     const channel = new BroadcastChannel("service-worker-channel");
-    if (e.action === "interrupt") {
-      channel.postMessage("interrupt");
-    } else if (e.action === "new") {
-      channel.postMessage("new");
-    } else {
-      clients.openWindow("/");
-    }
+    if (e.action === "new") channel.postMessage("new");
+    if (e.action === "interrupt") channel.postMessage("interrupt");
     channel.close();
   },
   false
