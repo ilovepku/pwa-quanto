@@ -1,6 +1,11 @@
 // react
 import React, { useState, useContext, useEffect } from "react";
 import { HistoryContext } from "../contexts/historyContext";
+import {
+  DISPLAY_NOTIFICATION,
+  ADD_ACTIVITY,
+  INTERRUPT_ACTIVITY
+} from "../reducers/constants.js";
 
 // material ui
 import {
@@ -58,7 +63,7 @@ const CurrentActivityCard = props => {
       setLastHistoryItemElapsed(
         duration2HHMM(Math.floor((new Date() - new Date(datetime)) / 1000 / 60))
       );
-      dispatch({ type: "DISPLAY_NOTIFICATION" });
+      dispatch({ type: DISPLAY_NOTIFICATION });
     }
     function loopingUpdateElapsedAndDisplayNotifcation(datetime) {
       // update toolbar elpased and display notification once
@@ -93,13 +98,13 @@ const CurrentActivityCard = props => {
         <div className={classes.controls}>
           <IconButton
             aria-label="Add"
-            onClick={() => dispatch({ type: "ADD_ACTIVITY" })}
+            onClick={() => dispatch({ type: ADD_ACTIVITY })}
           >
             <AddIcon className={classes.addIcon} />
           </IconButton>
           <IconButton
             aria-label="Interrupt"
-            onClick={() => dispatch({ type: "INTERRUPT_ACTIVITY" })}
+            onClick={() => dispatch({ type: INTERRUPT_ACTIVITY })}
           >
             {lastHistoryItem.activity === "Interruption" ? (
               // if current activity is interruption, show play button; else show pause button

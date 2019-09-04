@@ -2,6 +2,7 @@
 import React, { useState, useContext } from "react";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import { PURGE_HISTORY, OPEN_SNACKBAR } from "../reducers/constants.js";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -42,10 +43,10 @@ const SettingsPurgeHistoryDialog = props => {
         <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button
           onClick={() => {
-            dispatch({ type: "PURGE_HISTORY", payload: date });
+            dispatch({ type: PURGE_HISTORY, payload: date });
             handleCloseDialog();
             snackbarContext.dispatch({
-              type: "OPEN_SNACKBAR",
+              type: OPEN_SNACKBAR,
               payload: {
                 msg: "Successfully purged.",
                 variant: "success"

@@ -2,6 +2,11 @@
 import React, { useState, useContext, useRef } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import {
+  EDIT_ACTIVITY_NAME,
+  EDIT_DETAIL_NAME,
+  OPEN_SNACKBAR
+} from "../reducers/constants.js";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -43,7 +48,7 @@ const CategoriesInput = props => {
     } else {
       if (!category) {
         snackbarContext.dispatch({
-          type: "OPEN_SNACKBAR",
+          type: OPEN_SNACKBAR,
           payload: { msg: "Name cannot be empty.", variant: "error" }
         });
         setCategory(item.name);
@@ -54,7 +59,7 @@ const CategoriesInput = props => {
         category === "Unsorted"
       ) {
         snackbarContext.dispatch({
-          type: "OPEN_SNACKBAR",
+          type: OPEN_SNACKBAR,
           payload: { msg: "This name is reserved.", variant: "error" }
         });
         setCategory(item.name);
@@ -64,20 +69,20 @@ const CategoriesInput = props => {
         if (item.detailIds) {
           // is activity
           dispatch({
-            type: "EDIT_ACTIVITY_NAME",
+            type: EDIT_ACTIVITY_NAME,
             payload: {
               activityId: item.id,
               name: category
             }
           });
           snackbarContext.dispatch({
-            type: "OPEN_SNACKBAR",
+            type: OPEN_SNACKBAR,
             payload: { msg: "Activity name edited.", variant: "success" }
           });
         } else {
           // is detail
           dispatch({
-            type: "EDIT_DETAIL_NAME",
+            type: EDIT_DETAIL_NAME,
             payload: {
               activityId: activityId,
               detailId: item.id,
@@ -85,7 +90,7 @@ const CategoriesInput = props => {
             }
           });
           snackbarContext.dispatch({
-            type: "OPEN_SNACKBAR",
+            type: OPEN_SNACKBAR,
             payload: { msg: "Detail name edited.", variant: "success" }
           });
         }

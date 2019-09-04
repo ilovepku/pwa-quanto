@@ -1,6 +1,7 @@
 // react
 import React, { Fragment, useState, useContext } from "react";
 import { HistoryContext } from "../contexts/historyContext";
+import { DISPLAY_NOTIFICATION } from "../reducers/constants.js";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -36,7 +37,7 @@ const SettingsGeneralTab = () => {
   const handlePermissionRequestClick = () => {
     Notification.requestPermission(result => {
       if (result === "granted") {
-        dispatch({ TYPE: "DISPLAY_NOTIFICATION" });
+        dispatch({ TYPE: DISPLAY_NOTIFICATION });
         setDisabled(true);
       }
     });

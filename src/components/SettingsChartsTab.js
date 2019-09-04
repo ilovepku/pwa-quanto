@@ -2,6 +2,14 @@
 import React, { Fragment, useContext, useState, useRef } from "react";
 import { SettingsContext } from "../contexts/settingsContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import {
+  CHARTS_FILTER_SWITCH,
+  CHARTS_FILTER_SET,
+  CHARTS_EXCLUDE_SWITCH,
+  ADD_CHARTS_EXCLUDE_KEY,
+  DEL_CHARTS_EXCLUDE_KEY,
+  OPEN_SNACKBAR
+} from "../reducers/constants.js";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -46,7 +54,7 @@ const SettingsChartsTab = () => {
     e.preventDefault();
     if (!value) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Keyword is empty.",
           variant: "error"
@@ -54,14 +62,14 @@ const SettingsChartsTab = () => {
       });
     } else if (settings.chartsExcludeList.includes(value)) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Keyword already exists.",
           variant: "error"
         }
       });
     } else {
-      dispatch({ type: "ADD_CHARTS_EXCLUDE_KEY", payload: value });
+      dispatch({ type: ADD_CHARTS_EXCLUDE_KEY, payload: value });
       formRef.current.reset(); // manually reset form
     }
   };
@@ -77,14 +85,14 @@ const SettingsChartsTab = () => {
                   onChange={() => {
                     if (settings.chartsFilterStart > settings.chartsFilterEnd) {
                       snackbarContext.dispatch({
-                        type: "OPEN_SNACKBAR",
+                        type: OPEN_SNACKBAR,
                         payload: {
                           msg: "End date earlier than start date.",
                           variant: "error"
                         }
                       });
                     } else {
-                      dispatch({ type: "CHARTS_FILTER_SWITCH" });
+                      dispatch({ type: CHARTS_FILTER_SWITCH });
                     }
                   }}
                   value="chartsFilterSwitch"
@@ -102,7 +110,7 @@ const SettingsChartsTab = () => {
                 value={new Date(settings.chartsFilterStart)}
                 onChange={date =>
                   dispatch({
-                    type: "CHARTS_FILTER_SET",
+                    type: CHARTS_FILTER_SET,
                     payload: {
                       type: "chartsFilterStart",
                       date: date.setHours(0, 0, 0, 0)
@@ -119,7 +127,7 @@ const SettingsChartsTab = () => {
                 value={new Date(settings.chartsFilterEnd)}
                 onChange={date =>
                   dispatch({
-                    type: "CHARTS_FILTER_SET",
+                    type: CHARTS_FILTER_SET,
                     payload: {
                       type: "chartsFilterEnd",
                       date: date.setHours(23, 59, 59, 999)
@@ -141,7 +149,7 @@ const SettingsChartsTab = () => {
                 <Switch
                   checked={settings.chartsExclude}
                   onChange={() => {
-                    dispatch({ type: "CHARTS_EXCLUDE_SWITCH" });
+                    dispatch({ type: CHARTS_EXCLUDE_SWITCH });
                   }}
                   value="chartsExcludeSwitch"
                   color="primary"
@@ -171,7 +179,7 @@ const SettingsChartsTab = () => {
                         label={item}
                         onDelete={() =>
                           dispatch({
-                            type: "DEL_CHARTS_EXCLUDE_KEY",
+                            type: DEL_CHARTS_EXCLUDE_KEY,
                             payload: index
                           })
                         }

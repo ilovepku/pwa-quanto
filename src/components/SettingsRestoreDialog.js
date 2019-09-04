@@ -4,6 +4,12 @@ import { SettingsContext } from "../contexts/settingsContext";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import {
+  RESTORE_HISTORY,
+  RESTORE_CATEGORIES,
+  OPEN_SNACKBAR,
+  RESTORE_SETTINGS
+} from "../reducers/constants.js";
 
 // libs
 import firebase from "../global/firebase";
@@ -38,19 +44,19 @@ const SettingsRestoreDialog = props => {
 
   const handleRestoreClick = () => {
     historyContext.dispatch({
-      type: "RESTORE_HISTORY",
+      type: RESTORE_HISTORY,
       payload: backup.history
     });
     categoriesContext.dispatch({
-      type: "RESTORE_CATEGORIES",
+      type: RESTORE_CATEGORIES,
       payload: backup.categories
     });
     settingsContext.dispatch({
-      type: "RESTORE_SETTINGS",
+      type: RESTORE_SETTINGS,
       payload: backup.settings
     });
     snackbarContext.dispatch({
-      type: "OPEN_SNACKBAR",
+      type: OPEN_SNACKBAR,
       payload: {
         msg: "Successfully restored.",
         variant: "success"

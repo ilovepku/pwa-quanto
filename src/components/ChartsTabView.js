@@ -2,6 +2,10 @@
 import React, { Fragment, useState, useContext } from "react";
 import { HistoryContext } from "../contexts/historyContext";
 import { SettingsContext } from "../contexts/settingsContext";
+import {
+  PREV_CHARTS_FILTER,
+  NEXT_CHARTS_FILTER
+} from "../reducers/constants.js";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -217,7 +221,7 @@ const ChartsTabView = props => {
           <Fab
             aria-label="Previous"
             size="small"
-            onClick={() => dispatch({ type: "PREV_CHARTS_FILTER" })}
+            onClick={() => dispatch({ type: PREV_CHARTS_FILTER })}
           >
             <SkipPreviousIcon />
           </Fab>
@@ -225,7 +229,7 @@ const ChartsTabView = props => {
           <Fab
             aria-label="Next"
             size="small"
-            onClick={() => dispatch({ type: "NEXT_CHARTS_FILTER" })}
+            onClick={() => dispatch({ type: NEXT_CHARTS_FILTER })}
           >
             <SkipNextIcon />
           </Fab>

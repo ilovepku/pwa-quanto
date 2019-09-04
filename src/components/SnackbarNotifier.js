@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import { CLOSE_SNACKBAR } from "../reducers/constants.js";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -58,7 +59,7 @@ const SnackbarNotifier = () => {
     if (reason === "clickaway") {
       return;
     }
-    dispatch({ type: "CLOSE_SNACKBAR" });
+    dispatch({ type: CLOSE_SNACKBAR });
   };
 
   return (

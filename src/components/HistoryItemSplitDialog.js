@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import { SPLIT_ACTIVITY, OPEN_SNACKBAR } from "../reducers/constants.js";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -39,17 +40,17 @@ const HistoryItemSplitDialog = props => {
       splitDatetime < datetime // split time cannot be earlier than current entry's start time
     ) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Split time must be between 'Start' and 'End'.",
           variant: "error"
         }
       });
     } else {
-      dispatch({ type: "SPLIT_ACTIVITY", payload: { splitDatetime, index } });
+      dispatch({ type: SPLIT_ACTIVITY, payload: { splitDatetime, index } });
       handleCloseDialog();
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Activity splitted.",
           variant: "success"

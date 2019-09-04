@@ -2,6 +2,11 @@
 import React, { useState, useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import {
+  DELETE_ACTIVITY_NAME,
+  DELETE_DETAIL_NAME,
+  OPEN_SNACKBAR
+} from "../reducers/constants.js";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -87,11 +92,11 @@ const CategoriesNestedLists = props => {
                     <DeleteIcon
                       onClick={() => {
                         dispatch({
-                          type: "DELETE_ACTIVITY_NAME",
+                          type: DELETE_ACTIVITY_NAME,
                           payload: activity.id
                         });
                         snackbarContext.dispatch({
-                          type: "OPEN_SNACKBAR",
+                          type: OPEN_SNACKBAR,
                           payload: {
                             msg: "Activity name removed.",
                             variant: "success"
@@ -145,14 +150,14 @@ const CategoriesNestedLists = props => {
                                 <DeleteIcon
                                   onClick={() => {
                                     dispatch({
-                                      type: "DELETE_DETAIL_NAME",
+                                      type: DELETE_DETAIL_NAME,
                                       payload: {
                                         activityId: activity.id,
                                         detailId: detail.id
                                       }
                                     });
                                     snackbarContext.dispatch({
-                                      type: "OPEN_SNACKBAR",
+                                      type: OPEN_SNACKBAR,
                                       payload: {
                                         msg: "Detail name removed.",
                                         variant: "success"

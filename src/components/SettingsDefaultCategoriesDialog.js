@@ -2,6 +2,7 @@
 import React, { useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import { DEFAULT_CATEGORIES, OPEN_SNACKBAR } from "../reducers/constants.js";
 
 // material ui
 import Button from "@material-ui/core/Button";
@@ -26,10 +27,10 @@ const SettingsDefaultCategoriesDialog = props => {
         <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button
           onClick={() => {
-            dispatch({ type: "DEFAULT_CATEGORIES" });
+            dispatch({ type: DEFAULT_CATEGORIES });
             handleCloseDialog();
             snackbarContext.dispatch({
-              type: "OPEN_SNACKBAR",
+              type: OPEN_SNACKBAR,
               payload: {
                 msg: "Successfully reset.",
                 variant: "success"

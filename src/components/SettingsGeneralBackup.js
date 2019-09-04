@@ -4,6 +4,7 @@ import { SettingsContext } from "../contexts/settingsContext";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import { OPEN_SNACKBAR } from "../reducers/constants.js";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -55,13 +56,13 @@ const SettingsGeneralBackup = props => {
         })
         .then(() => {
           dispatch({
-            type: "OPEN_SNACKBAR",
+            type: OPEN_SNACKBAR,
             payload: { msg: "Backup complete.", variant: "success" }
           });
         })
         .catch(() => {
           dispatch({
-            type: "OPEN_SNACKBAR",
+            type: OPEN_SNACKBAR,
             payload: { msg: "Backup error, try again later.", variant: "error" }
           });
         });

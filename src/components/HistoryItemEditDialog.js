@@ -3,6 +3,11 @@ import React, { useContext, useState } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
+import {
+  SAVE_ACTIVITY,
+  OPEN_SNACKBAR,
+  DELETE_ACTIVITY
+} from "../reducers/constants.js";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -67,7 +72,7 @@ const HistoryItemEditDialog = props => {
     if (lastItemDatetime && datetime < lastItemDatetime) {
       // new time cannot be earlier than previou entry's start time
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Start time before last activity.",
           variant: "error"
@@ -78,7 +83,7 @@ const HistoryItemEditDialog = props => {
       datetime > nextItemDatetime // new time cannot be later than next entry's start time
     ) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Start time after end time.",
           variant: "error"
@@ -87,7 +92,7 @@ const HistoryItemEditDialog = props => {
     } else if (!nextItemDatetime && datetime > new Date()) {
       // new start time is in the future
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Start time in the future.",
           variant: "error"
@@ -99,7 +104,7 @@ const HistoryItemEditDialog = props => {
       // new end time cannot be earlier than start time of next next item
     ) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "End time after next activity.",
           variant: "error"
@@ -111,7 +116,7 @@ const HistoryItemEditDialog = props => {
       // new end time cannot be in the future
     ) {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "End time in the future.",
           variant: "error"
@@ -119,7 +124,7 @@ const HistoryItemEditDialog = props => {
       });
     } else {
       dispatch({
-        type: "SAVE_ACTIVITY",
+        type: SAVE_ACTIVITY,
         payload: {
           datetime,
           nextItemDatetime,
@@ -131,7 +136,7 @@ const HistoryItemEditDialog = props => {
 
       handleCloseDialog();
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Activity saved.",
           variant: "success"
@@ -145,7 +150,7 @@ const HistoryItemEditDialog = props => {
     if (!lastItemDatetime && !nextItemDatetime) {
       // if is last entry
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "A new activity has been started.",
           variant: "warning"
@@ -153,14 +158,14 @@ const HistoryItemEditDialog = props => {
       });
     } else {
       snackbarContext.dispatch({
-        type: "OPEN_SNACKBAR",
+        type: OPEN_SNACKBAR,
         payload: {
           msg: "Activity deleted.",
           variant: "success"
         }
       });
     }
-    dispatch({ type: "DELETE_ACTIVITY", payload: index });
+    dispatch({ type: DELETE_ACTIVITY, payload: index });
     handleCloseDialog();
   };
 

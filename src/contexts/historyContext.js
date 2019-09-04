@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
 import { historyReducer } from "../reducers/historyReducer";
+import { ADD_ACTIVITY, INTERRUPT_ACTIVITY } from "../reducers/constants.js";
 
 export const HistoryContext = createContext();
 
@@ -25,8 +26,8 @@ const HistoryContextProvider = props => {
   useEffect(() => {
     const channel = new BroadcastChannel("service-worker-channel");
     channel.onmessage = msg => {
-      if (msg.data === "new") dispatch({ type: "ADD_ACTIVITY" });
-      if (msg.data === "interrupt") dispatch({ type: "INTERRUPT_ACTIVITY" });
+      if (msg.data === "new") dispatch({ type: ADD_ACTIVITY });
+      if (msg.data === "interrupt") dispatch({ type: INTERRUPT_ACTIVITY });
     };
     return channel.close;
   }, [dispatch]);

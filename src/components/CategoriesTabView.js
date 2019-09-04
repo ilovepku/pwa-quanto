@@ -1,6 +1,7 @@
 // react
 import React, { useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
+import { REORDER_CATEGORIES } from "../reducers/constants.js";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -31,7 +32,7 @@ function CategoriesTabView(props) {
   const { classes } = props;
   return (
     <DragDropContext
-      onDragEnd={payload => dispatch({ type: "REORDER_CATEGORIES", payload })}
+      onDragEnd={payload => dispatch({ type: REORDER_CATEGORIES, payload })}
     >
       <Droppable
         droppableId="all-activities"
