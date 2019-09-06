@@ -1,7 +1,7 @@
 // react
 import React, { useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
-import { REORDER_CATEGORIES } from "../reducers/constants.js";
+import { REORDER_CATEGORIES } from "../contexts/constants";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";
@@ -14,8 +14,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 // components
-import CategoriesNestedLists from "./CategoriesNestedLists";
-import CategoriesInput from "./CategoriesInput";
+import CategoriesNestedLists from "../components/CategoriesNestedLists";
+import CategoriesInput from "../components/CategoriesInput";
 
 const styles = () => ({
   view: {

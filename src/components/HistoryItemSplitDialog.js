@@ -2,7 +2,7 @@
 import React, { useContext, useState } from "react";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
-import { SPLIT_ACTIVITY, OPEN_SNACKBAR } from "../reducers/constants.js";
+import { SPLIT_ACTIVITY, OPEN_SNACKBAR } from "../contexts/constants";
 
 // material ui
 import Button from "@material-ui/core/Button";

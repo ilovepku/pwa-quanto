@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
-import { DEFAULT_CATEGORIES, OPEN_SNACKBAR } from "../reducers/constants.js";
+import { DEFAULT_CATEGORIES, OPEN_SNACKBAR } from "../contexts/constants";
 
 // material ui
 import Button from "@material-ui/core/Button";

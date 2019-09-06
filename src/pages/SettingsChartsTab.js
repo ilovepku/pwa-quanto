@@ -9,7 +9,7 @@ import {
   ADD_CHARTS_EXCLUDE_KEY,
   DEL_CHARTS_EXCLUDE_KEY,
   OPEN_SNACKBAR
-} from "../reducers/constants.js";
+} from "../contexts/constants";
 
 // material ui
 import Card from "@material-ui/core/Card";

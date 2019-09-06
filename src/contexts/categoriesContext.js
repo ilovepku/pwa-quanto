@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect } from "react";
-import { categoriesReducer } from "../reducers/categoriesReducer";
+import { categoriesReducer } from "./categoriesReducer";
 import initialCategories from "../data/initialCategories";
 
 export const CategoriesContext = createContext();

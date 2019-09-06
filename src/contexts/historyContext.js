@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
-import { historyReducer } from "../reducers/historyReducer";
-import { ADD_ACTIVITY, INTERRUPT_ACTIVITY } from "../reducers/constants.js";
+import { historyReducer } from "./historyReducer";
+import { ADD_ACTIVITY, INTERRUPT_ACTIVITY } from "./constants";
 
 export const HistoryContext = createContext();
 

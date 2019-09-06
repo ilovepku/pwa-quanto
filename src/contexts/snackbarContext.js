@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import { snackbarReducer } from "../reducers/snackbarReducer";
+import { snackbarReducer } from "./snackbarReducer";
 
 export const SnackbarContext = createContext();
 

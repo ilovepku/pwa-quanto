@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SnackbarContext } from "../contexts/snackbarContext";
-import { CLOSE_SNACKBAR } from "../reducers/constants.js";
+import { CLOSE_SNACKBAR } from "../contexts/constants";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";

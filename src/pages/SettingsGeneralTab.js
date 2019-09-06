@@ -1,7 +1,7 @@
 // react
 import React, { Fragment, useState, useContext } from "react";
 import { HistoryContext } from "../contexts/historyContext";
-import { DISPLAY_NOTIFICATION } from "../reducers/constants.js";
+import { DISPLAY_NOTIFICATION } from "../contexts/constants";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -11,10 +11,10 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 // components
-import SettingsPurgeHistoryDialog from "./SettingsPurgeHistoryDialog";
-import SettingsDefaultCategoriesDialog from "./SettingsDefaultCategoriesDialog";
-import SettingsRestoreDialog from "./SettingsRestoreDialog";
-import SettingsGeneralBackup from "./SettingsGeneralBackup";
+import SettingsPurgeHistoryDialog from "../components/SettingsPurgeHistoryDialog";
+import SettingsDefaultCategoriesDialog from "../components/SettingsDefaultCategoriesDialog";
+import SettingsRestoreDialog from "../components/SettingsRestoreDialog";
+import SettingsGeneralBackup from "../components/SettingsGeneralBackup";
 
 const SettingsGeneralTab = () => {
   const { dispatch } = useContext(HistoryContext);

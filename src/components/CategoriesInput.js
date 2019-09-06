@@ -6,7 +6,7 @@ import {
   EDIT_ACTIVITY_NAME,
   EDIT_DETAIL_NAME,
   OPEN_SNACKBAR
-} from "../reducers/constants.js";
+} from "../contexts/constants";
 
 // material ui
 import { withStyles } from "@material-ui/core/styles";

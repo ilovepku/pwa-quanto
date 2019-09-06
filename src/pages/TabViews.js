@@ -6,12 +6,12 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 // components
-import BottomAppBar from "./BottomAppBar";
+import BottomAppBar from "../components/BottomAppBar";
 import HistoryTabView from "./HistoryTabView";
 import ChartsTabView from "./ChartsTabView";
 import CategoriesTabView from "./CategoriesTabView";
 import SettingsTabView from "./SettingsTabView";
-import SnackbarNotifier from "./SnackbarNotifier";
+import SnackbarNotifier from "../components/SnackbarNotifier";
 
 const theme = createMuiTheme({
   overrides: {

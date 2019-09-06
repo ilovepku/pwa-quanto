@@ -5,7 +5,7 @@ import {
   DISPLAY_NOTIFICATION,
   ADD_ACTIVITY,
   INTERRUPT_ACTIVITY
-} from "../reducers/constants.js";
+} from "../contexts/constants";
 
 // material ui
 import {

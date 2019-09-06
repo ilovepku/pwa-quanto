@@ -16,8 +16,8 @@ import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 
 // components
-import HistoryItemEditDialog from "./HistoryItemEditDialog";
-import HistoryItemSplitDialog from "./HistoryItemSplitDialog";
+import HistoryItemEditDialog from "../components/HistoryItemEditDialog";
+import HistoryItemSplitDialog from "../components/HistoryItemSplitDialog";
 
 const styles = () => ({
   autoSizer: {

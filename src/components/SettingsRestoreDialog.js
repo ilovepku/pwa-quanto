@@ -9,7 +9,7 @@ import {
   RESTORE_CATEGORIES,
   OPEN_SNACKBAR,
   RESTORE_SETTINGS
-} from "../reducers/constants.js";
+} from "../contexts/constants";
 
 // libs
 import firebase from "../global/firebase";

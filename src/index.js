@@ -7,7 +7,7 @@ import HistoryContextProvider from "./contexts/historyContext";
 import SnackbarContextProvider from "./contexts/snackbarContext";
 
 // components
-import TabViews from "./components/TabViews";
+import TabViews from "./pages/TabViews";
 
 // styles
 import "./index.css";

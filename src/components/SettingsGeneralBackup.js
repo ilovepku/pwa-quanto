@@ -4,7 +4,7 @@ import { SettingsContext } from "../contexts/settingsContext";
 import { CategoriesContext } from "../contexts/categoriesContext";
 import { HistoryContext } from "../contexts/historyContext";
 import { SnackbarContext } from "../contexts/snackbarContext";
-import { OPEN_SNACKBAR } from "../reducers/constants.js";
+import { OPEN_SNACKBAR } from "../contexts/constants";
 
 // material ui
 import Card from "@material-ui/core/Card";
