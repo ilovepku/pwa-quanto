@@ -12,6 +12,7 @@ import CategoriesTab from "../categories-tab/categories-tab.page";
 import SettingsTab from "../settings-tab/settings-tab.page";
 import BottomBar from "../../components/bottom-bar/bottom-bar.component";
 import SnackbarNotifier from "../../components/snackbar-notifier/snackbar-notifier.component";
+import withContexts from "../../components/with-contexts/with-contexts.hoc";
 
 const theme = createMuiTheme({
   overrides: {
@@ -50,10 +51,9 @@ function TabPanel() {
     <Router>
       <MuiThemeProvider theme={theme}>
         <Route path="/" exact component={HistoryTab} />
+        <Route path="/settings/" component={SettingsTab} />
         <Route path="/charts/" component={ChartsTab} />
         <Route path="/categories/" component={CategoriesTab} />
-        <Route path="/settings/" component={SettingsTab} />
-
         <BottomBar />
         <SnackbarNotifier />
       </MuiThemeProvider>
@@ -61,4 +61,4 @@ function TabPanel() {
   );
 }
 
-export default TabPanel;
+export default withContexts(TabPanel);

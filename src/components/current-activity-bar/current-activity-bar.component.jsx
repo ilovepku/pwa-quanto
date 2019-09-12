@@ -1,7 +1,8 @@
 // react
 import React, { useState, useContext, useEffect } from "react";
-import { HistoryContext } from "../../contexts/history/history.context";
 
+// contexts
+import { HistoryContext } from "../../contexts/history/history.context";
 import {
   addActivity,
   interruptActivity,
@@ -97,7 +98,10 @@ const CurrentActivityBar = props => {
           </Typography>
         </div>
         <div className={classes.controls}>
-          <IconButton aria-label="Add" onClick={() => dispatchHistory(addActivity())}>
+          <IconButton
+            aria-label="Add"
+            onClick={() => dispatchHistory(addActivity())}
+          >
             <AddIcon className={classes.addIcon} />
           </IconButton>
           <IconButton
