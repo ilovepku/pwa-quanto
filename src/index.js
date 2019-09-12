@@ -1,13 +1,15 @@
 // react
 import React from "react";
 import ReactDOM from "react-dom";
-import SettingsContextProvider from "./contexts/settingsContext";
-import CategoriesContextProvider from "./contexts/categoriesContext";
-import HistoryContextProvider from "./contexts/historyContext";
-import SnackbarContextProvider from "./contexts/snackbarContext";
+
+// contexts
+import HistoryContextProvider from "./contexts/history/history.context";
+import CategoriesContextProvider from "./contexts/categories/categories.context";
+import SettingsContextProvider from "./contexts/settings/settings.context";
+import SnackbarContextProvider from "./contexts/snackbar/snackbar.context";
 
 // components
-import TabViews from "./pages/TabViews";
+import TabPanel from "./pages/tab-panel/tab-panel.page";
 
 // styles
 import "./index.css";
@@ -17,7 +19,7 @@ ReactDOM.render(
     <CategoriesContextProvider>
       <HistoryContextProvider>
         <SnackbarContextProvider>
-          <TabViews />
+          <TabPanel />
         </SnackbarContextProvider>
       </HistoryContextProvider>
     </CategoriesContextProvider>
