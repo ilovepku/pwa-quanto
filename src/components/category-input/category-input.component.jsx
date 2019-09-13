@@ -33,17 +33,15 @@ const getEditIconStyle = (value, name) => ({
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
-const CategoryInput = props => {
-  const { classes, item } = props;
+const CategoryInput = ({ classes, item, activityId }) => {
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
-  const [category, setCategory] = useState(props.item.name);
+  const [category, setCategory] = useState(item.name);
   const inputRef = useRef(null);
   const formRef = useRef(null);
 
   const handleSubmit = e => {
     e.preventDefault();
-    const { item, activityId } = props;
     if (category === item.name) {
       // focus on text field if no changes have been made (reack hooks solution)
       inputRef.current.focus();

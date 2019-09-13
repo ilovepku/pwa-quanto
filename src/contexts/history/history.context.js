@@ -13,7 +13,7 @@ const initialHistory = [
   }
 ];
 
-const HistoryContextProvider = props => {
+const HistoryContextProvider = ({ children }) => {
   const [history, dispatchHistory] = useReducer(historyReducer, [], () => {
     const localData = localStorage.getItem("history");
     return localData ? JSON.parse(localData) : initialHistory;
@@ -34,7 +34,7 @@ const HistoryContextProvider = props => {
 
   return (
     <HistoryContext.Provider value={{ history, dispatchHistory }}>
-      {props.children}
+      {children}
     </HistoryContext.Provider>
   );
 };

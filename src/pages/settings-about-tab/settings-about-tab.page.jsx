@@ -37,8 +37,7 @@ const styles = theme => ({
   }
 });
 
-function SettingsAboutTab(props) {
-  const { classes } = props;
+function SettingsAboutTab({ classes }) {
   return (
     <Card>
       <MuiThemeProvider theme={theme}>

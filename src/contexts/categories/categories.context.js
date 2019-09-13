@@ -4,7 +4,7 @@ import initialCategories from "../../data/initialCategories";
 
 export const CategoriesContext = createContext();
 
-const CategoriesContextProvider = props => {
+const CategoriesContextProvider = ({ children }) => {
   const [categories, dispatchCategories] = useReducer(
     categoriesReducer,
     [],
@@ -18,7 +18,7 @@ const CategoriesContextProvider = props => {
   }, [categories]);
   return (
     <CategoriesContext.Provider value={{ categories, dispatchCategories }}>
-      {props.children}
+      {children}
     </CategoriesContext.Provider>
   );
 };

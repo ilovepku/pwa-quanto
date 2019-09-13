@@ -18,8 +18,7 @@ import { DatePicker } from "@material-ui/pickers";
 // libs
 import DateFnsUtils from "@date-io/date-fns";
 
-const SettingsPurgeHistoryDialog = props => {
-  const { handleCloseDialog } = props;
+const SettingsPurgeHistoryDialog = ({ handleCloseDialog }) => {
   const [date, setDate] = useState(new Date());
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);

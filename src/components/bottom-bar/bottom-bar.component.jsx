@@ -26,11 +26,7 @@ const styles = () => ({
   }
 });
 
-function BottomBar(props) {
-  const {
-    classes,
-    location: { pathname }
-  } = props;
+function BottomBar({ classes, location: { pathname } }) {
   return (
     <AppBar className={classes.appBar}>
       <CurrentActivityBar />

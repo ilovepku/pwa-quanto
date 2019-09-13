@@ -9,12 +9,15 @@ const initialSnackbar = {
   variant: "success"
 };
 
-const SnackbarContextProvider = props => {
-  const [snackbar, dispatchSnackbar] = useReducer(snackbarReducer, initialSnackbar);
+const SnackbarContextProvider = ({ children }) => {
+  const [snackbar, dispatchSnackbar] = useReducer(
+    snackbarReducer,
+    initialSnackbar
+  );
 
   return (
     <SnackbarContext.Provider value={{ snackbar, dispatchSnackbar }}>
-      {props.children}
+      {children}
     </SnackbarContext.Provider>
   );
 };

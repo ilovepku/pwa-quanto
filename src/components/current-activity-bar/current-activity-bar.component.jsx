@@ -57,7 +57,7 @@ const styles = () => ({
   }
 });
 
-const CurrentActivityBar = props => {
+const CurrentActivityBar = ({ classes }) => {
   const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState(0);
   const { history, dispatchHistory } = useContext(HistoryContext);
   useEffect(() => {
@@ -84,7 +84,6 @@ const CurrentActivityBar = props => {
       clearInterval(intervalID);
     };
   }, [history, dispatchHistory]); // "history" to run effect on history change, "dispatch" to supress missing dependency warning
-  const { classes } = props;
   const lastHistoryItem = history[0];
   return (
     <MuiThemeProvider theme={theme}>

@@ -20,7 +20,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 // utils
 import firebase from "../../utils/firebase.utils";
 
-const SettingsRestoreDialog = props => {
+const SettingsRestoreDialog = ({ handleCloseDialog }) => {
   const [backup, setBackup] = useState(null);
   const { dispatchSettings } = useContext(SettingsContext);
   const { dispatchCategories } = useContext(CategoriesContext);
@@ -38,8 +38,6 @@ const SettingsRestoreDialog = props => {
         }
       });
   }, []); // [] to run effect only once
-
-  const { handleCloseDialog } = props;
 
   const handleRestoreClick = () => {
     dispatchHistory(restoreHistory(backup.history));

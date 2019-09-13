@@ -31,7 +31,7 @@ const styles = () => ({
   }
 });
 
-const HistoryTab = props => {
+const HistoryTab = ({ classes }) => {
   const { history } = useContext(HistoryContext);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [splitDialogOpen, setSplitDialogOpen] = useState(false);
@@ -40,8 +40,6 @@ const HistoryTab = props => {
   const [lastItemDatetime, setLastItemDatetime] = useState(null);
   const [nextItemDatetime, setNextItemDatetime] = useState(null);
   const [nextNextItemDatetime, setNextNextItemDatetime] = useState(null);
-
-  const { classes } = props;
 
   const handleOpenEditDialog = (
     item,
@@ -135,7 +133,7 @@ const HistoryTab = props => {
           item={item}
           index={index}
           lastItemDatetime={lastItemDatetime}
-          nextItemDatetime={nextItemDatetime}
+          nextItemDatetimeProp={nextItemDatetime}
           nextNextItemDatetime={nextNextItemDatetime}
           handleCloseDialog={handleCloseDialog}
         />
@@ -143,7 +141,7 @@ const HistoryTab = props => {
       <Dialog open={splitDialogOpen} onClose={handleCloseDialog}>
         <HistoryItemSplitDialog
           index={index}
-          datetime={item && item.datetime}
+          datetime={item && new Date(item.datetime)}
           nextItemDatetime={nextItemDatetime}
           handleCloseDialog={handleCloseDialog}
         />

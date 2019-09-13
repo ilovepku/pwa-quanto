@@ -37,19 +37,25 @@ const styles = () => ({
   }
 });
 
-const HistoryItemEditDialog = props => {
-  const { classes, handleCloseDialog } = props;
-
+const HistoryItemEditDialog = ({
+  classes,
+  handleCloseDialog,
+  index,
+  item,
+  lastItemDatetime,
+  nextItemDatetimeProp,
+  nextNextItemDatetime
+}) => {
   const { categories } = useContext(CategoriesContext);
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
 
-  const [datetime, setDatetime] = useState(new Date(props.item.datetime));
+  const [datetime, setDatetime] = useState(new Date(item.datetime));
   const [nextItemDatetime, setNextItemDatetime] = useState(
-    props.nextItemDatetime ? new Date(props.nextItemDatetime) : null
+    nextItemDatetimeProp ? new Date(nextItemDatetimeProp) : null
   );
-  const [activity, setActivity] = useState(props.item.activity);
-  const [detail, setDetail] = useState(props.item.detail);
+  const [activity, setActivity] = useState(item.activity);
+  const [detail, setDetail] = useState(item.detail);
 
   // on activity change, load its details and select the first detail
   const handleActivityChange = e => {
@@ -65,12 +71,6 @@ const HistoryItemEditDialog = props => {
   };
 
   const handleActivitySave = () => {
-    const {
-      index,
-      lastItemDatetime,
-      nextNextItemDatetime,
-      handleCloseDialog
-    } = props;
     if (lastItemDatetime && datetime < lastItemDatetime) {
       // new time cannot be earlier than previou entry's start time
       dispatchSnackbar(
@@ -142,7 +142,6 @@ const HistoryItemEditDialog = props => {
   };
 
   const handleActivityDel = () => {
-    const { index, lastItemDatetime, handleCloseDialog } = props;
     if (!lastItemDatetime && !nextItemDatetime) {
       // if is last entry
       dispatchSnackbar(

@@ -29,12 +29,10 @@ const styles = () => ({
   }
 });
 
-const ChartsTab = props => {
+const ChartsTab = ({ classes }) => {
   const { history } = useContext(HistoryContext);
   const { settings, dispatchSettings } = useContext(SettingsContext);
   const [selectedActivity, setSelectedActivity] = useState("");
-
-  const { classes } = props;
 
   // check for chartsFilter switch in settings and filter the history
   const filteredHistory = settings.chartsFilter

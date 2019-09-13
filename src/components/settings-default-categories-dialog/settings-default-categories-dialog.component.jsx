@@ -14,8 +14,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const SettingsDefaultCategoriesDialog = props => {
-  const { handleCloseDialog } = props;
+const SettingsDefaultCategoriesDialog = ({ handleCloseDialog }) => {
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
   return (

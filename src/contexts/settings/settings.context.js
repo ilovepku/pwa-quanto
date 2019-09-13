@@ -11,7 +11,7 @@ const initialSettings = {
   chartsExcludeList: ["Unsorted"]
 };
 
-const SettingsContextProvider = props => {
+const SettingsContextProvider = ({ children }) => {
   const [settings, dispatchSettings] = useReducer(settingsReducer, [], () => {
     const localData = localStorage.getItem("settings");
     return localData ? JSON.parse(localData) : initialSettings;
@@ -21,7 +21,7 @@ const SettingsContextProvider = props => {
   }, [settings]);
   return (
     <SettingsContext.Provider value={{ settings, dispatchSettings }}>
-      {props.children}
+      {children}
     </SettingsContext.Provider>
   );
 };

@@ -25,8 +25,7 @@ const firebaseUiConfig = {
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
 };
 
-const SettingsBackupCard = props => {
-  const { setRestoreDialogOpen } = props;
+const SettingsBackupCard = ({ setRestoreDialogOpen }) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const { settings } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);

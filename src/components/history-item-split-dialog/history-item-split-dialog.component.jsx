@@ -18,16 +18,18 @@ import { DateTimePicker } from "@material-ui/pickers";
 // libs
 import DateFnsUtils from "@date-io/date-fns";
 
-const HistoryItemSplitDialog = props => {
-  const { nextItemDatetime, handleCloseDialog } = props;
-
+const HistoryItemSplitDialog = ({
+  datetime,
+  nextItemDatetime,
+  index,
+  handleCloseDialog
+}) => {
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
 
-  const [datetime] = useState(new Date(props.datetime));
   const [splitDatetime, setSplitDatetime] = useState(
     new Date(
-      (new Date(datetime).getTime() +
+      (datetime.getTime() +
         (nextItemDatetime
           ? nextItemDatetime.getTime()
           : new Date().getTime())) /
@@ -36,7 +38,6 @@ const HistoryItemSplitDialog = props => {
   ); // get mid point between start and end datetime
 
   const handleActivitySplit = () => {
-    const { index } = props;
     if (
       (!nextItemDatetime && splitDatetime > new Date()) || // split time cannot be in the future
       (nextItemDatetime && splitDatetime > nextItemDatetime) || // split time cannot be later than next entry's start time

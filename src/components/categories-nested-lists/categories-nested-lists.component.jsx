@@ -57,8 +57,7 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-const CategoriesNestedLists = props => {
-  const { classes, index, activity, details } = props;
+const CategoriesNestedLists = ({ classes, index, activity, details }) => {
   const [nestedListOpen, setNestedListOpen] = useState(false);
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);

@@ -29,9 +29,8 @@ const styles = () => ({
   }
 });
 
-function CategoriesTab(props) {
+function CategoriesTab({ classes }) {
   const { categories, dispatchCategories } = useContext(CategoriesContext);
-  const { classes } = props;
   return (
     <DragDropContext
       onDragEnd={payload => dispatchCategories(reorderCategories(payload))}
