@@ -11,17 +11,17 @@ import {
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 
-const styles = () => ({
+const useStyles = makeStyles({
   form: {
     display: "flex"
   },
   editIcon: {
-    fill: "#557F2F" //rgb(160,82,45)
+    // fill: "#557F2F" //rgb(160,82,45)
   }
 });
 
@@ -33,7 +33,8 @@ const getEditIconStyle = (value, name) => ({
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
-const CategoryInput = ({ classes, item, activityId }) => {
+const CategoryInput = ({ item, activityId }) => {
+  const classes = useStyles();
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
   const [category, setCategory] = useState(item.name);
@@ -113,15 +114,14 @@ const CategoryInput = ({ classes, item, activityId }) => {
 
       <IconButton
         type="submit"
-        aria-label="Edit"
         // temp workaround to animate this IconButton
         color={getEditIconColor(category, item.name)}
         style={getEditIconStyle(category, item.name)}
       >
-        <CreateIcon classes={{ root: classes.editIcon }} />
+        <CreateIcon className={classes.editIcon} />
       </IconButton>
     </form>
   );
 };
 
-export default withStyles(styles)(CategoryInput);
+export default CategoryInput;

@@ -4,19 +4,16 @@ import React, { useState, useContext, useEffect } from "react";
 // contexts
 import { HistoryContext } from "../../contexts/history/history.context";
 import {
-  addActivity,
-  interruptActivity,
+  newActivity,
+  pauseActivity,
   displayNotification
 } from "../../contexts/history/history.actions";
 
 // material ui
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
 import PauseIcon from "@material-ui/icons/Pause";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -24,100 +21,83 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 // utils
 import { duration2HHMM } from "../../utils/duration2HHMM.utils";
 
-const theme = createMuiTheme({
-  overrides: {
-    MuiSvgIcon: {
-      root: {
-        fill: "#f8f8fa"
-      },
-      colorSecondary: {
-        fill: "#BB4D4C"
-      }
-    }
-  }
-});
-
-const styles = () => ({
+const useStyles = makeStyles({
   card: {
-    display: "flex"
+    display: "flex",
+    background:
+      "linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 90%) #7a7a7a",
+    backgroundBlendMode: "multiply,multiply"
   },
   content: {
-    flex: "1 0 auto",
-    padding: "0px 10px 0px 10px"
+    flex: "1",
+    paddingLeft: "10px"
   },
   controls: {
-    display: "flex"
+    "& svg": {
+      fill: "#f8f8fa"
+    }
   },
   addIcon: {
     height: 38,
     width: 38,
-    background: "linear-gradient(315deg, #CFB53B 0%, #C19A6B 74%)",
-    borderRadius: "50%",
-    boxShadow: "0 0 10px #AFAFAF"
+    background: "linear-gradient(315deg, #cfb53b 0%, #c19a6b 74%)",
+    boxShadow: "0 0 10px #afafaf",
+    borderRadius: "50%"
   }
 });
 
-const CurrentActivityBar = ({ classes }) => {
-  const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState(0);
+const CurrentActivityBar = () => {
+  const classes = useStyles();
   const { history, dispatchHistory } = useContext(HistoryContext);
+  const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState(0);
+  const lastHistoryItem = history[0];
+
   useEffect(() => {
-    function updateElapsedAndDisplayNotifcation(datetime) {
-      setLastHistoryItemElapsed(
-        duration2HHMM(Math.floor((new Date() - new Date(datetime)) / 1000 / 60))
+    const updateElapsedAndDisplayNotifcation = datetime => {
+      const duration = duration2HHMM(
+        Math.floor((new Date() - new Date(datetime)) / 1000 / 60)
       );
-      dispatchHistory(displayNotification());
-    }
-    function loopingUpdateElapsedAndDisplayNotifcation(datetime) {
-      // update toolbar elpased and display notification once
-      updateElapsedAndDisplayNotifcation(datetime);
-      // clearInterval and set new Interval to update toolbar elapsed and display notifcation every minute
-      clearInterval(intervalID);
-      intervalID = setInterval(() => {
-        updateElapsedAndDisplayNotifcation(datetime);
-      }, 1000 * 60);
-    }
-    let intervalID;
-    loopingUpdateElapsedAndDisplayNotifcation(
-      history[0].datetime // last history item start datetime
-    );
+      setLastHistoryItemElapsed(duration);
+      dispatchHistory(displayNotification(duration));
+    };
+
+    // update elpased and display notification once
+    updateElapsedAndDisplayNotifcation(lastHistoryItem.datetime);
+    // update elapsed and display notifcation every minute
+    const intervalID = setInterval(() => {
+      updateElapsedAndDisplayNotifcation(lastHistoryItem.datetime);
+    }, 1000 * 60);
+
     return () => {
       clearInterval(intervalID);
     };
-  }, [history, dispatchHistory]); // "history" to run effect on history change, "dispatch" to supress missing dependency warning
-  const lastHistoryItem = history[0];
+  }, [lastHistoryItem.datetime, dispatchHistory]);
+
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.card}>
-        <div className={classes.content}>
-          <Typography variant="h6" color="inherit">
-            {`Elapsed: ${lastHistoryItemElapsed}`}
-          </Typography>
-          <Typography variant="subtitle1" color="inherit">
-            {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
-          </Typography>
-        </div>
-        <div className={classes.controls}>
-          <IconButton
-            aria-label="Add"
-            onClick={() => dispatchHistory(addActivity())}
-          >
-            <AddIcon className={classes.addIcon} />
-          </IconButton>
-          <IconButton
-            aria-label="Interrupt"
-            onClick={() => dispatchHistory(interruptActivity())}
-          >
-            {lastHistoryItem.activity === "Interruption" ? (
-              // if current activity is interruption, show play button; else show pause button
-              <PlayArrowIcon color="secondary" />
-            ) : (
-              <PauseIcon />
-            )}
-          </IconButton>
-        </div>
-      </div>
-    </MuiThemeProvider>
+    <Box className={classes.card}>
+      <Box className={classes.content}>
+        <Typography variant="h6">
+          {`Elapsed: ${lastHistoryItemElapsed}`}
+        </Typography>
+        <Typography variant="subtitle1">
+          {`${lastHistoryItem.activity}: ${lastHistoryItem.detail}`}
+        </Typography>
+      </Box>
+      <Box className={classes.controls}>
+        <IconButton onClick={() => dispatchHistory(newActivity())}>
+          <AddIcon className={classes.addIcon} />
+        </IconButton>
+        <IconButton onClick={() => dispatchHistory(pauseActivity())}>
+          {lastHistoryItem.activity === "Interruption" ? (
+            // if current activity is interruption, show play button; else show pause button
+            <PlayArrowIcon />
+          ) : (
+            <PauseIcon />
+          )}
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 
-export default withStyles(styles)(CurrentActivityBar);
+export default CurrentActivityBar;

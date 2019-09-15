@@ -10,7 +10,8 @@ import {
 } from "../../contexts/settings/settings.actions";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 import Fab from "@material-ui/core/Fab";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
@@ -21,61 +22,75 @@ import { VictoryPie, VictoryLegend } from "victory";
 // utils
 import { duration2HHMM } from "../../utils/duration2HHMM.utils";
 
-const styles = () => ({
+const useStyles = makeStyles({
   fabs: {
     position: "absolute",
-    bottom: 125,
-    right: 10
+    top: 10,
+    right: 10,
+    "& button": {
+      marginLeft: 10
+    }
   }
 });
 
-const ChartsTab = ({ classes }) => {
+const ChartsTab = () => {
+  const classes = useStyles();
   const { history } = useContext(HistoryContext);
   const { settings, dispatchSettings } = useContext(SettingsContext);
   const [selectedActivity, setSelectedActivity] = useState("");
 
-  // check for chartsFilter switch in settings and filter the history
-  const filteredHistory = settings.chartsFilter
+  // generate chartsDateFilterStart-End in MM/DD format for legend title
+  const chartsDateFilterSpan =
+    settings.chartsDateFilter &&
+    `${new Date(settings.chartsDateFilterStart).getMonth() + 1}/${new Date(
+      settings.chartsDateFilterStart
+    ).getDate()}-${new Date(settings.chartsDateFilterEnd).getMonth() +
+      1}/${new Date(settings.chartsDateFilterEnd).getDate()}`;
+
+  // check for chartsDateFilter switch in settings and filter the history
+  const filteredHistory = settings.chartsDateFilter
     ? history.filter(
         item =>
-          new Date(item.datetime).getTime() >= settings.chartsFilterStart &&
-          new Date(item.datetime).getTime() <= settings.chartsFilterEnd
+          new Date(item.datetime) - new Date(settings.chartsDateFilterStart) >=
+            0 &&
+          new Date(item.datetime) - new Date(settings.chartsDateFilterEnd) <= 0
       )
-    : history.slice();
+    : [...history];
 
-  // fix for oldest activty started before settings.chartsFilterStart
+  // fix for first filtered activty started before settings.chartsDateFilterStart
   if (
-    settings.chartsFilter &&
+    settings.chartsDateFilter &&
     filteredHistory.length &&
-    new Date(filteredHistory[filteredHistory.length - 1].datetime).getTime() >
-      settings.chartsFilterStart && // oldest filtered activity started later than chartsFilterStart
-    history.indexOf(filteredHistory[filteredHistory.length - 1]) <
-      history.length - 1 // oldest filtered activity is not the oldest activity in history
+    new Date(filteredHistory[filteredHistory.length - 1].datetime) -
+      new Date(settings.chartsDateFilterStart) >
+      0 // check if first filtered activity started later than chartsDateFilterStart
   ) {
-    filteredHistory.push(
-      Object.assign(
-        {},
-        history[
-          history.indexOf(filteredHistory[filteredHistory.length - 1]) + 1
-        ]
-      ) // copy the object to prevent modifiying history at the same time
+    const firstFilteredHistoryActivityIdxInHistory = history.indexOf(
+      filteredHistory[filteredHistory.length - 1]
     );
-    filteredHistory[filteredHistory.length - 1].datetime = new Date(
-      settings.chartsFilterStart
-    );
+    if (firstFilteredHistoryActivityIdxInHistory < history.length - 1) {
+      // making sure first filtered activity is not first activity in history
+      filteredHistory.push({
+        ...history[firstFilteredHistoryActivityIdxInHistory + 1] // copy object to prevent next operation from changing the original
+      }); // add the previous activity to the filtered array
+      filteredHistory[filteredHistory.length - 1].datetime = new Date(
+        settings.chartsDateFilterStart
+      ); // and make it start at chartsDateFilterStart
+    }
   }
 
   // generate history arr with duration property (calculated from started)
-  let durationHistory = filteredHistory.map((item, index) => {
+  let durationHistory = filteredHistory.map((item, idx) => {
     let nextDatetime =
-      index !== 0 ? new Date(filteredHistory[index - 1].datetime) : new Date();
+      idx !== 0 ? new Date(filteredHistory[idx - 1].datetime) : new Date();
 
-    // check if nextDatetime started after settings.chartsFilterEnd
+    // fix for last filterd activity ending after chartsDateFilterEnd
+    // check if nextDatetime started after settings.chartsDateFilterEnd
     if (
-      settings.chartsFilter &&
-      settings.chartsFilterEnd <= new Date(nextDatetime).getTime()
+      settings.chartsDateFilter &&
+      new Date(settings.chartsDateFilterEnd) - new Date(nextDatetime) <= 0
     ) {
-      nextDatetime = settings.chartsFilterEnd;
+      nextDatetime = new Date(settings.chartsDateFilterEnd);
     }
 
     return {
@@ -86,11 +101,11 @@ const ChartsTab = ({ classes }) => {
   });
 
   // check for chartsExclude switch in settings and filter the durationHistory
-  if (settings.chartsExclude) {
+  if (settings.chartsKeyExclude) {
     durationHistory = durationHistory.filter(
       item =>
-        !settings.chartsExcludeList.includes(item.activity) &&
-        !settings.chartsExcludeList.includes(item.detail)
+        !settings.chartsExcludeKeysList.includes(item.activity) &&
+        !settings.chartsExcludeKeysList.includes(item.detail)
     );
   }
 
@@ -107,7 +122,7 @@ const ChartsTab = ({ classes }) => {
     return b.y - a.y;
   });
 
-  // add name field for VictoryLegend data
+  // add name field for VictoryLegend data, format: "percentage% duration name"
   const dataSum = data.reduce((acc, cur) => acc + cur.y, 0);
   data = data.map(item => {
     item.name = `${
@@ -117,21 +132,13 @@ const ChartsTab = ({ classes }) => {
     return item;
   });
 
-  // generate chartsFilterStart-End in MM/DD format
-  const chartsFilterSpan =
-    settings.chartsFilter &&
-    `${new Date(settings.chartsFilterStart).getMonth() + 1}/${new Date(
-      settings.chartsFilterStart
-    ).getDate()}-${new Date(settings.chartsFilterEnd).getMonth() +
-      1}/${new Date(settings.chartsFilterEnd).getDate()}`;
-
   return (
     <Fragment>
       <VictoryPie
-        padAngle={3}
-        innerRadius={100}
         data={data}
-        labels={() => null}
+        padAngle={1} // separation between adjacent slices in number of degrees
+        innerRadius={75} // distance between chart center and donut chart's inner edge in number of pixels
+        labels={() => null} // no labels
         colorScale={!selectedActivity ? "qualitative" : "heatmap"}
         events={[
           {
@@ -140,7 +147,6 @@ const ChartsTab = ({ classes }) => {
               onClick: () => {
                 return [
                   {
-                    target: "data",
                     mutation: props => {
                       if (!selectedActivity) {
                         setSelectedActivity(props.datum.x);
@@ -157,31 +163,28 @@ const ChartsTab = ({ classes }) => {
       />
 
       <VictoryLegend
-        // add left padding of 50 if legend has less than 2 columns
-        itemsPerRow={5}
-        centerTitle={data.length > 12 ? false : true}
-        borderPadding={{ left: data.length > 12 ? 0 : 50 }}
-        gutter={0}
+        data={data}
+        orientation={"horizontal"}
+        itemsPerRow={3}
+        gutter={0} // number of pixels between legend columns
         title={
           !selectedActivity
             ? `Stats - All Activities ${
-                chartsFilterSpan ? chartsFilterSpan : ""
+                chartsDateFilterSpan ? chartsDateFilterSpan : ""
               } ${duration2HHMM(dataSum)}`
             : `Stats - ${selectedActivity} ${
-                chartsFilterSpan ? chartsFilterSpan : ""
+                chartsDateFilterSpan ? chartsDateFilterSpan : ""
               } ${duration2HHMM(dataSum)}`
         }
-        colorScale={!selectedActivity ? "qualitative" : "heatmap"}
         style={{ title: { fontSize: 20 } }}
-        data={data}
+        colorScale={!selectedActivity ? "qualitative" : "heatmap"}
         events={[
           {
-            target: "data",
+            target: "labels",
             eventHandlers: {
               onClick: () => {
                 return [
                   {
-                    target: "data",
                     mutation: props => {
                       if (!selectedActivity) {
                         setSelectedActivity(props.datum.x);
@@ -193,53 +196,32 @@ const ChartsTab = ({ classes }) => {
                 ];
               }
             }
-          },
-          {
-            target: "labels",
-            eventHandlers: {
-              onClick: () => {
-                return [
-                  {
-                    target: "labels",
-                    mutation: props => {
-                      if (!selectedActivity) {
-                        const nameArr = props.datum.name.split(" ");
-                        setSelectedActivity(nameArr[nameArr.length - 1]);
-                      } else {
-                        setSelectedActivity("");
-                      }
-                    }
-                  }
-                ];
-              }
-            }
           }
         ]}
       />
-      {settings.chartsFilter && (
-        <div className={classes.fabs}>
-          <Fab
-            aria-label="Previous"
-            size="small"
-            onClick={() => dispatchSettings(prevChartsFilter())}
-          >
-            <SkipPreviousIcon />
-          </Fab>
-          {"  "}
-          <Fab
-            aria-label="Next"
-            size="small"
-            onClick={() => dispatchSettings(nextChartsFilter())}
-          >
-            <SkipNextIcon />
-          </Fab>
-        </div>
-      )}
+
+      {/* prev/next filter switches */}
+      <Box className={classes.fabs}>
+        <Fab
+          disabled={!settings.chartsDateFilter}
+          size="small"
+          onClick={() => dispatchSettings(prevChartsFilter())}
+        >
+          <SkipPreviousIcon />
+        </Fab>
+        <Fab
+          disabled={!settings.chartsDateFilter}
+          size="small"
+          onClick={() => dispatchSettings(nextChartsFilter())}
+        >
+          <SkipNextIcon />
+        </Fab>
+      </Box>
     </Fragment>
   );
 };
 
-export default withStyles(styles)(ChartsTab);
+export default ChartsTab;
 
 // custom function to generate data arrs for VictoryPie
 function groupBy(objectArray, property) {

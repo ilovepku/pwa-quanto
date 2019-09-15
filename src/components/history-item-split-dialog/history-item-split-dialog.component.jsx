@@ -101,9 +101,7 @@ const HistoryItemSplitDialog = ({
 
       <DialogActions>
         <Button onClick={handleCloseDialog}>Cancel</Button>
-        <Button onClick={handleActivitySplit} color="primary">
-          Save
-        </Button>
+        <Button onClick={handleActivitySplit}>Save</Button>
       </DialogActions>
     </div>
   );

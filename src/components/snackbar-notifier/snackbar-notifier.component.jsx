@@ -51,8 +51,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SnackbarNotifier = () => {
-  const { snackbar, dispatchSnackbar } = useContext(SnackbarContext);
   const classes = useStyles();
+  const { snackbar, dispatchSnackbar } = useContext(SnackbarContext);
   const Icon = variantIcon[snackbar.variant];
 
   const handleClose = (e, reason) => {
@@ -78,12 +78,7 @@ const SnackbarNotifier = () => {
           </span>
         }
         action={[
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={handleClose}
-          >
+          <IconButton key="close" onClick={handleClose}>
             <CloseIcon className={classes.icon} />
           </IconButton>
         ]}

@@ -8,7 +8,7 @@ self.addEventListener(
   e => {
     const channel = new BroadcastChannel("service-worker-channel");
     if (e.action === "new") channel.postMessage("new");
-    if (e.action === "interrupt") channel.postMessage("interrupt");
+    if (e.action === "pause") channel.postMessage("pause");
     channel.close();
   },
   false

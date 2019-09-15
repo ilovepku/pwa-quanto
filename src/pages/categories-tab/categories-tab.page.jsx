@@ -6,7 +6,7 @@ import { CategoriesContext } from "../../contexts/categories/categories.context"
 import { reorderCategories } from "../../contexts/categories/categories.actions";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -19,17 +19,19 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import CategoriesNestedLists from "../../components/categories-nested-lists/categories-nested-lists.component";
 import CategoryInput from "../../components/category-input/category-input.component";
 
-const styles = () => ({
+const useStyles = makeStyles(theme => ({
   view: {
     paddingBottom: "110px"
   },
-  listItem: {
+  listItem: { // duplicate styles
+    paddingLeft: theme.spacing(1),
     paddingTop: 0,
     paddingBottom: 0
   }
-});
+}));
 
-function CategoriesTab({ classes }) {
+function CategoriesTab() {
+  const classes = useStyles();
   const { categories, dispatchCategories } = useContext(CategoriesContext);
   return (
     <DragDropContext
@@ -82,4 +84,4 @@ function CategoriesTab({ classes }) {
   );
 }
 
-export default withStyles(styles)(CategoriesTab);
+export default CategoriesTab;

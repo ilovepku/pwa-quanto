@@ -1,11 +1,11 @@
 import HistoryActionTypes from "./history.types";
 
-export const addActivity = () => ({
-  type: HistoryActionTypes.ADD_ACTIVITY
+export const newActivity = () => ({
+  type: HistoryActionTypes.NEW_ACTIVITY
 });
 
-export const interruptActivity = () => ({
-  type: HistoryActionTypes.INTERRUPT_ACTIVITY
+export const pauseActivity = () => ({
+  type: HistoryActionTypes.PAUSE_ACTIVITY
 });
 
 export const saveActivity = payload => ({
@@ -23,8 +23,9 @@ export const deleteActivity = payload => ({
   payload
 });
 
-export const displayNotification = () => ({
-  type: HistoryActionTypes.DISPLAY_NOTIFICATION
+export const displayNotification = payload => ({
+  type: HistoryActionTypes.DISPLAY_NOTIFICATION,
+  payload
 });
 
 export const purgeHistory = payload => ({

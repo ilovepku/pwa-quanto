@@ -100,15 +100,8 @@ const SettingsBackupCard = ({ setRestoreDialogOpen }) => {
 
           <CardActions>
             <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
-            <Button onClick={backup} color="primary">
-              Back-up
-            </Button>
-            <Button
-              onClick={() => setRestoreDialogOpen(true)}
-              color="secondary"
-            >
-              Restore
-            </Button>
+            <Button onClick={backup}>Back-up</Button>
+            <Button onClick={() => setRestoreDialogOpen(true)}>Restore</Button>
           </CardActions>
         </Card>
       )}

@@ -1,9 +1,5 @@
 // react
-import React, { Fragment, useState, useContext } from "react";
-
-// contexts
-import { HistoryContext } from "../../contexts/history/history.context";
-import { displayNotification } from "../../contexts/history/history.actions";
+import React, { Fragment, useState } from "react";
 
 // material ui
 import Card from "@material-ui/core/Card";
@@ -19,7 +15,6 @@ import SettingsRestoreDialog from "../../components/settings-restore-dialog/sett
 import SettingsBackupCard from "../../components/settings-backup-card/settings-backup-card.component";
 
 const SettingsGeneralTab = () => {
-  const { dispatchHistory } = useContext(HistoryContext);
   const [purgeDialogOpen, setPurgeDialogOpen] = useState(false);
   const [
     defaultCategoriesDialogOpen,
@@ -39,7 +34,6 @@ const SettingsGeneralTab = () => {
   const handlePermissionRequestClick = () => {
     Notification.requestPermission(result => {
       if (result === "granted") {
-        dispatchHistory(displayNotification());
         setDisabled(true);
       }
     });
@@ -55,7 +49,6 @@ const SettingsGeneralTab = () => {
         <CardActions>
           <Button
             disabled={disabled}
-            color="primary"
             onClick={() => handlePermissionRequestClick()}
           >
             {disabled ? "Notification Enabled" : "Enable Notification"}
@@ -71,7 +64,7 @@ const SettingsGeneralTab = () => {
           (a new activity will be started if all history entries are purged).
         </CardContent>
         <CardActions>
-          <Button color="secondary" onClick={() => setPurgeDialogOpen(true)}>
+          <Button onClick={() => setPurgeDialogOpen(true)}>
             Purge History
           </Button>
         </CardActions>
@@ -80,10 +73,7 @@ const SettingsGeneralTab = () => {
       <Card>
         <CardContent>Restore default categories</CardContent>
         <CardActions>
-          <Button
-            color="secondary"
-            onClick={() => setDefaultCategoriesDialogOpen(true)}
-          >
+          <Button onClick={() => setDefaultCategoriesDialogOpen(true)}>
             DEFAULT CATEGORIES
           </Button>
         </CardActions>

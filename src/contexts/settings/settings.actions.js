@@ -1,24 +1,24 @@
 import SettingsActionTypes from "./settings.types";
 
-export const chartsFilterSwitch = () => ({
-  type: SettingsActionTypes.CHARTS_FILTER_SWITCH
+export const chartsDateFilterSwitch = () => ({
+  type: SettingsActionTypes.CHARTS_DATE_FILTER_SWITCH
 });
 
-export const chartsFilterSet = payload => ({
-  type: SettingsActionTypes.CHARTS_FILTER_SET,
+export const chartsDateFilterSet = payload => ({
+  type: SettingsActionTypes.CHARTS_DATE_FILTER_SET,
   payload
 });
 
 export const prevChartsFilter = () => ({
-  type: SettingsActionTypes.PREV_CHARTS_FILTER
+  type: SettingsActionTypes.PREV_CHARTS_DATE_FILTER
 });
 
 export const nextChartsFilter = () => ({
-  type: SettingsActionTypes.NEXT_CHARTS_FILTER
+  type: SettingsActionTypes.NEXT_CHARTS_DATE_FILTER
 });
 
-export const chartsExcludeSwitch = () => ({
-  type: SettingsActionTypes.CHARTS_EXCLUDE_SWITCH
+export const chartsKeyExcludeSwitch = () => ({
+  type: SettingsActionTypes.CHARTS_KEY_EXCLUDE_SWITCH
 });
 
 export const addChartsExcludeKey = payload => ({

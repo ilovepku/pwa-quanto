@@ -7,7 +7,7 @@ import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -19,19 +19,20 @@ import CallSplitIcon from "@material-ui/icons/CallSplit";
 import HistoryItemEditDialog from "../../components/history-item-edit-dialog/history-item-edit-dialog.component";
 import HistoryItemSplitDialog from "../../components/history-item-split-dialog/history-item-split-dialog.component";
 
-const styles = () => ({
-  autoSizer: {
-    height: "80vh"
+const useStyles = makeStyles({
+  autoSizerContainer: {
+    height: "75vh"
   },
   splitIcon: {
-    fill: "#857541"
+    //fill: "#857541"
   },
   editIcon: {
-    fill: "#557F2F"
+    //fill: "#557F2F"
   }
 });
 
-const HistoryTab = ({ classes }) => {
+const HistoryTab = () => {
+  const classes = useStyles();
   const { history } = useContext(HistoryContext);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [splitDialogOpen, setSplitDialogOpen] = useState(false);
@@ -71,7 +72,6 @@ const HistoryTab = ({ classes }) => {
   const Row = ({ index, style }) => (
     <ListItem style={style} dense divider key={"history-" + index}>
       <ListItemIcon
-        aria-label="Split"
         onClick={() =>
           handleOpenSplitDialog(
             history[index],
@@ -80,7 +80,7 @@ const HistoryTab = ({ classes }) => {
           )
         }
       >
-        <CallSplitIcon classes={{ root: classes.splitIcon }} />
+        <CallSplitIcon className={classes.splitIcon} />
       </ListItemIcon>
 
       <ListItemText
@@ -96,7 +96,6 @@ const HistoryTab = ({ classes }) => {
       />
 
       <ListItemIcon
-        aria-label="Edit"
         onClick={() =>
           handleOpenEditDialog(
             history[index],
@@ -107,14 +106,14 @@ const HistoryTab = ({ classes }) => {
           )
         }
       >
-        <CreateIcon classes={{ root: classes.editIcon }} />
+        <CreateIcon className={classes.editIcon} />
       </ListItemIcon>
     </ListItem>
   );
   return (
     <Fragment>
-      <div className={classes.autoSizer}>
-        <AutoSizer>
+      <div className={classes.autoSizerContainer}>
+        <AutoSizer className={classes.autoSizer}>
           {({ height, width }) => (
             <List
               height={height}
@@ -150,4 +149,4 @@ const HistoryTab = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(HistoryTab);
+export default HistoryTab;

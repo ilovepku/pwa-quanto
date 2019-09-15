@@ -38,7 +38,6 @@ const SettingsDefaultCategoriesDialog = ({ handleCloseDialog }) => {
             );
             handleCloseDialog();
           }}
-          color="secondary"
         >
           Reset
         </Button>

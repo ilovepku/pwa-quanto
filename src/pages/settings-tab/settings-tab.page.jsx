@@ -1,12 +1,8 @@
 // react
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 
 // material ui
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -16,7 +12,7 @@ import SettingsGeneralTab from "../settings-general-tab/settings-general-tab.pag
 import SettingsChartsTab from "../settings-charts-tab/settings-charts-tab.page";
 import SettingsAboutTab from "../settings-about-tab/settings-about-tab.page";
 
-const theme = createMuiTheme({
+/* const theme = createMuiTheme({
   overrides: {
     MuiAppBar: {
       colorPrimary: {
@@ -62,22 +58,23 @@ const theme = createMuiTheme({
       }
     }
   }
-});
+}); */
 
-const styles = () => ({
+const useStyles = makeStyles({
   view: {
     paddingTop: "40px",
     paddingBottom: "110px"
   }
 });
 
-const SettingsTab = ({ classes }) => {
+const SettingsTab = () => {
+  const classes = useStyles();
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabIndexChange = (event, tabIndex) => {
     setTabIndex(tabIndex);
   };
   return (
-    <MuiThemeProvider theme={theme}>
+    <Fragment>
       <AppBar>
         <Tabs value={tabIndex} onChange={handleTabIndexChange} centered>
           <Tab label="General" />
@@ -90,8 +87,8 @@ const SettingsTab = ({ classes }) => {
         {tabIndex === 1 && <SettingsChartsTab />}
         {tabIndex === 2 && <SettingsAboutTab />}
       </div>
-    </MuiThemeProvider>
+    </Fragment>
   );
 };
 
-export default withStyles(styles, { withTheme: true })(SettingsTab);
+export default SettingsTab;

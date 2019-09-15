@@ -69,7 +69,6 @@ const SettingsRestoreDialog = ({ handleCloseDialog }) => {
             handleRestoreClick();
             handleCloseDialog();
           }}
-          color="secondary"
         >
           Restore
         </Button>

@@ -12,7 +12,7 @@ import {
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -31,14 +31,13 @@ import DateFnsUtils from "@date-io/date-fns";
 // utils
 import { duration2HHMM } from "../../utils/duration2HHMM.utils";
 
-const styles = () => ({
+const useStyles = makeStyles({
   formControl: {
-    minWidth: 180
+    minWidth: 175
   }
 });
 
 const HistoryItemEditDialog = ({
-  classes,
   handleCloseDialog,
   index,
   item,
@@ -46,6 +45,7 @@ const HistoryItemEditDialog = ({
   nextItemDatetimeProp,
   nextNextItemDatetime
 }) => {
+  const classes = useStyles();
   const { categories } = useContext(CategoriesContext);
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
@@ -270,18 +270,14 @@ const HistoryItemEditDialog = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleActivityDel} color="secondary">
-          DELETE
-        </Button>
+        <Button onClick={handleActivityDel}>DELETE</Button>
 
         <Button onClick={handleCloseDialog}>Cancel</Button>
 
-        <Button onClick={handleActivitySave} color="primary">
-          Save
-        </Button>
+        <Button onClick={handleActivitySave}>Save</Button>
       </DialogActions>
     </div>
   );
 };
 
-export default withStyles(styles)(HistoryItemEditDialog);
+export default HistoryItemEditDialog;

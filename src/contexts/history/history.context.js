@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
 import { historyReducer } from "./history.reducer";
-import { addActivity, interruptActivity } from "./history.actions";
+import { newActivity, pauseActivity } from "./history.actions";
 
 export const HistoryContext = createContext();
 
@@ -22,14 +22,16 @@ const HistoryContextProvider = ({ children }) => {
     localStorage.setItem("history", JSON.stringify(history));
   }, [history]);
 
-  // push notification action handler: dispatch with history context
+  // service worker notification action handler
   useEffect(() => {
     const channel = new BroadcastChannel("service-worker-channel");
     channel.onmessage = msg => {
-      if (msg.data === "new") dispatchHistory(addActivity());
-      if (msg.data === "interrupt") dispatchHistory(interruptActivity());
+      if (msg.data === "new") dispatchHistory(newActivity());
+      if (msg.data === "pause") dispatchHistory(pauseActivity());
     };
-    return channel.close;
+    return () => {
+      channel.close();
+    };
   }, [dispatchHistory]);
 
   return (

@@ -1,76 +1,29 @@
 // react
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import HistoryIcon from "@material-ui/icons/History";
-import PieChartIcon from "@material-ui/icons/PieChart";
-import CategoryIcon from "@material-ui/icons/Category";
-import SettingsIcon from "@material-ui/icons/Settings";
 
 // components
 import CurrentActivityBar from "../current-activity-bar/current-activity-bar.component";
+import BottomNavigationBar from "../bottom-navigation-bar/bottom-navigation-bar.component";
 
-const styles = () => ({
+const useStyles = makeStyles({
   appBar: {
-    position: "fixed",
     top: "auto",
-    bottom: 0,
-    background:
-      "linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 90%) #7a7a7a",
-    backgroundBlendMode: "multiply,multiply"
+    bottom: 0
   }
 });
 
-function BottomBar({ classes, location: { pathname } }) {
+function BottomBar() {
+  const classes = useStyles();
   return (
     <AppBar className={classes.appBar}>
       <CurrentActivityBar />
-      <BottomNavigation value={router2index(pathname)}>
-        <BottomNavigationAction
-          label="HISTORY"
-          icon={<HistoryIcon />}
-          component={Link}
-          to="/"
-        />
-        <BottomNavigationAction
-          label="CHARTS"
-          icon={<PieChartIcon />}
-          component={Link}
-          to="/charts"
-        />
-        <BottomNavigationAction
-          label="CATEGORIES"
-          icon={<CategoryIcon />}
-          component={Link}
-          to="/categories"
-        />
-        <BottomNavigationAction
-          label="SETTINGS"
-          icon={<SettingsIcon />}
-          component={Link}
-          to="/settings"
-        />
-      </BottomNavigation>
+      <BottomNavigationBar />
     </AppBar>
   );
 }
 
-export default withStyles(styles)(withRouter(BottomBar));
-
-function router2index(pathname) {
-  switch (pathname) {
-    case "/charts":
-      return 1;
-    case "/categories":
-      return 2;
-    case "/settings":
-      return 3;
-    default:
-      return 0;
-  }
-}
+export default BottomBar;

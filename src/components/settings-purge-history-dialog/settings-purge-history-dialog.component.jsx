@@ -54,7 +54,6 @@ const SettingsPurgeHistoryDialog = ({ handleCloseDialog }) => {
             );
             handleCloseDialog();
           }}
-          color="secondary"
         >
           Purge
         </Button>

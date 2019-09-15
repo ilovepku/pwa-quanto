@@ -1,5 +1,3 @@
-import { duration2HHMM } from "../../utils/duration2HHMM.utils";
-
 import HistoryActionTypes from "./history.types";
 
 const initialHistory = [
@@ -13,7 +11,7 @@ const initialHistory = [
 export const historyReducer = (state, action) => {
   let newState;
   switch (action.type) {
-    case HistoryActionTypes.ADD_ACTIVITY:
+    case HistoryActionTypes.NEW_ACTIVITY:
       newState = [
         {
           datetime: new Date(),
@@ -24,7 +22,7 @@ export const historyReducer = (state, action) => {
       ];
       return newState;
 
-    case HistoryActionTypes.INTERRUPT_ACTIVITY:
+    case HistoryActionTypes.PAUSE_ACTIVITY:
       if (
         // if current activity is interruption, ends interruption
         state.length &&
@@ -91,37 +89,33 @@ export const historyReducer = (state, action) => {
 
     case HistoryActionTypes.DISPLAY_NOTIFICATION:
       if (Notification.permission === "granted") {
-        // get last history item
+
         const lastHistoryItem = state[0];
-        const duration = duration2HHMM(
-          Math.floor(
-            (new Date() - new Date(lastHistoryItem.datetime)) / 1000 / 60
-          )
-        );
 
         if ("serviceWorker" in navigator) {
           var options = {
-            body: "Elasped: " + duration,
+            body: "Elasped: " + action.payload,
             timestamp: new Date(lastHistoryItem.datetime),
-            /* badge: "", */
             icon: "android-chrome-192x192.png",
-            tag: "default",
-            silent: true,
+            // badge:
+            // image:
             actions: [
               {
                 action: "new",
-                title: "New" /* ,
-                  icon: "icon-plus-24.png" */
+                title: "New",
+                icon: "icon-plus-24.png"
               },
               {
-                action: "interrupt",
+                action: "pause",
                 title:
                   lastHistoryItem.activity === "Interruption"
                     ? "Resume"
-                    : "Interrupt" /* ,
-                  icon: "icon-pause-24.png" */
+                    : "Interrupt",
+                icon: "icon-pause-24.png"
               }
-            ]
+            ],
+            tag: "default", // new notification automatically replaces old one with the same tag
+            silent: true
           };
 
           navigator.serviceWorker.ready.then(swreg => {

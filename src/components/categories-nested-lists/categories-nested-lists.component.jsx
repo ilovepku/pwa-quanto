@@ -11,7 +11,7 @@ import {
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -29,23 +29,22 @@ import clsx from "clsx";
 // components
 import CategoryInput from "../category-input/category-input.component";
 
-const styles = theme => ({
-  nested: {
-    paddingLeft: theme.spacing(4)
-  },
+const useStyles = makeStyles(theme => ({
   listItem: {
+    // duplicate styles
+    paddingLeft: theme.spacing(1),
     paddingTop: 0,
-    paddingBottom: 0,
-    background: "linear-gradient(75deg, #F9FCFF 0%, #EBEBEB 74%)",
-    boxShadow: "10px 5px 15px #e5e6eb"
+    paddingBottom: 0
+    /* background: "linear-gradient(75deg, #F9FCFF 0%, #EBEBEB 74%)",
+    boxShadow: "10px 5px 15px #e5e6eb" */
+  },
+  nested: {
+    paddingLeft: theme.spacing(2)
   },
   dragIcon: {
-    fill: "#857541"
-  },
-  deleteIcon: {
-    fill: "#6a6c6e"
+    /* fill: "#857541" */
   }
-});
+}));
 
 const getItemStyle = isDragging => ({
   ...(isDragging && {
@@ -57,7 +56,8 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-const CategoriesNestedLists = ({ classes, index, activity, details }) => {
+const CategoriesNestedLists = ({ index, activity, details }) => {
+  const classes = useStyles();
   const [nestedListOpen, setNestedListOpen] = useState(false);
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
@@ -77,14 +77,11 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
               >
                 <ListItem
                   divider
-                  classes={{ root: classes.listItem }}
+                  className={classes.listItem}
                   style={getItemStyle(outterSnapshot.isDragging)}
                 >
-                  <ListItemIcon
-                    {...outterProvided.dragHandleProps}
-                    aria-label="Drag"
-                  >
-                    <DragIndicatorIcon classes={{ root: classes.dragIcon }} />
+                  <ListItemIcon {...outterProvided.dragHandleProps}>
+                    <DragIndicatorIcon className={classes.dragIcon} />
                   </ListItemIcon>
 
                   <CategoryInput item={activity} />
@@ -100,7 +97,6 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
                           })
                         );
                       }}
-                      classes={{ root: classes.deleteIcon }}
                     />
                   </ListItemIcon>
 
@@ -129,12 +125,9 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
                               className={clsx(classes.nested, classes.listItem)}
                               style={getItemStyle(snapshot.isDragging)}
                             >
-                              <ListItemIcon
-                                {...provided.dragHandleProps}
-                                aria-label="Drag"
-                              >
+                              <ListItemIcon {...provided.dragHandleProps}>
                                 <DragIndicatorIcon
-                                  classes={{ root: classes.dragIcon }}
+                                  className={classes.dragIcon}
                                 />
                               </ListItemIcon>
 
@@ -143,7 +136,7 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
                                 activityId={activity.id}
                               />
 
-                              <ListItemIcon aria-label="Delete">
+                              <ListItemIcon>
                                 <DeleteIcon
                                   onClick={() => {
                                     dispatchCategories(
@@ -159,7 +152,7 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
                                       })
                                     );
                                   }}
-                                  classes={{ root: classes.deleteIcon }}
+                                  className={classes.deleteIcon}
                                 />
                               </ListItemIcon>
                             </ListItem>
@@ -194,4 +187,4 @@ const CategoriesNestedLists = ({ classes, index, activity, details }) => {
   );
 };
 
-export default withStyles(styles)(CategoriesNestedLists);
+export default CategoriesNestedLists;
