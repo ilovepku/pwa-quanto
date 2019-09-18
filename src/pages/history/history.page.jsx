@@ -8,10 +8,12 @@ import AutoSizer from "react-virtualized-auto-sizer";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Dialog from "@material-ui/core/Dialog";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Dialog
+} from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
 
@@ -31,7 +33,7 @@ const useStyles = makeStyles({
   }
 });
 
-const HistoryTab = () => {
+const HistoryPage = () => {
   const classes = useStyles();
   const { history } = useContext(HistoryContext);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -149,4 +151,4 @@ const HistoryTab = () => {
   );
 };
 
-export default HistoryTab;
+export default HistoryPage;

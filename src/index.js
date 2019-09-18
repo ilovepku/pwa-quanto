@@ -3,9 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // components
-import TabPanel from "./pages/tab-panel/tab-panel.page";
+import App from "./App";
 
 // styles
 import "./index.css";
 
-ReactDOM.render(<TabPanel />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));

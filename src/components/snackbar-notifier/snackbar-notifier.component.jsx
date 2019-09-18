@@ -1,17 +1,17 @@
+// react
 import React, { useContext } from "react";
+
+// contexts
 import { SnackbarContext } from "../../contexts/snackbar/snackbar.context";
 import { closeSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
 import { amber, green } from "@material-ui/core/colors";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
-import IconButton from "@material-ui/core/IconButton";
+import { Snackbar, SnackbarContent, IconButton } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import WarningIcon from "@material-ui/icons/Warning";
 import ErrorIcon from "@material-ui/icons/Error";
-import InfoIcon from "@material-ui/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
 
 // libs
@@ -20,8 +20,7 @@ import clsx from "clsx";
 const variantIcon = {
   success: CheckCircleIcon,
   warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon
+  error: ErrorIcon
 };
 
 const useStyles = makeStyles(theme => ({
@@ -30,9 +29,6 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     backgroundColor: theme.palette.error.dark
-  },
-  info: {
-    backgroundColor: theme.palette.primary.main
   },
   warning: {
     backgroundColor: amber[700]

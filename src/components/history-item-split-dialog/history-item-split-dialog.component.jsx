@@ -8,12 +8,13 @@ import { splitActivity } from "../../contexts/history/history.actions";
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { DateTimePicker } from "@material-ui/pickers";
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "@material-ui/core";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
 // libs
 import DateFnsUtils from "@date-io/date-fns";

@@ -3,9 +3,7 @@ import React, { useState, Fragment } from "react";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { AppBar, Tabs, Tab } from "@material-ui/core";
 
 // components
 import SettingsGeneralTab from "../settings-general-tab/settings-general-tab.page";

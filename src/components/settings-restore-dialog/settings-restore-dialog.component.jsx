@@ -12,10 +12,12 @@ import { restoreSettings } from "../../contexts/settings/settings.actions";
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
+import {
+  Button,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from "@material-ui/core";
 
 // utils
 import firebase from "../../utils/firebase.utils";

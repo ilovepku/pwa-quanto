@@ -5,10 +5,10 @@ export const SettingsContext = createContext();
 
 const initialSettings = {
   chartsDateFilter: false,
-  chartsDateFilterStart: new Date(new Date().setHours(0, 0, 0, 0)),
-  chartsDateFilterEnd: new Date(new Date().setHours(23, 59, 59, 999)),
-  chartsKeyExclude: false,
-  chartsExcludeKeysList: ["Unsorted"]
+  chartsFilterDateStart: new Date(new Date().setHours(0, 0, 0, 0)),
+  chartsFilterDateEnd: new Date(new Date().setHours(23, 59, 59, 999)),
+  chartsKeyFilter: false,
+  chartsFilterKeyList: ["Unsorted"]
 };
 
 const SettingsContextProvider = ({ children }) => {

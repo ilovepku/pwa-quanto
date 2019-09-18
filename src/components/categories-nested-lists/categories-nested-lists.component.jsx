@@ -12,14 +12,11 @@ import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Collapse from "@material-ui/core/Collapse";
+import { List, ListItem, ListItemIcon, Collapse } from "@material-ui/core";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
 // libs
@@ -101,9 +98,9 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                   </ListItemIcon>
 
                   {nestedListOpen ? (
-                    <ExpandLess onClick={toggleNestedListOpen} />
+                    <ExpandLessIcon onClick={toggleNestedListOpen} />
                   ) : (
-                    <ExpandMore onClick={toggleNestedListOpen} />
+                    <ExpandMoreIcon onClick={toggleNestedListOpen} />
                   )}
                 </ListItem>
 

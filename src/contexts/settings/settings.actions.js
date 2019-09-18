@@ -1,33 +1,33 @@
 import SettingsActionTypes from "./settings.types";
 
-export const chartsDateFilterSwitch = () => ({
-  type: SettingsActionTypes.CHARTS_DATE_FILTER_SWITCH
+export const switchChartsDateFilter = () => ({
+  type: SettingsActionTypes.SWITCH_CHARTS_DATE_FILTER
 });
 
-export const chartsDateFilterSet = payload => ({
-  type: SettingsActionTypes.CHARTS_DATE_FILTER_SET,
+export const setChartsFilterDate = payload => ({
+  type: SettingsActionTypes.SET_CHARTS_FILTER_DATE,
   payload
 });
 
-export const prevChartsFilter = () => ({
-  type: SettingsActionTypes.PREV_CHARTS_DATE_FILTER
+export const prevChartsFilterDate = () => ({
+  type: SettingsActionTypes.PREV_CHARTS_FILTER_DATE
 });
 
-export const nextChartsFilter = () => ({
-  type: SettingsActionTypes.NEXT_CHARTS_DATE_FILTER
+export const nextChartsFilterDate = () => ({
+  type: SettingsActionTypes.NEXT_CHARTS_FILTER_DATE
 });
 
-export const chartsKeyExcludeSwitch = () => ({
-  type: SettingsActionTypes.CHARTS_KEY_EXCLUDE_SWITCH
+export const switchChartsKeyFilter = () => ({
+  type: SettingsActionTypes.SWITCH_CHARTS_KEY_FILTER
 });
 
-export const addChartsExcludeKey = payload => ({
-  type: SettingsActionTypes.ADD_CHARTS_EXCLUDE_KEY,
+export const addChartsFilterKey = payload => ({
+  type: SettingsActionTypes.ADD_CHARTS_FILTER_KEY,
   payload
 });
 
-export const delChartsExcludeKey = payload => ({
-  type: SettingsActionTypes.DEL_CHARTS_EXCLUDE_KEY,
+export const delChartsFilterKey = payload => ({
+  type: SettingsActionTypes.DEL_CHARTS_FILTER_KEY,
   payload
 });
 

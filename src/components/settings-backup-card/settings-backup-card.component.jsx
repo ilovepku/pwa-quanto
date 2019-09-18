@@ -9,10 +9,7 @@ import { SnackbarContext } from "../../contexts/snackbar/snackbar.context";
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
+import { Card, CardContent, CardActions, Button } from "@material-ui/core";
 
 // libs
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
@@ -97,7 +94,6 @@ const SettingsBackupCard = ({ setRestoreDialogOpen }) => {
             backup or restore your activity history, custom categories and
             settings!
           </CardContent>
-
           <CardActions>
             <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
             <Button onClick={backup}>Back-up</Button>

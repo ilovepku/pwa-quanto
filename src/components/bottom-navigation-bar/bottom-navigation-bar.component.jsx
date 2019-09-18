@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import HistoryIcon from "@material-ui/icons/History";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import CategoryIcon from "@material-ui/icons/Category";

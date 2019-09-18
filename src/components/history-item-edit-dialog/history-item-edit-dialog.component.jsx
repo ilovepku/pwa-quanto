@@ -13,16 +13,17 @@ import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import Input from "@material-ui/core/Input";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { DateTimePicker } from "@material-ui/pickers";
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  NativeSelect,
+  Input
+} from "@material-ui/core";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
 // libs
 import nanoid from "nanoid";

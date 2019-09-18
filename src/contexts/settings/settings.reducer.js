@@ -1,64 +1,64 @@
 import SettingsActionTypes from "./settings.types";
 
 export const settingsReducer = (state, action) => {
-  let chartsDateFilterStart, chartsDateFilterEnd;
+  let chartsFilterDateStart, chartsFilterDateEnd;
 
   switch (action.type) {
-    case SettingsActionTypes.CHARTS_DATE_FILTER_SWITCH:
+    case SettingsActionTypes.SWITCH_CHARTS_DATE_FILTER:
       return {
         ...state,
         chartsDateFilter: !state.chartsDateFilter
       };
 
-    case SettingsActionTypes.CHARTS_DATE_FILTER_SET:
+    case SettingsActionTypes.SET_CHARTS_FILTER_DATE:
       return {
         ...state,
         [action.payload.type]: action.payload.date
       };
 
-    case SettingsActionTypes.PREV_CHARTS_DATE_FILTER:
-      chartsDateFilterStart = new Date(state.chartsDateFilterStart);
-      chartsDateFilterEnd = new Date(state.chartsDateFilterEnd);
+    case SettingsActionTypes.PREV_CHARTS_FILTER_DATE:
+      chartsFilterDateStart = new Date(state.chartsFilterDateStart);
+      chartsFilterDateEnd = new Date(state.chartsFilterDateEnd);
 
       return {
         ...state,
-        chartsDateFilterStart: chartsDateFilterStart.setDate(
-          chartsDateFilterStart.getDate() - 1
+        chartsFilterDateStart: chartsFilterDateStart.setDate(
+          chartsFilterDateStart.getDate() - 1
         ),
-        chartsDateFilterEnd: chartsDateFilterEnd.setDate(
-          chartsDateFilterEnd.getDate() - 1
+        chartsFilterDateEnd: chartsFilterDateEnd.setDate(
+          chartsFilterDateEnd.getDate() - 1
         )
       };
 
-    case SettingsActionTypes.NEXT_CHARTS_DATE_FILTER:
-      chartsDateFilterStart = new Date(state.chartsDateFilterStart);
-      chartsDateFilterEnd = new Date(state.chartsDateFilterEnd);
+    case SettingsActionTypes.NEXT_CHARTS_FILTER_DATE:
+      chartsFilterDateStart = new Date(state.chartsFilterDateStart);
+      chartsFilterDateEnd = new Date(state.chartsFilterDateEnd);
       return {
         ...state,
-        chartsDateFilterStart: chartsDateFilterStart.setDate(
-          chartsDateFilterStart.getDate() + 1
+        chartsFilterDateStart: chartsFilterDateStart.setDate(
+          chartsFilterDateStart.getDate() + 1
         ),
-        chartsDateFilterEnd: chartsDateFilterEnd.setDate(
-          chartsDateFilterEnd.getDate() + 1
+        chartsFilterDateEnd: chartsFilterDateEnd.setDate(
+          chartsFilterDateEnd.getDate() + 1
         )
       };
 
-    case SettingsActionTypes.CHARTS_KEY_EXCLUDE_SWITCH:
+    case SettingsActionTypes.SWITCH_CHARTS_KEY_FILTER:
       return {
         ...state,
-        chartsKeyExclude: !state.chartsKeyExclude
+        chartsKeyFilter: !state.chartsKeyFilter
       };
 
-    case SettingsActionTypes.ADD_CHARTS_EXCLUDE_KEY:
+    case SettingsActionTypes.ADD_CHARTS_FILTER_KEY:
       return {
         ...state,
-        chartsExcludeKeysList: [...state.chartsExcludeKeysList, action.payload]
+        chartsFilterKeyList: [...state.chartsFilterKeyList, action.payload]
       };
 
-    case SettingsActionTypes.DEL_CHARTS_EXCLUDE_KEY:
+    case SettingsActionTypes.DEL_CHARTS_FILTER_KEY:
       return {
         ...state,
-        chartsExcludeKeysList: state.chartsExcludeKeysList.filter(
+        chartsFilterKeyList: state.chartsFilterKeyList.filter(
           (item, index) => index !== action.payload
         )
       };

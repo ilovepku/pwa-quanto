@@ -7,9 +7,7 @@ import { reorderCategories } from "../../contexts/categories/categories.actions"
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import { List, ListItem, ListItemIcon } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 // libs
@@ -23,14 +21,15 @@ const useStyles = makeStyles(theme => ({
   view: {
     paddingBottom: "110px"
   },
-  listItem: { // duplicate styles
+  listItem: {
+    // duplicate styles
     paddingLeft: theme.spacing(1),
     paddingTop: 0,
     paddingBottom: 0
   }
 }));
 
-function CategoriesTab() {
+function CategoriesPage() {
   const classes = useStyles();
   const { categories, dispatchCategories } = useContext(CategoriesContext);
   return (
@@ -84,4 +83,4 @@ function CategoriesTab() {
   );
 }
 
-export default CategoriesTab;
+export default CategoriesPage;

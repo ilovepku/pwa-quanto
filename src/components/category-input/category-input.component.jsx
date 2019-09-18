@@ -12,8 +12,7 @@ import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
+import { TextField, IconButton } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 
 const useStyles = makeStyles({

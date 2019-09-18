@@ -2,11 +2,13 @@
 import React, { Fragment, useState } from "react";
 
 // material ui
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Dialog
+} from "@material-ui/core";
 
 // components
 import SettingsPurgeHistoryDialog from "../../components/settings-purge-history-dialog/settings-purge-history-dialog.component";
@@ -31,31 +33,8 @@ const SettingsGeneralTab = () => {
     setRestoreDialogOpen(false);
   };
 
-  const handlePermissionRequestClick = () => {
-    Notification.requestPermission(result => {
-      if (result === "granted") {
-        setDisabled(true);
-      }
-    });
-  };
-
   return (
     <Fragment>
-      <Card>
-        <CardContent>
-          Enable Notification to check/pause/add an activity without opening the
-          app or even unlocking your device).
-        </CardContent>
-        <CardActions>
-          <Button
-            disabled={disabled}
-            onClick={() => handlePermissionRequestClick()}
-          >
-            {disabled ? "Notification Enabled" : "Enable Notification"}
-          </Button>
-        </CardActions>
-      </Card>
-
       <SettingsBackupCard setRestoreDialogOpen={setRestoreDialogOpen} />
 
       <Card>
