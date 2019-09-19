@@ -12,7 +12,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Dialog
+  Dialog,
+  Box
 } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import CallSplitIcon from "@material-ui/icons/CallSplit";
@@ -21,17 +22,24 @@ import CallSplitIcon from "@material-ui/icons/CallSplit";
 import HistoryItemEditDialog from "../../components/history-item-edit-dialog/history-item-edit-dialog.component";
 import HistoryItemSplitDialog from "../../components/history-item-split-dialog/history-item-split-dialog.component";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   autoSizerContainer: {
-    height: "75vh"
+    height: "calc(100vh - 125px)"
   },
   splitIcon: {
     //fill: "#857541"
   },
   editIcon: {
     //fill: "#557F2F"
+  },
+  listItemIcon: {
+    minWidth: theme.spacing(3),
+    padding: theme.spacing(1)
+  },
+  listItemText: {
+    padding: theme.spacing(1)
   }
-});
+}));
 
 const HistoryPage = () => {
   const classes = useStyles();
@@ -81,6 +89,7 @@ const HistoryPage = () => {
             history[index - 1] ? new Date(history[index - 1].datetime) : null
           )
         }
+        className={classes.listItemIcon}
       >
         <CallSplitIcon className={classes.splitIcon} />
       </ListItemIcon>
@@ -95,6 +104,7 @@ const HistoryPage = () => {
           hour12: false
         })}
         secondary={`${history[index].activity}: ${history[index].detail}`}
+        className={classes.listItemText}
       />
 
       <ListItemIcon
@@ -107,6 +117,7 @@ const HistoryPage = () => {
             history[index - 2] ? new Date(history[index - 2].datetime) : null
           )
         }
+        className={classes.listItemIcon}
       >
         <CreateIcon className={classes.editIcon} />
       </ListItemIcon>
@@ -114,7 +125,7 @@ const HistoryPage = () => {
   );
   return (
     <Fragment>
-      <div className={classes.autoSizerContainer}>
+      <Box className={classes.autoSizerContainer}>
         <AutoSizer className={classes.autoSizer}>
           {({ height, width }) => (
             <List
@@ -127,7 +138,7 @@ const HistoryPage = () => {
             </List>
           )}
         </AutoSizer>
-      </div>
+      </Box>
 
       <Dialog open={editDialogOpen} onClose={handleCloseDialog}>
         <HistoryItemEditDialog

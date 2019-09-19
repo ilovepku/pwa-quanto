@@ -8,7 +8,7 @@ export const categoriesReducer = (state, action) => {
   switch (action.type) {
     case CategoriesActionTypes.EDIT_ACTIVITY_NAME:
       let activityId = action.payload.activityId;
-      let newActivityIds = state.activityIds.slice();
+      const newActivityIds = [...state.activityIds];
 
       // prepare to add new activity if activityId is empty
       if (!activityId) {
@@ -16,7 +16,7 @@ export const categoriesReducer = (state, action) => {
         newActivityIds.push(activityId);
       }
 
-      newState = {
+      return {
         ...state,
         activityIds: newActivityIds,
         activities: {
@@ -30,13 +30,12 @@ export const categoriesReducer = (state, action) => {
           }
         }
       };
-      return newState;
 
     case CategoriesActionTypes.EDIT_DETAIL_NAME:
       let detailId = action.payload.detailId;
-      let newDetailIds = state.activities[
-        action.payload.activityId
-      ].detailIds.slice();
+      const newDetailIds = [
+        ...state.activities[action.payload.activityId].detailIds
+      ];
 
       // prepare to add new detail if activityId is empty
       if (!detailId) {
@@ -44,7 +43,7 @@ export const categoriesReducer = (state, action) => {
         newDetailIds.push(detailId);
       }
 
-      newState = {
+      return {
         ...state,
         details: {
           ...state.details,
@@ -61,7 +60,6 @@ export const categoriesReducer = (state, action) => {
           }
         }
       };
-      return newState;
 
     case CategoriesActionTypes.DELETE_ACTIVITY_NAME:
       newState = {
@@ -97,12 +95,10 @@ export const categoriesReducer = (state, action) => {
       const { destination, source, draggableId, type } = action.payload;
 
       // check for no changes
-      if (!destination) {
-        return state;
-      }
       if (
-        destination.droppableId === source.droppableId &&
-        destination.index === source.index
+        !destination ||
+        (destination.droppableId === source.droppableId &&
+          destination.index === source.index)
       ) {
         return state;
       }
@@ -113,18 +109,17 @@ export const categoriesReducer = (state, action) => {
         newactivityIds.splice(source.index, 1);
         newactivityIds.splice(destination.index, 0, draggableId);
 
-        newState = {
+        return {
           ...state,
           activityIds: newactivityIds
         };
-        return newState;
       }
 
       // reording details
       const start = state.activities[source.droppableId];
       const finish = state.activities[destination.droppableId];
 
-      // moving detailswithin the same activity
+      // moving details within the same activity
       if (start === finish) {
         const newDetailIds = Array.from(start.detailIds);
         newDetailIds.splice(source.index, 1);
@@ -135,15 +130,13 @@ export const categoriesReducer = (state, action) => {
           detailIds: newDetailIds
         };
 
-        newState = {
+        return {
           ...state,
           activities: {
             ...state.activities,
             [newActivity.id]: newActivity
           }
         };
-
-        return newState;
       }
 
       // moving details from one activity to another
@@ -161,7 +154,7 @@ export const categoriesReducer = (state, action) => {
         detailIds: finishDetailIds
       };
 
-      newState = {
+      return {
         ...state,
         activities: {
           ...state.activities,
@@ -169,8 +162,6 @@ export const categoriesReducer = (state, action) => {
           [newFinish.id]: newFinish
         }
       };
-
-      return newState;
 
     case CategoriesActionTypes.DEFAULT_CATEGORIES:
       return initialCategories;

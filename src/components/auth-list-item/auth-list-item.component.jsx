@@ -34,7 +34,6 @@ import firebase from "../../utils/firebase.utils";
 
 // Configure FirebaseUI.
 const firebaseUiConfig = {
-  signInFlow: "redirect",
   signInSuccessUrl: "/settings",
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -54,12 +53,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     marginLeft: theme.spacing(2),
     flex: 1
-  },
-  hidden: {
-    //display: "none"
-  },
-  visible: {
-    //display: "block"
   }
 }));
 
@@ -74,6 +67,7 @@ const AuthListItem = () => {
     dispatchUser
   } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+
   useEffect(() => {
     // Listen to the Firebase Auth state and set the local state.
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {

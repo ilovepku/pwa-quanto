@@ -151,20 +151,18 @@ const ChartsSettings = () => {
             <AddIcon />
           </IconButton>
         </form>
-        <div>
-          {settings.chartsFilterKeyList.length
-            ? settings.chartsFilterKeyList.map((item, index) => {
-                return (
-                  <Chip
-                    key={"chartsFilterKey-" + index}
-                    label={item}
-                    onDelete={() => dispatchSettings(delChartsFilterKey(index))}
-                    className={classes.chip}
-                  />
-                );
-              })
-            : "List is currently empty."}
-        </div>
+        {settings.chartsFilterKeyList.length
+          ? settings.chartsFilterKeyList.map((item, index) => {
+              return (
+                <Chip
+                  key={"chartsFilterKey-" + index}
+                  label={item}
+                  onDelete={() => dispatchSettings(delChartsFilterKey(index))}
+                  className={classes.chip}
+                />
+              );
+            })
+          : "List is currently empty."}
         <ListItemSecondaryAction>
           <Switch
             edge="end"

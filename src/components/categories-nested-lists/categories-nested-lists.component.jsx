@@ -12,7 +12,7 @@ import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemIcon, Collapse } from "@material-ui/core";
+import { List, ListItem, ListItemIcon, Collapse, Box } from "@material-ui/core";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -28,15 +28,15 @@ import CategoryInput from "../category-input/category-input.component";
 
 const useStyles = makeStyles(theme => ({
   listItem: {
-    // duplicate styles
-    paddingLeft: theme.spacing(1),
-    paddingTop: 0,
-    paddingBottom: 0
     /* background: "linear-gradient(75deg, #F9FCFF 0%, #EBEBEB 74%)",
     boxShadow: "10px 5px 15px #e5e6eb" */
   },
-  nested: {
-    paddingLeft: theme.spacing(2)
+  nestedListItem: {
+    paddingLeft: theme.spacing(4)
+  },
+  listItemIcon: {
+    minWidth: theme.spacing(3),
+    padding: theme.spacing(1)
   },
   dragIcon: {
     /* fill: "#857541" */
@@ -64,10 +64,10 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
   return (
     <Draggable draggableId={activity.id} index={index}>
       {(outterProvided, outterSnapshot) => (
-        <div {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
+        <Box {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
           <Droppable droppableId={activity.id} type="detail">
             {(provided, snapshot) => (
-              <div
+              <Box
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 style={getListStyle(snapshot.isDraggingOver)}
@@ -77,13 +77,16 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                   className={classes.listItem}
                   style={getItemStyle(outterSnapshot.isDragging)}
                 >
-                  <ListItemIcon {...outterProvided.dragHandleProps}>
+                  <ListItemIcon
+                    {...outterProvided.dragHandleProps}
+                    className={classes.listItemIcon}
+                  >
                     <DragIndicatorIcon className={classes.dragIcon} />
                   </ListItemIcon>
 
                   <CategoryInput item={activity} />
 
-                  <ListItemIcon>
+                  <ListItemIcon className={classes.listItemIcon}>
                     <DeleteIcon
                       onClick={() => {
                         dispatchCategories(deleteActivityName(activity.id));
@@ -97,11 +100,13 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                     />
                   </ListItemIcon>
 
-                  {nestedListOpen ? (
-                    <ExpandLessIcon onClick={toggleNestedListOpen} />
-                  ) : (
-                    <ExpandMoreIcon onClick={toggleNestedListOpen} />
-                  )}
+                  <ListItemIcon className={classes.listItemIcon}>
+                    {nestedListOpen ? (
+                      <ExpandLessIcon onClick={toggleNestedListOpen} />
+                    ) : (
+                      <ExpandMoreIcon onClick={toggleNestedListOpen} />
+                    )}
+                  </ListItemIcon>
                 </ListItem>
 
                 <Collapse in={nestedListOpen} timeout="auto" unmountOnExit>
@@ -113,16 +118,22 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                         index={index}
                       >
                         {(provided, snapshot) => (
-                          <div
+                          <Box
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                           >
                             <ListItem
                               divider
-                              className={clsx(classes.nested, classes.listItem)}
+                              className={clsx(
+                                classes.nestedListItem,
+                                classes.listItem
+                              )}
                               style={getItemStyle(snapshot.isDragging)}
                             >
-                              <ListItemIcon {...provided.dragHandleProps}>
+                              <ListItemIcon
+                                {...provided.dragHandleProps}
+                                className={classes.listItemIcon}
+                              >
                                 <DragIndicatorIcon
                                   className={classes.dragIcon}
                                 />
@@ -133,7 +144,7 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                                 activityId={activity.id}
                               />
 
-                              <ListItemIcon>
+                              <ListItemIcon className={classes.listItemIcon}>
                                 <DeleteIcon
                                   onClick={() => {
                                     dispatchCategories(
@@ -153,7 +164,7 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                                 />
                               </ListItemIcon>
                             </ListItem>
-                          </div>
+                          </Box>
                         )}
                       </Draggable>
                     ))}
@@ -163,9 +174,9 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                     {/* the listItem to add a new detail */}
                     <ListItem
                       divider
-                      className={clsx(classes.nested, classes.listItem)}
+                      className={clsx(classes.nestedListItem, classes.listItem)}
                     >
-                      <ListItemIcon>
+                      <ListItemIcon className={classes.listItemIcon}>
                         <AddIcon />
                       </ListItemIcon>
                       <CategoryInput
@@ -175,10 +186,10 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                     </ListItem>
                   </List>
                 </Collapse>
-              </div>
+              </Box>
             )}
           </Droppable>
-        </div>
+        </Box>
       )}
     </Draggable>
   );

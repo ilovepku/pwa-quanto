@@ -7,7 +7,7 @@ import { reorderCategories } from "../../contexts/categories/categories.actions"
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemIcon } from "@material-ui/core";
+import { List, ListItem, ListItemIcon, Box } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 // libs
@@ -23,9 +23,13 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     // duplicate styles
-    paddingLeft: theme.spacing(1),
-    paddingTop: 0,
-    paddingBottom: 0
+    //paddingLeft: theme.spacing(1),
+    //paddingTop: 0,
+    //paddingBottom: 0
+  },
+  listItemIcon: {
+    minWidth: theme.spacing(3),
+    padding: theme.spacing(1)
   }
 }));
 
@@ -42,7 +46,7 @@ function CategoriesPage() {
         type="activity"
       >
         {provided => (
-          <div
+          <Box
             {...provided.droppableProps}
             ref={provided.innerRef}
             className={classes.view}
@@ -67,8 +71,8 @@ function CategoriesPage() {
               {provided.placeholder}
 
               {/* the listItem to add a new activity */}
-              <ListItem className={classes.listItem} divider>
-                <ListItemIcon>
+              <ListItem divider className={classes.listItem}>
+                <ListItemIcon className={classes.listItemIcon}>
                   <AddIcon />
                 </ListItemIcon>
                 <CategoryInput
@@ -76,7 +80,7 @@ function CategoriesPage() {
                 />
               </ListItem>
             </List>
-          </div>
+          </Box>
         )}
       </Droppable>
     </DragDropContext>

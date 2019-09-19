@@ -15,14 +15,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TextField, IconButton } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   form: {
     display: "flex"
   },
+  textField: {
+    padding: theme.spacing(1)
+  },
   editIcon: {
+    padding: theme.spacing(1)
     // fill: "#557F2F" //rgb(160,82,45)
   }
-});
+}));
 
 const getEditIconColor = (value, name) =>
   value !== name ? "primary" : "default";
@@ -43,7 +47,7 @@ const CategoryInput = ({ item, activityId }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (category === item.name) {
-      // focus on text field if no changes have been made (reack hooks solution)
+      // focus on text field if no changes have been made
       inputRef.current.focus();
     } else {
       if (!category) {
@@ -99,8 +103,8 @@ const CategoryInput = ({ item, activityId }) => {
   return (
     <form
       onSubmit={event => handleSubmit(event)}
-      className={classes.form}
       ref={formRef} // ref for manually reset form
+      className={classes.form}
     >
       <TextField
         inputRef={inputRef} // ref for focusing upon first clicking submit
@@ -108,7 +112,7 @@ const CategoryInput = ({ item, activityId }) => {
         placeholder={!item.name ? "Add a new one here!" : null}
         onChange={e => setCategory(e.target.value)}
         margin={"dense"}
-        variant="outlined"
+        className={classes.textField}
       />
 
       <IconButton
@@ -116,8 +120,9 @@ const CategoryInput = ({ item, activityId }) => {
         // temp workaround to animate this IconButton
         color={getEditIconColor(category, item.name)}
         style={getEditIconStyle(category, item.name)}
+        className={classes.editIcon}
       >
-        <CreateIcon className={classes.editIcon} />
+        <CreateIcon />
       </IconButton>
     </form>
   );

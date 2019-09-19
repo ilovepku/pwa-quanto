@@ -11,9 +11,10 @@ export const settingsReducer = (state, action) => {
       };
 
     case SettingsActionTypes.SET_CHARTS_FILTER_DATE:
+      const { type, date } = action.payload;
       return {
         ...state,
-        [action.payload.type]: action.payload.date
+        [type]: date
       };
 
     case SettingsActionTypes.PREV_CHARTS_FILTER_DATE:

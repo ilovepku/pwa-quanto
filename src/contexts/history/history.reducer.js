@@ -12,7 +12,7 @@ export const historyReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case HistoryActionTypes.NEW_ACTIVITY:
-      newState = [
+      return [
         {
           datetime: new Date(),
           activity: "Unsorted",
@@ -20,58 +20,55 @@ export const historyReducer = (state, action) => {
         },
         ...state
       ];
-      return newState;
 
     case HistoryActionTypes.PAUSE_ACTIVITY:
-      if (
-        // if current activity is interruption, ends interruption
-        state.length &&
-        state[0].activity === "Interruption"
-      ) {
-        newState = [
-          {
-            datetime: new Date(),
-            activity: state[1].activity,
-            detail: state[1].detail
-          },
-          ...state
-        ];
-      } else {
-        // if current activity is not interruption, starts interruption
-        newState = [
-          {
-            datetime: new Date(),
-            activity: "Interruption",
-            detail: "-"
-          },
-          ...state
-        ];
-      }
-
-      return newState;
+      return state[0].activity === "Interruption" // if current activity is interruption, ends interruption
+        ? [
+            {
+              datetime: new Date(),
+              activity: state[1].activity,
+              detail: state[1].detail
+            },
+            ...state
+          ]
+        : [
+            // if current activity is not interruption, starts interruption
+            {
+              datetime: new Date(),
+              activity: "Interruption",
+              detail: "-"
+            },
+            ...state
+          ];
 
     case HistoryActionTypes.SAVE_ACTIVITY:
-      newState = state.map((item, index) => {
-        if (index === action.payload.index) {
+      var {
+        index,
+        datetime,
+        activity,
+        detail,
+        nextItemDatetime
+      } = action.payload;
+      return state.map((item, idx) => {
+        if (idx === index) {
           return {
             ...item,
-            datetime: action.payload.datetime,
-            activity: action.payload.activity,
-            detail: action.payload.detail
+            datetime,
+            activity,
+            detail
           };
-        } else if (index === action.payload.index - 1) {
+        } else if (idx === index - 1) {
           return {
             ...item,
-            datetime: action.payload.nextItemDatetime
+            datetime: nextItemDatetime
           };
         } else {
           return item;
         }
       });
-      return newState;
 
     case HistoryActionTypes.SPLIT_ACTIVITY:
-      newState = [
+      return [
         ...state.slice(0, action.payload.index),
         {
           datetime: action.payload.splitDatetime,
@@ -80,16 +77,9 @@ export const historyReducer = (state, action) => {
         },
         ...state.slice(action.payload.index)
       ];
-      return newState;
-
-    case HistoryActionTypes.DELETE_ACTIVITY:
-      newState = state.filter((item, index) => index !== action.payload);
-      if (newState.length === 0) newState = initialHistory;
-      return newState;
 
     case HistoryActionTypes.DISPLAY_NOTIFICATION:
       if (Notification.permission === "granted") {
-
         const lastHistoryItem = state[0];
 
         if ("serviceWorker" in navigator) {
@@ -128,12 +118,15 @@ export const historyReducer = (state, action) => {
       }
       return state;
 
+    case HistoryActionTypes.DELETE_ACTIVITY:
+      newState = state.filter((item, index) => index !== action.payload);
+      return newState.length ? newState : initialHistory;
+
     case HistoryActionTypes.PURGE_HISTORY:
-      newState = state.filter(item => {
-        return new Date(item.datetime).getTime() >= action.payload;
-      });
-      if (newState.length === 0) newState = initialHistory;
-      return newState;
+      newState = state.filter(
+        item => new Date(item.datetime).getTime() >= action.payload
+      );
+      return newState.length ? newState : initialHistory;
 
     case HistoryActionTypes.RESTORE_HISTORY:
       return action.payload;

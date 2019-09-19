@@ -46,7 +46,7 @@ function App() {
         <Route exact path="/" component={HistoryPage} />
         <Route exact path="/charts/" component={ChartsPage} />
         <Route exact path="/categories/" component={CategoriesPage} />
-        <Route exact path="/settings/" component={SettingsPage} />
+        <Route path="/settings/" component={SettingsPage} />
         <BottomBar />
         <SnackbarNotifier />
       </MuiThemeProvider>

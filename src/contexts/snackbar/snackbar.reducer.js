@@ -9,11 +9,12 @@ export const snackbarReducer = (state, action) => {
       };
 
     case SnackbarActionTypes.OPEN_SNACKBAR:
+      const { msg, variant } = action.payload;
       return {
         ...state,
         open: true,
-        msg: action.payload.msg,
-        variant: action.payload.variant
+        msg,
+        variant
       };
 
     default:
