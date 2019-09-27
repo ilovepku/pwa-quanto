@@ -1,72 +1,27 @@
-import React, {
-  Fragment,
-  forwardRef,
-  useContext,
-  useState,
-  useEffect
-} from "react";
+// react
+import React, { Fragment, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // contexts
 import { UserContext } from "../../contexts/user/user.context";
 import { setCurrentUser } from "../../contexts/user/user.actions";
 
 // material ui
-import { makeStyles } from "@material-ui/core/styles";
 import {
   ListItem,
   ListItemText,
   Button,
-  Typography,
-  IconButton,
-  Toolbar,
-  Dialog,
-  AppBar,
-  Slide,
   ListItemSecondaryAction
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-
-// libs
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 // utils
 import firebase from "../../utils/firebase.utils";
 
-// Configure FirebaseUI.
-const firebaseUiConfig = {
-  signInSuccessUrl: "/settings",
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-    firebase.auth.GithubAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.PhoneAuthProvider.PROVIDER_ID
-  ],
-  credentialHelper: "none"
-};
-
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: "relative"
-  },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1
-  }
-}));
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 const AuthListItem = () => {
-  const classes = useStyles();
   const {
     user: { currentUser },
     dispatchUser
   } = useContext(UserContext);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     // Listen to the Firebase Auth state and set the local state.
@@ -101,41 +56,12 @@ const AuthListItem = () => {
               SIGN OUT
             </Button>
           ) : (
-            <Button edge="end" onClick={() => setOpen(true)}>
+            <Button edge="end" component={Link} to="/auth">
               SIGN IN
             </Button>
           )}
         </ListItemSecondaryAction>
       </ListItem>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={() => setOpen(false)}
-        TransitionComponent={Transition}
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={() => setOpen(false)}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Sign in
-            </Typography>
-            <Button color="inherit" onClick={() => setOpen(false)}>
-              CANCEL
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <StyledFirebaseAuth
-          uiConfig={firebaseUiConfig}
-          firebaseAuth={firebase.auth()}
-        />
-      </Dialog>
     </Fragment>
   );
 };

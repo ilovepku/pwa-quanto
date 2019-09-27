@@ -11,6 +11,7 @@ import HistoryPage from "./pages/history/history.page";
 import ChartsPage from "./pages/charts/charts.page";
 import CategoriesPage from "./pages/categories/categories.page";
 import SettingsPage from "./pages/settings/settings.page";
+import AuthPage from "./pages/auth/auth.page";
 import BottomBar from "./components/bottom-bar/bottom-bar.component";
 import SnackbarNotifier from "./components/snackbar-notifier/snackbar-notifier.component";
 
@@ -47,6 +48,7 @@ function App() {
         <Route exact path="/charts/" component={ChartsPage} />
         <Route exact path="/categories/" component={CategoriesPage} />
         <Route path="/settings/" component={SettingsPage} />
+        <Route path="/auth/" component={AuthPage} />
         <BottomBar />
         <SnackbarNotifier />
       </MuiThemeProvider>

@@ -21,7 +21,8 @@ import {
   FormControl,
   InputLabel,
   NativeSelect,
-  Input
+  Input,
+  Box
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
@@ -202,7 +203,7 @@ const HistoryItemEditDialog = ({
     );
   });
   return (
-    <div className="dialog-container">
+    <Box className="dialog-container">
       <DialogTitle>Edit Activity Details</DialogTitle>
       <DialogContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -272,12 +273,10 @@ const HistoryItemEditDialog = ({
 
       <DialogActions>
         <Button onClick={handleActivityDel}>DELETE</Button>
-
-        <Button onClick={handleCloseDialog}>Cancel</Button>
-
         <Button onClick={handleActivitySave}>Save</Button>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
       </DialogActions>
-    </div>
+    </Box>
   );
 };
 

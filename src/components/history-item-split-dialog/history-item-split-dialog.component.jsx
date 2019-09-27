@@ -12,7 +12,8 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Box
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
@@ -63,7 +64,7 @@ const HistoryItemSplitDialog = ({
   };
 
   return (
-    <div className="dialog-container">
+    <Box className="dialog-container">
       <DialogTitle>Split Activity</DialogTitle>
 
       <DialogContent>
@@ -101,10 +102,10 @@ const HistoryItemSplitDialog = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button onClick={handleActivitySplit}>Save</Button>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
       </DialogActions>
-    </div>
+    </Box>
   );
 };
 

@@ -3,7 +3,7 @@ import React, { Fragment, useState, useContext } from "react";
 import { HistoryContext } from "../../contexts/history/history.context";
 
 // libs
-import { FixedSizeList as List } from "react-window";
+import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 // material ui
@@ -128,14 +128,14 @@ const HistoryPage = () => {
       <Box className={classes.autoSizerContainer}>
         <AutoSizer className={classes.autoSizer}>
           {({ height, width }) => (
-            <List
+            <FixedSizeList
               height={height}
               itemCount={history.length}
-              itemSize={45}
+              itemSize={50}
               width={width}
             >
               {Row}
-            </List>
+            </FixedSizeList>
           )}
         </AutoSizer>
       </Box>
