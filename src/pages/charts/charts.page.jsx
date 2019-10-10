@@ -103,8 +103,8 @@ const ChartsPage = () => {
   if (settings.chartsKeyFilter) {
     durationHistory = durationHistory.filter(
       item =>
-        !settings.chartsExcludeKeysList.includes(item.activity) &&
-        !settings.chartsExcludeKeysList.includes(item.detail)
+        !settings.chartsFilterKeyList.includes(item.activity) &&
+        !settings.chartsFilterKeyList.includes(item.detail)
     );
   }
 

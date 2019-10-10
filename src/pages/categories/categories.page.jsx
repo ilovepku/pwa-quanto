@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     // duplicate styles
-    //paddingLeft: theme.spacing(1),
-    //paddingTop: 0,
-    //paddingBottom: 0
+    // paddingLeft: theme.spacing(1),
+    // paddingTop: 0,
+    // paddingBottom: 0
   },
   listItemIcon: {
     minWidth: theme.spacing(3),
