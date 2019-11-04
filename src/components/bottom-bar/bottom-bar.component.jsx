@@ -12,7 +12,8 @@ import BottomNavigationBar from "../bottom-navigation-bar/bottom-navigation-bar.
 const useStyles = makeStyles({
   appBar: {
     top: "auto",
-    bottom: 0
+    bottom: 0,
+    left: 0
   }
 });
 

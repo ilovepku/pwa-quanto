@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   fabs: {
     position: "absolute",
     top: 10,
-    right: 10,
+    left: 10,
     "& button": {
       marginLeft: 10
     }
@@ -200,22 +200,22 @@ const ChartsPage = () => {
       />
 
       {/* prev/next filter switches */}
-      <Box className={classes.fabs}>
-        <Fab
-          disabled={!settings.chartsDateFilter}
-          size="small"
-          onClick={() => dispatchSettings(prevChartsFilterDate())}
-        >
-          <SkipPreviousIcon />
-        </Fab>
-        <Fab
-          disabled={!settings.chartsDateFilter}
-          size="small"
-          onClick={() => dispatchSettings(nextChartsFilterDate())}
-        >
-          <SkipNextIcon />
-        </Fab>
-      </Box>
+      {settings.chartsDateFilter && (
+        <Box className={classes.fabs}>
+          <Fab
+            size="small"
+            onClick={() => dispatchSettings(prevChartsFilterDate())}
+          >
+            <SkipPreviousIcon />
+          </Fab>
+          <Fab
+            size="small"
+            onClick={() => dispatchSettings(nextChartsFilterDate())}
+          >
+            <SkipNextIcon />
+          </Fab>
+        </Box>
+      )}
     </Fragment>
   );
 };
