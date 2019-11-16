@@ -79,7 +79,7 @@ const ChartsSettings = () => {
         />
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container justify="space-evenly">
+          <Grid container justify="space-between">
             <DatePicker
               margin="dense"
               openTo="date"
