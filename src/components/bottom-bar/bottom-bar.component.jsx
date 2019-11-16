@@ -13,7 +13,9 @@ const useStyles = makeStyles({
   appBar: {
     top: "auto",
     bottom: 0,
-    left: 0
+    left: 0,
+    maxWidth: "576px",
+    margin: "auto"
   }
 });
 

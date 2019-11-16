@@ -22,7 +22,8 @@ import {
   InputLabel,
   NativeSelect,
   Input,
-  Box
+  Box,
+  Grid
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
@@ -206,69 +207,71 @@ const HistoryItemEditDialog = ({
     <Box className="dialog-container">
       <DialogTitle>Edit Activity Details</DialogTitle>
       <DialogContent>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DateTimePicker
-            format="yyyy/MM/dd HH:mm"
-            ampm={false}
-            openTo="minutes"
-            value={datetime}
-            onChange={setDatetime}
-            label="Start"
-            showTodayButton
-            todayLabel="Now"
-          />
-        </MuiPickersUtilsProvider>
-
-        {nextItemDatetime && (
-          // show end datetime if it's not current activity
+        <Grid container direction="column">
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DateTimePicker
-              margin="dense"
               format="yyyy/MM/dd HH:mm"
               ampm={false}
               openTo="minutes"
-              value={nextItemDatetime}
-              onChange={setNextItemDatetime}
-              label="End"
+              value={datetime}
+              onChange={setDatetime}
+              label="Start"
               showTodayButton
               todayLabel="Now"
             />
           </MuiPickersUtilsProvider>
-        )}
 
-        <p>
-          {nextItemDatetime
-            ? // show duration or elapsed depending on if it's the current activity
-              `Duration: ${duration2HHMM(
-                Math.floor((nextItemDatetime - datetime) / 1000 / 60)
-              )}
+          {nextItemDatetime && (
+            // show end datetime if it's not current activity
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DateTimePicker
+                margin="dense"
+                format="yyyy/MM/dd HH:mm"
+                ampm={false}
+                openTo="minutes"
+                value={nextItemDatetime}
+                onChange={setNextItemDatetime}
+                label="End"
+                showTodayButton
+                todayLabel="Now"
+              />
+            </MuiPickersUtilsProvider>
+          )}
+
+          <p>
+            {nextItemDatetime
+              ? // show duration or elapsed depending on if it's the current activity
+                `Duration: ${duration2HHMM(
+                  Math.floor((nextItemDatetime - datetime) / 1000 / 60)
+                )}
         `
-            : `Elapsed: ${duration2HHMM(
-                Math.floor((new Date() - datetime) / 1000 / 60)
-              )}`}
-        </p>
+              : `Elapsed: ${duration2HHMM(
+                  Math.floor((new Date() - datetime) / 1000 / 60)
+                )}`}
+          </p>
 
-        <FormControl margin="dense" className={classes.formControl}>
-          <InputLabel htmlFor="activity">Activity</InputLabel>
-          <NativeSelect
-            value={activity}
-            onChange={handleActivityChange}
-            input={<Input name="activity" id="activity" />}
-          >
-            {activityNameListItems}
-          </NativeSelect>
-        </FormControl>
+          <FormControl margin="dense" className={classes.formControl}>
+            <InputLabel htmlFor="activity">Activity</InputLabel>
+            <NativeSelect
+              value={activity}
+              onChange={handleActivityChange}
+              input={<Input name="activity" id="activity" />}
+            >
+              {activityNameListItems}
+            </NativeSelect>
+          </FormControl>
 
-        <FormControl margin="dense" className={classes.formControl}>
-          <InputLabel htmlFor="detail">Detail</InputLabel>
-          <NativeSelect
-            value={detail}
-            onChange={e => setDetail(e.target.value)}
-            input={<Input name="detail" id="detail" />}
-          >
-            {detailNameListItems}
-          </NativeSelect>
-        </FormControl>
+          <FormControl margin="dense" className={classes.formControl}>
+            <InputLabel htmlFor="detail">Detail</InputLabel>
+            <NativeSelect
+              value={detail}
+              onChange={e => setDetail(e.target.value)}
+              input={<Input name="detail" id="detail" />}
+            >
+              {detailNameListItems}
+            </NativeSelect>
+          </FormControl>
+        </Grid>
       </DialogContent>
 
       <DialogActions>

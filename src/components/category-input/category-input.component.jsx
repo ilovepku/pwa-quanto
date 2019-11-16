@@ -17,7 +17,8 @@ import CreateIcon from "@material-ui/icons/Create";
 
 const useStyles = makeStyles(theme => ({
   form: {
-    display: "flex"
+    display: "flex",
+    width: "100%"
   },
   textField: {
     padding: theme.spacing(1)
@@ -107,6 +108,7 @@ const CategoryInput = ({ item, activityId }) => {
       className={classes.form}
     >
       <TextField
+        fullWidth
         inputRef={inputRef} // ref for focusing upon first clicking submit
         defaultValue={category}
         placeholder={!item.name ? "Add a new one here!" : null}

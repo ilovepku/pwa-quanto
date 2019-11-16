@@ -133,72 +133,79 @@ const ChartsPage = () => {
 
   return (
     <Fragment>
-      <VictoryPie
-        data={data}
-        padAngle={1} // separation between adjacent slices in number of degrees
-        innerRadius={75} // distance between chart center and donut chart's inner edge in number of pixels
-        labels={() => null} // no labels
-        colorScale={!selectedActivity ? "qualitative" : "heatmap"}
-        events={[
-          {
-            target: "data",
-            eventHandlers: {
-              onClick: () => {
-                return [
-                  {
-                    mutation: props => {
-                      if (!selectedActivity) {
-                        setSelectedActivity(props.datum.x);
-                      } else {
-                        setSelectedActivity("");
+      <svg viewBox="0 0 400 800">
+        <VictoryPie
+          standalone={false}
+          animate={{
+            duration: 100
+          }}
+          data={data}
+          padAngle={1} // separation between adjacent slices in number of degrees
+          innerRadius={75} // distance between chart center and donut chart's inner edge in number of pixels
+          labels={() => null} // no labels
+          colorScale={!selectedActivity ? "qualitative" : "heatmap"}
+          events={[
+            {
+              target: "data",
+              eventHandlers: {
+                onClick: () => {
+                  return [
+                    {
+                      mutation: props => {
+                        if (!selectedActivity) {
+                          setSelectedActivity(props.datum.x);
+                        } else {
+                          setSelectedActivity("");
+                        }
                       }
                     }
-                  }
-                ];
+                  ];
+                }
               }
             }
-          }
-        ]}
-      />
-
-      <VictoryLegend
-        data={data}
-        orientation={"horizontal"}
-        itemsPerRow={3}
-        gutter={0} // number of pixels between legend columns
-        title={
-          !selectedActivity
-            ? `Stats - All Activities ${
-                chartsDateFilterSpan ? chartsDateFilterSpan : ""
-              } ${duration2HHMM(dataSum)}`
-            : `Stats - ${selectedActivity} ${
-                chartsDateFilterSpan ? chartsDateFilterSpan : ""
-              } ${duration2HHMM(dataSum)}`
-        }
-        style={{ title: { fontSize: 20 } }}
-        colorScale={!selectedActivity ? "qualitative" : "heatmap"}
-        events={[
-          {
-            target: "labels",
-            eventHandlers: {
-              onClick: () => {
-                return [
-                  {
-                    mutation: props => {
-                      if (!selectedActivity) {
-                        setSelectedActivity(props.datum.x);
-                      } else {
-                        setSelectedActivity("");
+          ]}
+        />
+        <g transform={"translate(25, 400)"}>
+          <VictoryLegend
+            standalone={false}
+            data={data}
+            orientation={"horizontal"}
+            itemsPerRow={2}
+            // gutter={0} // number of pixels between legend columns
+            title={
+              !selectedActivity
+                ? `Stats - All Activities ${
+                    chartsDateFilterSpan ? chartsDateFilterSpan : ""
+                  } ${duration2HHMM(dataSum)}`
+                : `Stats - ${selectedActivity} ${
+                    chartsDateFilterSpan ? chartsDateFilterSpan : ""
+                  } ${duration2HHMM(dataSum)}`
+            }
+            style={{ title: { fontSize: 20 } }}
+            colorScale={!selectedActivity ? "qualitative" : "heatmap"}
+            events={[
+              {
+                target: "labels",
+                eventHandlers: {
+                  onClick: () => {
+                    return [
+                      {
+                        mutation: props => {
+                          if (!selectedActivity) {
+                            setSelectedActivity(props.datum.x);
+                          } else {
+                            setSelectedActivity("");
+                          }
+                        }
                       }
-                    }
+                    ];
                   }
-                ];
+                }
               }
-            }
-          }
-        ]}
-      />
-
+            ]}
+          />
+        </g>
+      </svg>
       {/* prev/next filter switches */}
       {settings.chartsDateFilter && (
         <Box className={classes.fabs}>
