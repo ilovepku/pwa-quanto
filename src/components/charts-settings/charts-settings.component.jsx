@@ -24,7 +24,8 @@ import {
   Switch,
   TextField,
   IconButton,
-  Chip
+  Chip,
+  Grid
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
@@ -78,37 +79,40 @@ const ChartsSettings = () => {
         />
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker
-            openTo="date"
-            label="Start"
-            format="yyyy/MM/dd"
-            value={new Date(settings.chartsFilterDateStart)}
-            onChange={date =>
-              dispatchSettings(
-                setChartsFilterDate({
-                  type: "chartsFilterDateStart",
-                  date: new Date(date.setHours(0, 0, 0, 0))
-                })
-              )
-            }
-            showTodayButton
-          />
-          <DatePicker
-            margin="dense"
-            openTo="date"
-            label="End"
-            format="yyyy/MM/dd"
-            value={new Date(settings.chartsFilterDateEnd)}
-            onChange={date =>
-              dispatchSettings(
-                setChartsFilterDate({
-                  type: "chartsFilterDateEnd",
-                  date: new Date(date.setHours(23, 59, 59, 999))
-                })
-              )
-            }
-            showTodayButton
-          />
+          <Grid container justify="space-evenly">
+            <DatePicker
+              margin="dense"
+              openTo="date"
+              label="Start"
+              format="yyyy/MM/dd"
+              value={new Date(settings.chartsFilterDateStart)}
+              onChange={date =>
+                dispatchSettings(
+                  setChartsFilterDate({
+                    type: "chartsFilterDateStart",
+                    date: new Date(date.setHours(0, 0, 0, 0))
+                  })
+                )
+              }
+              showTodayButton
+            />
+            <DatePicker
+              margin="dense"
+              openTo="date"
+              label="End"
+              format="yyyy/MM/dd"
+              value={new Date(settings.chartsFilterDateEnd)}
+              onChange={date =>
+                dispatchSettings(
+                  setChartsFilterDate({
+                    type: "chartsFilterDateEnd",
+                    date: new Date(date.setHours(23, 59, 59, 999))
+                  })
+                )
+              }
+              showTodayButton
+            />
+          </Grid>
         </MuiPickersUtilsProvider>
         <ListItemSecondaryAction>
           <Switch

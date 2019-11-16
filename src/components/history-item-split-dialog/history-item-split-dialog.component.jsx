@@ -13,7 +13,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Box
+  Box,
+  Grid
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
@@ -68,37 +69,40 @@ const HistoryItemSplitDialog = ({
       <DialogTitle>Split Activity</DialogTitle>
 
       <DialogContent>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DateTimePicker
-            format="yyyy/MM/dd HH:mm"
-            value={datetime}
-            label="Start"
-            disabled
-          />
-        </MuiPickersUtilsProvider>
+        <Grid container direction="column">
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              margin="dense"
+              format="yyyy/MM/dd HH:mm"
+              value={datetime}
+              label="Start"
+              disabled
+            />
+          </MuiPickersUtilsProvider>
 
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DateTimePicker
-            margin="dense"
-            format="yyyy/MM/dd HH:mm"
-            ampm={false}
-            openTo="minutes"
-            value={splitDatetime}
-            onChange={setSplitDatetime}
-            label="Split At"
-            showTodayButton
-          />
-        </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              margin="dense"
+              format="yyyy/MM/dd HH:mm"
+              ampm={false}
+              openTo="minutes"
+              value={splitDatetime}
+              onChange={setSplitDatetime}
+              label="Split At"
+              showTodayButton
+            />
+          </MuiPickersUtilsProvider>
 
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DateTimePicker
-            margin="dense"
-            format="yyyy/MM/dd HH:mm"
-            value={nextItemDatetime ? nextItemDatetime : new Date()}
-            label="End"
-            disabled
-          />
-        </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              margin="dense"
+              format="yyyy/MM/dd HH:mm"
+              value={nextItemDatetime ? nextItemDatetime : new Date()}
+              label="End"
+              disabled
+            />
+          </MuiPickersUtilsProvider>
+        </Grid>
       </DialogContent>
 
       <DialogActions>
