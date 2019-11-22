@@ -23,11 +23,9 @@ import { duration2HHMM } from "../../utils/duration2HHMM.utils";
 
 const useStyles = makeStyles({
   fabs: {
-    position: "absolute",
-    top: 10,
-    left: 10,
+    position: "fixed",
     "& button": {
-      marginLeft: 10
+      margin: 5
     }
   }
 });
@@ -133,6 +131,23 @@ const ChartsPage = () => {
 
   return (
     <Fragment>
+      {/* prev/next filter switches */}
+      {settings.chartsDateFilter && (
+        <Box className={classes.fabs}>
+          <Fab
+            size="small"
+            onClick={() => dispatchSettings(prevChartsFilterDate())}
+          >
+            <SkipPreviousIcon />
+          </Fab>
+          <Fab
+            size="small"
+            onClick={() => dispatchSettings(nextChartsFilterDate())}
+          >
+            <SkipNextIcon />
+          </Fab>
+        </Box>
+      )}
       <svg viewBox="0 0 400 800">
         <VictoryPie
           standalone={false}
@@ -206,23 +221,6 @@ const ChartsPage = () => {
           />
         </g>
       </svg>
-      {/* prev/next filter switches */}
-      {settings.chartsDateFilter && (
-        <Box className={classes.fabs}>
-          <Fab
-            size="small"
-            onClick={() => dispatchSettings(prevChartsFilterDate())}
-          >
-            <SkipPreviousIcon />
-          </Fab>
-          <Fab
-            size="small"
-            onClick={() => dispatchSettings(nextChartsFilterDate())}
-          >
-            <SkipNextIcon />
-          </Fab>
-        </Box>
-      )}
     </Fragment>
   );
 };
