@@ -1,7 +1,7 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { Dispatch, createContext, useReducer, useEffect } from "react";
 import { settingsReducer } from "./settings.reducer";
 
-export const SettingsContext = createContext();
+export const SettingsContext = createContext<Partial<ContextProps>>({});
 
 const initialSettings = {
   chartsDateFilter: false,
@@ -10,6 +10,17 @@ const initialSettings = {
   chartsKeyFilter: false,
   chartsFilterKeyList: ["Unsorted"]
 };
+
+interface ContextProps {
+  settings: {
+    chartsDateFilter: boolean;
+    chartsFilterDateStart: number;
+    chartsFilterDateEnd: number;
+    chartsKeyFilter: boolean;
+    chartsFilterKeyList: string[];
+  };
+  dispatchSettings: Dispatch<{ type: string; payload?: string | object }>;
+}
 
 const SettingsContextProvider = ({ children }) => {
   const [settings, dispatchSettings] = useReducer(settingsReducer, [], () => {

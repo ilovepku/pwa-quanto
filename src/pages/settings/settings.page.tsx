@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SettingsPage = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
 
   return (
     <List className={classes.list}>

@@ -47,14 +47,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SnackbarNotifier = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { snackbar, dispatchSnackbar } = useContext(SnackbarContext);
-  const Icon = variantIcon[snackbar.variant];
+  const Icon = variantIcon[snackbar.variant as keyof typeof variantIcon];
 
-  const handleClose = (e, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  const handleClose: () => void = () => {
     dispatchSnackbar(closeSnackbar());
   };
 
@@ -65,7 +62,7 @@ const SnackbarNotifier = () => {
       onClose={handleClose}
     >
       <SnackbarContent
-        className={clsx(classes[snackbar.variant])}
+        className={clsx(classes[snackbar.variant as keyof typeof classes])}
         aria-describedby="client-snackbar"
         message={
           <span id="client-snackbar" className={classes.message}>

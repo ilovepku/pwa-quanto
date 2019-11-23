@@ -45,18 +45,18 @@ const AuthListItem = () => {
         <ListItemText
           primary={
             currentUser
-              ? `Hello, ${firebase.auth().currentUser.displayName}`
+              ? `Hello, ${currentUser.displayName}`
               : "Hello, guest user!"
           }
           secondary={"Sign in to backup/restore data"}
         />
         <ListItemSecondaryAction>
           {currentUser ? (
-            <Button edge="end" onClick={() => firebase.auth().signOut()}>
+            <Button onClick={() => firebase.auth().signOut()}>
               SIGN OUT
             </Button>
           ) : (
-            <Button edge="end" component={Link} to="/auth">
+            <Button component={Link} to="/auth">
               SIGN IN
             </Button>
           )}

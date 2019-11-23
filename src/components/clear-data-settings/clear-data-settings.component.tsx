@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ClearDataSettings = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
@@ -83,7 +83,7 @@ const ClearDataSettings = () => {
             openTo="date"
             format="yyyy/MM/dd"
             value={date}
-            onChange={date => setDate(date.setHours(23, 59, 59, 999))}
+            onChange={date => setDate(new Date(date.setHours(23, 59, 59, 999)))}
             showTodayButton
           />
         </MuiPickersUtilsProvider>

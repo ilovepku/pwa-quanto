@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useState } from "react";
 
 // contexts
+import { UserContext } from "../../contexts/user/user.context";
 import { SettingsContext } from "../../contexts/settings/settings.context";
 import { CategoriesContext } from "../../contexts/categories/categories.context";
 import { HistoryContext } from "../../contexts/history/history.context";
@@ -27,6 +28,9 @@ import ConfirmDialog from "../confirm-dialog/confirm-dialog.component";
 import firebase from "../../utils/firebase.utils";
 
 const BackupRestoreListItem = () => {
+  const {
+    user: { currentUser }
+  } = useContext(UserContext);
   const { categories, dispatchCategories } = useContext(CategoriesContext);
   const { history, dispatchHistory } = useContext(HistoryContext);
   const { settings, dispatchSettings } = useContext(SettingsContext);
@@ -39,7 +43,7 @@ const BackupRestoreListItem = () => {
     firebase
       .firestore()
       .collection("backup")
-      .doc(firebase.auth().currentUser.uid)
+      .doc(currentUser.uid)
       .get()
       .then(doc => {
         if (doc.exists) {

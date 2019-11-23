@@ -12,7 +12,7 @@ import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemIcon, Collapse, Box } from "@material-ui/core";
+import { List, ListItem, ListItemIcon, Collapse } from "@material-ui/core";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -43,18 +43,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const getItemStyle = isDragging => ({
+const getItemStyle = (isDragging: boolean) => ({
   ...(isDragging && {
     background: "lightgrey"
   })
 });
 
-const getListStyle = isDraggingOver => ({
+const getListStyle = (isDraggingOver: boolean) => ({
   background: isDraggingOver ? "lightblue" : "white"
 });
 
-const CategoriesNestedLists = ({ index, activity, details }) => {
-  const classes = useStyles();
+interface Activity {
+  id: string;
+  name: string;
+  detailIds: string[];
+}
+
+interface CategoriesNestedListsProps {
+  index: number;
+  activity: Activity;
+  details: Array<{ id: string; name: string }>;
+}
+
+const CategoriesNestedLists = ({
+  index,
+  activity,
+  details
+}: CategoriesNestedListsProps) => {
+  const classes = useStyles({});
   const [nestedListOpen, setNestedListOpen] = useState(false);
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
@@ -64,10 +80,10 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
   return (
     <Draggable draggableId={activity.id} index={index}>
       {(outterProvided, outterSnapshot) => (
-        <Box {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
+        <div {...outterProvided.draggableProps} ref={outterProvided.innerRef}>
           <Droppable droppableId={activity.id} type="detail">
             {(provided, snapshot) => (
-              <Box
+              <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 style={getListStyle(snapshot.isDraggingOver)}
@@ -118,7 +134,7 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                         index={index}
                       >
                         {(provided, snapshot) => (
-                          <Box
+                          <div
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                           >
@@ -160,11 +176,10 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                                       })
                                     );
                                   }}
-                                  className={classes.deleteIcon}
                                 />
                               </ListItemIcon>
                             </ListItem>
-                          </Box>
+                          </div>
                         )}
                       </Draggable>
                     ))}
@@ -186,10 +201,10 @@ const CategoriesNestedLists = ({ index, activity, details }) => {
                     </ListItem>
                   </List>
                 </Collapse>
-              </Box>
+              </div>
             )}
           </Droppable>
-        </Box>
+        </div>
       )}
     </Draggable>
   );

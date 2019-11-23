@@ -1,10 +1,29 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, {
+  FunctionComponent,
+  Dispatch,
+  createContext,
+  useReducer,
+  useEffect
+} from "react";
 import { categoriesReducer } from "./categories.reducer";
 import initialCategories from "../../data/initialCategories";
 
-export const CategoriesContext = createContext();
+interface ContextProps {
+  categories: {
+    details: {
+      [key: string]: { id: string; name: string };
+    };
+    activities: {
+      [key: string]: { id: string; name: string; detailIds: string[] };
+    };
+    activityIds: string[];
+  };
+  dispatchCategories: Dispatch<{ type: string; payload?: string | object }>;
+}
 
-const CategoriesContextProvider = ({ children }) => {
+export const CategoriesContext = createContext<Partial<ContextProps>>({});
+
+const CategoriesContextProvider: FunctionComponent = ({ children }) => {
   const [categories, dispatchCategories] = useReducer(
     categoriesReducer,
     [],

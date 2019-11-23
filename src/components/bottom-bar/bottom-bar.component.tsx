@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 function BottomBar() {
-  const classes = useStyles();
+  const classes = useStyles({});
   return (
     <AppBar className={classes.appBar}>
       <CurrentActivityBar />

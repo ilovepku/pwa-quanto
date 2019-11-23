@@ -45,15 +45,17 @@ const useStyles = makeStyles({
 });
 
 const CurrentActivityBar = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { history, dispatchHistory } = useContext(HistoryContext);
-  const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState(0);
+  const [lastHistoryItemElapsed, setLastHistoryItemElapsed] = useState("");
   const lastHistoryItem = history[0];
 
   useEffect(() => {
-    const updateElapsedAndDisplayNotifcation = datetime => {
+    const updateElapsedAndDisplayNotifcation = (datetime: string) => {
       const duration = duration2HHMM(
-        Math.floor((new Date() - new Date(datetime)) / 1000 / 60)
+        Math.floor(
+          (new Date().valueOf() - new Date(datetime).valueOf()) / 1000 / 60
+        )
       );
       setLastHistoryItemElapsed(duration);
       dispatchHistory(displayNotification(duration));

@@ -1,8 +1,8 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { Dispatch, createContext, useReducer, useEffect } from "react";
 import { historyReducer } from "./history.reducer";
 import { newActivity, pauseActivity } from "./history.actions";
 
-export const HistoryContext = createContext();
+export const HistoryContext = createContext<Partial<ContextProps>>({});
 
 const initialHistory = [
   // duplicate in reducer
@@ -12,6 +12,11 @@ const initialHistory = [
     detail: "-"
   }
 ];
+
+interface ContextProps {
+  history: Array<{ datetime: string; activity: string; detail: string }>;
+  dispatchHistory: Dispatch<{ type: string; payload?: string | object }>;
+}
 
 const HistoryContextProvider = ({ children }) => {
   const [history, dispatchHistory] = useReducer(historyReducer, [], () => {

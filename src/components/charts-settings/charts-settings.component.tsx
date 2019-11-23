@@ -1,5 +1,5 @@
 // react
-import React, { Fragment, useContext, useState, useRef } from "react";
+import React, { FormEvent, Fragment, useContext, useState, useRef } from "react";
 
 // contexts
 import { SettingsContext } from "../../contexts/settings/settings.context";
@@ -43,12 +43,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ChartsSettings = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { settings, dispatchSettings } = useContext(SettingsContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
   const [value, setValue] = useState("");
-  const formRef = useRef();
-  const handleSubmit = e => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value) {
       dispatchSnackbar(
@@ -156,7 +156,7 @@ const ChartsSettings = () => {
           </IconButton>
         </form>
         {settings.chartsFilterKeyList.length
-          ? settings.chartsFilterKeyList.map((item, index) => {
+          ? settings.chartsFilterKeyList.map((item: string, index: number) => {
               return (
                 <Chip
                   key={"chartsFilterKey-" + index}

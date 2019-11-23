@@ -22,10 +22,10 @@ const useStyles = makeStyles({
 });
 
 const BottomNavigationBar = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const [value, setValue] = useState("history");
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: object, newValue: string) => {
     setValue(newValue);
   };
   return (

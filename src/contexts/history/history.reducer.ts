@@ -85,7 +85,7 @@ export const historyReducer = (state, action) => {
         if ("serviceWorker" in navigator) {
           var options = {
             body: "Elasped: " + action.payload,
-            timestamp: new Date(lastHistoryItem.datetime),
+            timestamp: new Date(lastHistoryItem.datetime).getTime(),
             icon: "android-chrome-192x192.png",
             // badge:
             // image:

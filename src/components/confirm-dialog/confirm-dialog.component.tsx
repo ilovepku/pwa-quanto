@@ -11,13 +11,21 @@ import {
   Button
 } from "@material-ui/core";
 
+interface ConfirmDialogProps {
+  title: string;
+  desc: string;
+  open: boolean;
+  handleCloseDialog: () => void;
+  handleConfirmAction: () => void;
+}
+
 const ConfirmDialog = ({
   title,
   desc,
   open,
   handleCloseDialog,
   handleConfirmAction
-}) => {
+}: ConfirmDialogProps) => {
   return (
     <Dialog open={open} onClose={() => handleCloseDialog()}>
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>

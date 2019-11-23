@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 const ChartsPage = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { history } = useContext(HistoryContext);
   const { settings, dispatchSettings } = useContext(SettingsContext);
   const [selectedActivity, setSelectedActivity] = useState("");
@@ -48,9 +48,12 @@ const ChartsPage = () => {
   const filteredHistory = settings.chartsDateFilter
     ? history.filter(
         item =>
-          new Date(item.datetime) - new Date(settings.chartsFilterDateStart) >=
+          new Date(item.datetime).valueOf() -
+            new Date(settings.chartsFilterDateStart).valueOf() >=
             0 &&
-          new Date(item.datetime) - new Date(settings.chartsFilterDateEnd) <= 0
+          new Date(item.datetime).valueOf() -
+            new Date(settings.chartsFilterDateEnd).valueOf() <=
+            0
       )
     : [...history];
 
@@ -58,8 +61,8 @@ const ChartsPage = () => {
   if (
     settings.chartsDateFilter &&
     filteredHistory.length &&
-    new Date(filteredHistory[filteredHistory.length - 1].datetime) -
-      new Date(settings.chartsFilterDateStart) >
+    new Date(filteredHistory[filteredHistory.length - 1].datetime).valueOf() -
+      new Date(settings.chartsFilterDateStart).valueOf() >
       0 // check if first filtered activity started later than chartsFilterDateStart
   ) {
     const firstFilteredHistoryActivityIdxInHistory = history.indexOf(
@@ -72,7 +75,7 @@ const ChartsPage = () => {
       }); // add the previous activity to the filtered array
       filteredHistory[filteredHistory.length - 1].datetime = new Date(
         settings.chartsFilterDateStart
-      ); // and make it start at chartsFilterDateStart
+      ).toString(); // and make it start at chartsFilterDateStart
     }
   }
 
@@ -85,7 +88,7 @@ const ChartsPage = () => {
     // check if nextDatetime started after settings.chartsFilterDateEnd
     if (
       settings.chartsDateFilter &&
-      new Date(settings.chartsFilterDateEnd) - new Date(nextDatetime) <= 0
+      new Date(settings.chartsFilterDateEnd).valueOf() - new Date(nextDatetime).valueOf() <= 0
     ) {
       nextDatetime = new Date(settings.chartsFilterDateEnd);
     }
@@ -93,7 +96,7 @@ const ChartsPage = () => {
     return {
       activity: item.activity,
       detail: item.detail,
-      duration: Math.round((nextDatetime - new Date(item.datetime)) / 1000 / 60)
+      duration: Math.round((nextDatetime.valueOf() - new Date(item.datetime).valueOf()) / 1000 / 60)
     };
   });
 

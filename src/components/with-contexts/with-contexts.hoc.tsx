@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 // contexts
 import UserContextProvider from "../../contexts/user/user.context";
@@ -7,8 +7,8 @@ import CategoriesContextProvider from "../../contexts/categories/categories.cont
 import SettingsContextProvider from "../../contexts/settings/settings.context";
 import SnackbarContextProvider from "../../contexts/snackbar/snackbar.context";
 
-const withContexts = WrappedComponent => {
-  return props => {
+const withContexts = (WrappedComponent: FunctionComponent) => {
+  return (props: object) => {
     return (
       <UserContextProvider>
         <HistoryContextProvider>

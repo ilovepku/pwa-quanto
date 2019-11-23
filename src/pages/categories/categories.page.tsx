@@ -7,7 +7,7 @@ import { reorderCategories } from "../../contexts/categories/categories.actions"
 
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import { List, ListItem, ListItemIcon, Box } from "@material-ui/core";
+import { List, ListItem, ListItemIcon } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 // libs
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CategoriesPage() {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { categories, dispatchCategories } = useContext(CategoriesContext);
   return (
     <DragDropContext
@@ -46,7 +46,7 @@ function CategoriesPage() {
         type="activity"
       >
         {provided => (
-          <Box
+          <div
             {...provided.droppableProps}
             ref={provided.innerRef}
             className={classes.view}
@@ -80,7 +80,7 @@ function CategoriesPage() {
                 />
               </ListItem>
             </List>
-          </Box>
+          </div>
         )}
       </Droppable>
     </DragDropContext>

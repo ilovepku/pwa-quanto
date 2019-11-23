@@ -1,5 +1,5 @@
 // react
-import React, { useState, useContext, useRef } from "react";
+import React, { FormEvent, useState, useContext, useRef } from "react";
 
 // contexts
 import { CategoriesContext } from "../../contexts/categories/categories.context";
@@ -29,23 +29,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const getEditIconColor = (value, name) =>
-  value !== name ? "primary" : "default";
-const getEditIconStyle = (value, name) => ({
+/* const getEditIconColor = (value: string, name: string) =>
+  value !== name ? "primary" : "default"; */
+const getEditIconStyle = (value: string, name: string) => ({
   color: value !== name ? "primary" : "default",
   transition: "transform 0.5s",
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
 
-const CategoryInput = ({ item, activityId }) => {
-  const classes = useStyles();
+interface Item {
+  id: string;
+  name: string;
+  detailIds?: string[];
+}
+
+interface CategoryInputProps {
+  item: Item;
+  activityId?: string;
+}
+
+const CategoryInput = ({ item, activityId }: CategoryInputProps) => {
+  const classes = useStyles({});
   const { dispatchCategories } = useContext(CategoriesContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
   const [category, setCategory] = useState(item.name);
   const inputRef = useRef(null);
   const formRef = useRef(null);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (category === item.name) {
       // focus on text field if no changes have been made
@@ -120,7 +131,7 @@ const CategoryInput = ({ item, activityId }) => {
       <IconButton
         type="submit"
         // temp workaround to animate this IconButton
-        color={getEditIconColor(category, item.name)}
+        // color={getEditIconColor(category, item.name)}
         style={getEditIconStyle(category, item.name)}
         className={classes.editIcon}
       >

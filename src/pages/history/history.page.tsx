@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const HistoryPage = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const { history } = useContext(HistoryContext);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [splitDialogOpen, setSplitDialogOpen] = useState(false);
@@ -126,7 +126,7 @@ const HistoryPage = () => {
   return (
     <Fragment>
       <Box className={classes.autoSizerContainer}>
-        <AutoSizer className={classes.autoSizer}>
+        <AutoSizer>
           {({ height, width }) => (
             <FixedSizeList
               height={height}

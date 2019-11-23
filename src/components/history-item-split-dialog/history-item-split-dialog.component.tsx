@@ -21,12 +21,19 @@ import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 // libs
 import DateFnsUtils from "@date-io/date-fns";
 
+interface HistoryItemSplitDialogProps {
+  datetime: Date;
+  nextItemDatetime: Date;
+  index: number;
+  handleCloseDialog: () => void;
+}
+
 const HistoryItemSplitDialog = ({
   datetime,
   nextItemDatetime,
   index,
   handleCloseDialog
-}) => {
+}: HistoryItemSplitDialogProps) => {
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
 
@@ -76,6 +83,7 @@ const HistoryItemSplitDialog = ({
               format="yyyy/MM/dd HH:mm"
               value={datetime}
               label="Start"
+              onChange={null}
               disabled
             />
           </MuiPickersUtilsProvider>
@@ -99,6 +107,7 @@ const HistoryItemSplitDialog = ({
               format="yyyy/MM/dd HH:mm"
               value={nextItemDatetime ? nextItemDatetime : new Date()}
               label="End"
+              onChange={null}
               disabled
             />
           </MuiPickersUtilsProvider>

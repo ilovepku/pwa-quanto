@@ -1,5 +1,5 @@
 // react
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 
 // contexts
 import { CategoriesContext } from "../../contexts/categories/categories.context";
@@ -40,6 +40,21 @@ const useStyles = makeStyles({
   }
 });
 
+interface Item {
+  datetime: Date;
+  activity: string;
+  detail: string;
+}
+
+interface HistoryItemEditDialog {
+  handleCloseDialog: () => void;
+  index: number;
+  item: Item;
+  lastItemDatetime: Date;
+  nextItemDatetimeProp: Date;
+  nextNextItemDatetime: Date;
+}
+
 const HistoryItemEditDialog = ({
   handleCloseDialog,
   index,
@@ -47,8 +62,8 @@ const HistoryItemEditDialog = ({
   lastItemDatetime,
   nextItemDatetimeProp,
   nextNextItemDatetime
-}) => {
-  const classes = useStyles();
+}: HistoryItemEditDialog) => {
+  const classes = useStyles({});
   const { categories } = useContext(CategoriesContext);
   const { dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
@@ -61,15 +76,19 @@ const HistoryItemEditDialog = ({
   const [detail, setDetail] = useState(item.detail);
 
   // on activity change, load its details and select the first detail
-  const handleActivityChange = e => {
-    const selectedActivity = Object.values(categories.activities).filter(
-      item => item.name === e.target.value
-    )[0];
+  const handleActivityChange = (
+    event: ChangeEvent<{ value: unknown }>
+  ) => {
+    const selectedActivity = (Object.keys(categories.activities) as string[])
+      .map((key: string) => categories.activities[key])
+      .filter(
+        (activity: { name: string }) => activity.name === event.target.value
+      )[0];
     const detailList = selectedActivity.detailIds.map(
-      detailId => categories.details[detailId]
+      (detailId: string) => categories.details[detailId]
     );
 
-    setActivity(e.target.value);
+    setActivity(event.target.value as string);
     setDetail(detailList.length ? detailList[0].name : "-"); // fix for selecting activity with no detail
   };
 
@@ -166,21 +185,27 @@ const HistoryItemEditDialog = ({
   };
 
   // load activity and detail lists
-  const activityList = categories.activityIds.map(activityId => {
+  const activityList = categories.activityIds.map((activityId: string) => {
     return categories.activities[activityId];
   });
 
   let detailList;
-  const currentActivity = activityList.find(item => item.name === activity);
+  const currentActivity = activityList.find(
+    (item: { name: string }) => item.name === activity
+  );
   if (currentActivity === undefined) {
     // if activity no longer exists in activity list, add a temp activity
-    activityList.unshift({ id: "activity-" + nanoid(10), name: activity });
+    activityList.unshift({
+      id: "activity-" + nanoid(10),
+      name: activity,
+      detailIds: []
+    });
     detailList = [{ id: "detail-" + nanoid(10), name: detail }];
   } else {
     detailList = currentActivity.detailIds.map(
-      detailId => categories.details[detailId]
+      (detailId: string) => categories.details[detailId]
     );
-    if (!detailList.find(item => item.name === detail)) {
+    if (!detailList.find((item: { name: string }) => item.name === detail)) {
       // if detail no longer exists in activity list, add a temp detail
       detailList.unshift({ id: "detail-" + nanoid(10), name: detail });
     }
@@ -189,20 +214,24 @@ const HistoryItemEditDialog = ({
   detail !== "-" && detailList.unshift({ id: "detail-0", name: "-" });
 
   // generate options for selects
-  const activityNameListItems = activityList.map(item => {
-    return (
-      <option value={item.name} key={item.id}>
-        {item.name}
-      </option>
-    );
-  });
-  const detailNameListItems = detailList.map(item => {
-    return (
-      <option value={item.name} key={item.id}>
-        {item.name}
-      </option>
-    );
-  });
+  const activityNameListItems = activityList.map(
+    (item: { name: string; id: string }) => {
+      return (
+        <option value={item.name} key={item.id}>
+          {item.name}
+        </option>
+      );
+    }
+  );
+  const detailNameListItems = detailList.map(
+    (item: { name: string; id: string }) => {
+      return (
+        <option value={item.name} key={item.id}>
+          {item.name}
+        </option>
+      );
+    }
+  );
   return (
     <Box className="dialog-container">
       <DialogTitle>Edit Activity Details</DialogTitle>
@@ -242,11 +271,17 @@ const HistoryItemEditDialog = ({
             {nextItemDatetime
               ? // show duration or elapsed depending on if it's the current activity
                 `Duration: ${duration2HHMM(
-                  Math.floor((nextItemDatetime - datetime) / 1000 / 60)
+                  Math.floor(
+                    (nextItemDatetime.valueOf() - datetime.valueOf()) /
+                      1000 /
+                      60
+                  )
                 )}
         `
               : `Elapsed: ${duration2HHMM(
-                  Math.floor((new Date() - datetime) / 1000 / 60)
+                  Math.floor(
+                    (new Date().valueOf() - datetime.valueOf()) / 1000 / 60
+                  )
                 )}`}
           </p>
 
