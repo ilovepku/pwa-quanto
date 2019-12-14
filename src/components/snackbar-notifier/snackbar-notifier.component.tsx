@@ -71,7 +71,7 @@ const SnackbarNotifier = () => {
           </span>
         }
         action={[
-          <IconButton key="close" onClick={handleClose}>
+          <IconButton onClick={handleClose}>
             <CloseIcon className={classes.icon} />
           </IconButton>
         ]}

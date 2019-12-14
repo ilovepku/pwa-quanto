@@ -80,7 +80,7 @@ const HistoryPage = () => {
   };
 
   const Row = ({ index, style }) => (
-    <ListItem style={style} dense divider key={"history-" + index}>
+    <ListItem style={style} dense divider key={history[index].datetime}>
       <ListItemIcon
         onClick={() =>
           handleOpenSplitDialog(

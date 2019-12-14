@@ -1,5 +1,11 @@
 // react
-import React, { FormEvent, Fragment, useContext, useState, useRef } from "react";
+import React, {
+  FormEvent,
+  Fragment,
+  useContext,
+  useState,
+  useRef
+} from "react";
 
 // contexts
 import { SettingsContext } from "../../contexts/settings/settings.context";
@@ -159,7 +165,7 @@ const ChartsSettings = () => {
           ? settings.chartsFilterKeyList.map((item: string, index: number) => {
               return (
                 <Chip
-                  key={"chartsFilterKey-" + index}
+                  key={item}
                   label={item}
                   onDelete={() => dispatchSettings(delChartsFilterKey(index))}
                   className={classes.chip}
