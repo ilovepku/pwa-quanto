@@ -1,48 +1,39 @@
 import HistoryActionTypes from "./history.types";
 
-const initialHistory = [
-  {
-    datetime: new Date(),
+export const createUnsortedActivity = (datetime = new Date()) => {
+  return {
+    datetime,
     activity: "Unsorted",
     detail: "-"
-  }
-];
+  };
+};
 
-export const historyReducer = (state, action) => {
+const historyReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case HistoryActionTypes.NEW_ACTIVITY:
-      return [
-        {
-          datetime: new Date(),
-          activity: "Unsorted",
-          detail: "-"
-        },
-        ...state
-      ];
+      return [createUnsortedActivity(), ...state];
 
     case HistoryActionTypes.PAUSE_ACTIVITY:
-      return state[0].activity === "Interruption" // if current activity is interruption, ends interruption
-        ? [
-            {
+      return [
+        state[0].activity === "Interruption"
+          ? {
+              // if current activity is interruption, ends interruption
               datetime: new Date(),
               activity: state[1].activity,
               detail: state[1].detail
-            },
-            ...state
-          ]
-        : [
-            // if current activity is not interruption, starts interruption
-            {
+            }
+          : {
+              // if current activity is not interruption, starts interruption
               datetime: new Date(),
               activity: "Interruption",
               detail: "-"
             },
-            ...state
-          ];
+        ...state
+      ];
 
     case HistoryActionTypes.SAVE_ACTIVITY:
-      var {
+      const {
         index,
         datetime,
         activity,
@@ -50,17 +41,17 @@ export const historyReducer = (state, action) => {
         nextItemDatetime
       } = action.payload;
       return state.map((item, idx) => {
-        if (idx === index) {
+        if (idx === index - 1) {
+          return {
+            ...item,
+            datetime: nextItemDatetime
+          };
+        } else if (idx === index) {
           return {
             ...item,
             datetime,
             activity,
             detail
-          };
-        } else if (idx === index - 1) {
-          return {
-            ...item,
-            datetime: nextItemDatetime
           };
         } else {
           return item;
@@ -70,13 +61,25 @@ export const historyReducer = (state, action) => {
     case HistoryActionTypes.SPLIT_ACTIVITY:
       return [
         ...state.slice(0, action.payload.index),
-        {
-          datetime: action.payload.splitDatetime,
-          activity: "Unsorted",
-          detail: "-"
-        },
+        createUnsortedActivity(action.payload.splitDatetime),
         ...state.slice(action.payload.index)
       ];
+
+    case HistoryActionTypes.DELETE_ACTIVITY:
+      newState = [
+        ...state.slice(0, action.payload),
+        ...state.slice(action.payload + 1)
+      ];
+      return newState.length ? newState : [createUnsortedActivity()];
+
+    case HistoryActionTypes.PURGE_HISTORY:
+      newState = state.filter(
+        item => new Date(item.datetime).getTime() >= action.payload
+      );
+      return newState.length ? newState : [createUnsortedActivity()];
+
+    case HistoryActionTypes.RESTORE_HISTORY:
+      return action.payload;
 
     case HistoryActionTypes.DISPLAY_NOTIFICATION:
       if (Notification.permission === "granted") {
@@ -87,8 +90,6 @@ export const historyReducer = (state, action) => {
             body: "Elasped: " + action.payload,
             timestamp: new Date(lastHistoryItem.datetime).getTime(),
             icon: "android-chrome-192x192.png",
-            // badge:
-            // image:
             actions: [
               {
                 action: "new",
@@ -118,20 +119,9 @@ export const historyReducer = (state, action) => {
       }
       return state;
 
-    case HistoryActionTypes.DELETE_ACTIVITY:
-      newState = state.filter((item, index) => index !== action.payload);
-      return newState.length ? newState : initialHistory;
-
-    case HistoryActionTypes.PURGE_HISTORY:
-      newState = state.filter(
-        item => new Date(item.datetime).getTime() >= action.payload
-      );
-      return newState.length ? newState : initialHistory;
-
-    case HistoryActionTypes.RESTORE_HISTORY:
-      return action.payload;
-
     default:
       return state;
   }
 };
+
+export default historyReducer;

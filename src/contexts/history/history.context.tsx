@@ -1,5 +1,5 @@
 import React, { Dispatch, createContext, useReducer, useEffect } from "react";
-import { historyReducer } from "./history.reducer";
+import historyReducer from "./history.reducer";
 import { newActivity, pauseActivity } from "./history.actions";
 
 export const HistoryContext = createContext<Partial<ContextProps>>({});
