@@ -1,11 +1,13 @@
 import SnackbarActionTypes from "./snackbar.types";
 
-export const snackbarReducer = (state, action) => {
+const snackbarReducer = (state, action) => {
   switch (action.type) {
     case SnackbarActionTypes.CLOSE_SNACKBAR:
       return {
         ...state,
-        open: false
+        open: false,
+        msg: "",
+        variant: "info"
       };
 
     case SnackbarActionTypes.OPEN_SNACKBAR:
@@ -21,3 +23,5 @@ export const snackbarReducer = (state, action) => {
       return state;
   }
 };
+
+export default snackbarReducer;
