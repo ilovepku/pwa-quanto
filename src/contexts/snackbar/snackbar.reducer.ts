@@ -5,9 +5,7 @@ const snackbarReducer = (state, action) => {
     case SnackbarActionTypes.CLOSE_SNACKBAR:
       return {
         ...state,
-        open: false,
-        msg: "",
-        variant: "info"
+        open: false
       };
 
     case SnackbarActionTypes.OPEN_SNACKBAR:

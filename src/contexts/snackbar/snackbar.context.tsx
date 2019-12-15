@@ -12,7 +12,7 @@ export const SnackbarContext = createContext<Partial<ContextProps>>({});
 const initialSnackbar = {
   open: false,
   msg: "",
-  variant: "info"
+  variant: "warning"
 };
 
 const SnackbarContextProvider = ({ children }) => {

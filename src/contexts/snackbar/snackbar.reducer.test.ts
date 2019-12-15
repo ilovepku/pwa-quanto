@@ -10,7 +10,7 @@ const prevStateOpen = {
 const prevStateClosed = {
   open: false,
   msg: "",
-  variant: "info"
+  variant: "warning"
 };
 
 describe("snackbarReducer", () => {
@@ -22,12 +22,8 @@ describe("snackbarReducer", () => {
     expect(
       snackbarReducer(prevStateOpen, {
         type: SnackbarActionTypes.CLOSE_SNACKBAR
-      })
-    ).toEqual({
-      open: false,
-      msg: "",
-      variant: "info"
-    });
+      }).open
+    ).toEqual(false);
   });
 
   it("should toggle open value to 'true' and set msg and variant values with openSnackbar action", () => {
