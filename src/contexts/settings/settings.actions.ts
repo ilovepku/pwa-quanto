@@ -1,11 +1,16 @@
 import SettingsActionTypes from "./settings.types";
 
-export const switchChartsDateFilter = () => ({
-  type: SettingsActionTypes.SWITCH_CHARTS_DATE_FILTER
+export const toggleChartsDateFilter = () => ({
+  type: SettingsActionTypes.TOGGLE_CHARTS_DATE_FILTER
 });
 
-export const setChartsFilterDate = payload => ({
-  type: SettingsActionTypes.SET_CHARTS_FILTER_DATE,
+export const setChartsFilterDateStart = payload => ({
+  type: SettingsActionTypes.SET_CHARTS_FILTER_DATE_START,
+  payload
+});
+
+export const setChartsFilterDateEnd = payload => ({
+  type: SettingsActionTypes.SET_CHARTS_FILTER_DATE_END,
   payload
 });
 
@@ -17,8 +22,8 @@ export const nextChartsFilterDate = () => ({
   type: SettingsActionTypes.NEXT_CHARTS_FILTER_DATE
 });
 
-export const switchChartsKeyFilter = () => ({
-  type: SettingsActionTypes.SWITCH_CHARTS_KEY_FILTER
+export const toggleChartsKeyFilter = () => ({
+  type: SettingsActionTypes.TOGGLE_CHARTS_KEY_FILTER
 });
 
 export const addChartsFilterKey = payload => ({

@@ -1,5 +1,5 @@
 import React, { Dispatch, createContext, useReducer, useEffect } from "react";
-import { settingsReducer } from "./settings.reducer";
+import settingsReducer from "./settings.reducer";
 
 export const SettingsContext = createContext<Partial<ContextProps>>({});
 

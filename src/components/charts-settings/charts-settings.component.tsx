@@ -11,9 +11,10 @@ import React, {
 import { SettingsContext } from "../../contexts/settings/settings.context";
 import { SnackbarContext } from "../../contexts/snackbar/snackbar.context";
 import {
-  switchChartsDateFilter,
-  setChartsFilterDate,
-  switchChartsKeyFilter,
+  toggleChartsDateFilter,
+  setChartsFilterDateStart,
+  setChartsFilterDateEnd,
+  toggleChartsKeyFilter,
   addChartsFilterKey,
   delChartsFilterKey
 } from "../../contexts/settings/settings.actions";
@@ -94,10 +95,7 @@ const ChartsSettings = () => {
               value={new Date(settings.chartsFilterDateStart)}
               onChange={date =>
                 dispatchSettings(
-                  setChartsFilterDate({
-                    type: "chartsFilterDateStart",
-                    date: new Date(date.setHours(0, 0, 0, 0))
-                  })
+                  setChartsFilterDateStart(new Date(date.setHours(0, 0, 0, 0)))
                 )
               }
               showTodayButton
@@ -110,10 +108,9 @@ const ChartsSettings = () => {
               value={new Date(settings.chartsFilterDateEnd)}
               onChange={date =>
                 dispatchSettings(
-                  setChartsFilterDate({
-                    type: "chartsFilterDateEnd",
-                    date: new Date(date.setHours(23, 59, 59, 999))
-                  })
+                  setChartsFilterDateEnd(
+                    new Date(date.setHours(23, 59, 59, 999))
+                  )
                 )
               }
               showTodayButton
@@ -135,7 +132,7 @@ const ChartsSettings = () => {
                   })
                 );
               } else {
-                dispatchSettings(switchChartsDateFilter());
+                dispatchSettings(toggleChartsDateFilter());
               }
             }}
             checked={settings.chartsDateFilter}
@@ -177,7 +174,7 @@ const ChartsSettings = () => {
           <Switch
             edge="end"
             onChange={() => {
-              dispatchSettings(switchChartsKeyFilter());
+              dispatchSettings(toggleChartsKeyFilter());
             }}
             checked={settings.chartsKeyFilter}
           />

@@ -1,20 +1,25 @@
 import SettingsActionTypes from "./settings.types";
 
-export const settingsReducer = (state, action) => {
+const settingsReducer = (state, action) => {
   let chartsFilterDateStart, chartsFilterDateEnd;
 
   switch (action.type) {
-    case SettingsActionTypes.SWITCH_CHARTS_DATE_FILTER:
+    case SettingsActionTypes.TOGGLE_CHARTS_DATE_FILTER:
       return {
         ...state,
         chartsDateFilter: !state.chartsDateFilter
       };
 
-    case SettingsActionTypes.SET_CHARTS_FILTER_DATE:
-      const { type, date } = action.payload;
+    case SettingsActionTypes.SET_CHARTS_FILTER_DATE_START:
       return {
         ...state,
-        [type]: date
+        chartsFilterDateStart: action.payload
+      };
+
+    case SettingsActionTypes.SET_CHARTS_FILTER_DATE_END:
+      return {
+        ...state,
+        chartsFilterDateEnd: action.payload
       };
 
     case SettingsActionTypes.PREV_CHARTS_FILTER_DATE:
@@ -44,7 +49,7 @@ export const settingsReducer = (state, action) => {
         )
       };
 
-    case SettingsActionTypes.SWITCH_CHARTS_KEY_FILTER:
+    case SettingsActionTypes.TOGGLE_CHARTS_KEY_FILTER:
       return {
         ...state,
         chartsKeyFilter: !state.chartsKeyFilter
@@ -59,9 +64,10 @@ export const settingsReducer = (state, action) => {
     case SettingsActionTypes.DEL_CHARTS_FILTER_KEY:
       return {
         ...state,
-        chartsFilterKeyList: state.chartsFilterKeyList.filter(
-          (item, index) => index !== action.payload
-        )
+        chartsFilterKeyList: [
+          ...state.chartsFilterKeyList.slice(0, action.payload),
+          ...state.chartsFilterKeyList.slice(action.payload + 1)
+        ]
       };
 
     case SettingsActionTypes.RESTORE_SETTINGS:
@@ -71,3 +77,5 @@ export const settingsReducer = (state, action) => {
       return state;
   }
 };
+
+export default settingsReducer;
