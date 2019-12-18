@@ -1,54 +1,63 @@
 import nanoid from "nanoid";
-import initialCategories from "../../data/initialCategories";
 
 import CategoriesActionTypes from "./categories.types";
 
-export const categoriesReducer = (state, action) => {
+import initialCategories from "../../data/initialCategories";
+
+const categoriesReducer = (state, action) => {
   let newState;
   switch (action.type) {
-    case CategoriesActionTypes.EDIT_ACTIVITY_NAME:
-      let activityId = action.payload.activityId;
-      const newActivityIds = [...state.activityIds];
-
-      // prepare to add new activity if activityId is empty
-      if (!activityId) {
-        activityId = "activity-" + nanoid(10);
-        newActivityIds.push(activityId);
-      }
-
+    case CategoriesActionTypes.ADD_ACTIVITY_NAME:
+      const newActivityId = "activity-" + nanoid(10);
       return {
         ...state,
-        activityIds: newActivityIds,
+        activityIds: [...state.activityIds, newActivityId],
         activities: {
           ...state.activities,
-          [activityId]: {
-            id: activityId,
-            name: action.payload.name,
-            detailIds: !action.payload.activityId
-              ? []
-              : state.activities[activityId].detailIds
+          [newActivityId]: {
+            id: newActivityId,
+            name: action.payload,
+            detailIds: []
           }
         }
       };
 
-    case CategoriesActionTypes.EDIT_DETAIL_NAME:
-      let detailId = action.payload.detailId;
-      const newDetailIds = [
-        ...state.activities[action.payload.activityId].detailIds
-      ];
+    case CategoriesActionTypes.EDIT_ACTIVITY_NAME:
+      return {
+        ...state,
+        activities: {
+          ...state.activities,
+          [action.payload.activityId]: {
+            ...state.activities[action.payload.activityId],
+            name: action.payload.name
+          }
+        }
+      };
 
-      // prepare to add new detail if activityId is empty
-      if (!detailId) {
-        detailId = "detail-" + nanoid(10);
-        newDetailIds.push(detailId);
-      }
+    case CategoriesActionTypes.DELETE_ACTIVITY_NAME:
+      // remove activityId
+      newState = {
+        ...state,
+        activityIds: state.activityIds.filter(item => item !== action.payload)
+      };
 
+      // remove details related to activity to be deleted
+      newState.activities[action.payload].detailIds.forEach(item => {
+        delete newState.details[item];
+      });
+
+      // remove activity
+      delete newState.activities[action.payload];
+      return newState;
+
+    case CategoriesActionTypes.ADD_DETAIL_NAME:
+      const newDetailId = "detail-" + nanoid(10);
       return {
         ...state,
         details: {
           ...state.details,
-          [detailId]: {
-            id: detailId,
+          [newDetailId]: {
+            id: newDetailId,
             name: action.payload.name
           }
         },
@@ -56,26 +65,28 @@ export const categoriesReducer = (state, action) => {
           ...state.activities,
           [action.payload.activityId]: {
             ...state.activities[action.payload.activityId],
-            detailIds: newDetailIds
+            detailIds: [
+              ...state.activities[action.payload.activityId].detailIds,
+              newDetailId
+            ]
           }
         }
       };
 
-    case CategoriesActionTypes.DELETE_ACTIVITY_NAME:
-      newState = {
+    case CategoriesActionTypes.EDIT_DETAIL_NAME:
+      return {
         ...state,
-        activityIds: state.activityIds.filter(item => item !== action.payload)
+        details: {
+          ...state.details,
+          [action.payload.detailId]: {
+            ...state.details[action.payload.detailId],
+            name: action.payload.name
+          }
+        }
       };
 
-      // delete details related to activity to be deleted
-      newState.activities[action.payload].detailIds.forEach(item => {
-        delete newState.details[item];
-      });
-
-      delete newState.activities[action.payload];
-      return newState;
-
     case CategoriesActionTypes.DELETE_DETAIL_NAME:
+      // remove detailId in activity
       newState = {
         ...state,
         activities: {
@@ -88,6 +99,7 @@ export const categoriesReducer = (state, action) => {
           }
         }
       };
+      // remove detail
       delete newState.details[action.payload.detailId];
       return newState;
 
@@ -105,63 +117,58 @@ export const categoriesReducer = (state, action) => {
 
       // reording activities
       if (type === "activity") {
-        const newactivityIds = Array.from(state.activityIds);
-        newactivityIds.splice(source.index, 1);
-        newactivityIds.splice(destination.index, 0, draggableId);
+        const newActivityIds = [...state.activityIds];
+        newActivityIds.splice(source.index, 1);
+        newActivityIds.splice(destination.index, 0, draggableId);
 
         return {
           ...state,
-          activityIds: newactivityIds
+          activityIds: newActivityIds
         };
       }
 
       // reording details
-      const start = state.activities[source.droppableId];
-      const finish = state.activities[destination.droppableId];
-
-      // moving details within the same activity
-      if (start === finish) {
-        const newDetailIds = Array.from(start.detailIds);
+      if (source.droppableId === destination.droppableId) {
+        // moving details within the same activity
+        const startActivity = state.activities[source.droppableId];
+        const newDetailIds = [...startActivity.detailIds];
         newDetailIds.splice(source.index, 1);
         newDetailIds.splice(destination.index, 0, draggableId);
-
-        const newActivity = {
-          ...start,
-          detailIds: newDetailIds
-        };
 
         return {
           ...state,
           activities: {
             ...state.activities,
-            [newActivity.id]: newActivity
+            [startActivity.id]: {
+              ...startActivity,
+              detailIds: newDetailIds
+            }
+          }
+        };
+      } else {
+        // moving details from one activity to another
+        const startActivity = state.activities[source.droppableId];
+        const finishActivity = state.activities[destination.droppableId];
+        const startDetailIds = [...startActivity.detailIds];
+        startDetailIds.splice(source.index, 1);
+        const finishDetailIds = [...finishActivity.detailIds];
+        finishDetailIds.splice(destination.index, 0, draggableId);
+
+        return {
+          ...state,
+          activities: {
+            ...state.activities,
+            [startActivity.id]: {
+              ...startActivity,
+              detailIds: startDetailIds
+            },
+            [finishActivity.id]: {
+              ...finishActivity,
+              detailIds: finishDetailIds
+            }
           }
         };
       }
-
-      // moving details from one activity to another
-      const startDetailIds = Array.from(start.detailIds);
-      startDetailIds.splice(source.index, 1);
-      const newStart = {
-        ...start,
-        detailIds: startDetailIds
-      };
-
-      const finishDetailIds = Array.from(finish.detailIds);
-      finishDetailIds.splice(destination.index, 0, draggableId);
-      const newFinish = {
-        ...finish,
-        detailIds: finishDetailIds
-      };
-
-      return {
-        ...state,
-        activities: {
-          ...state.activities,
-          [newStart.id]: newStart,
-          [newFinish.id]: newFinish
-        }
-      };
 
     case CategoriesActionTypes.DEFAULT_CATEGORIES:
       return initialCategories;
@@ -173,3 +180,5 @@ export const categoriesReducer = (state, action) => {
       return state;
   }
 };
+
+export default categoriesReducer;

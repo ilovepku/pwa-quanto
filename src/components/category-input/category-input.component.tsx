@@ -5,7 +5,9 @@ import React, { FormEvent, useState, useContext, useRef } from "react";
 import { CategoriesContext } from "../../contexts/categories/categories.context";
 import { SnackbarContext } from "../../contexts/snackbar/snackbar.context";
 import {
+  addActivityName,
   editActivityName,
+  addDetailName,
   editDetailName
 } from "../../contexts/categories/categories.actions";
 import { openSnackbar } from "../../contexts/snackbar/snackbar.actions";
@@ -82,24 +84,39 @@ const CategoryInput = ({ item, activityId }: CategoryInputProps) => {
         // check for item type: acitivty or detail
         if (item.detailIds) {
           // is activity
-          dispatchCategories(
-            editActivityName({
-              activityId: item.id,
-              name: category
-            })
-          );
+          if (item.id) {
+            dispatchCategories(
+              editActivityName({
+                activityId: item.id,
+                name: category
+              })
+            );
+          } else {
+            dispatchCategories(addActivityName(category));
+          }
+
           dispatchSnackbar(
             openSnackbar({ msg: "Activity name edited.", variant: "success" })
           );
         } else {
           // is detail
-          dispatchCategories(
-            editDetailName({
-              activityId: activityId,
-              detailId: item.id,
-              name: category
-            })
-          );
+
+          if (item.id) {
+            dispatchCategories(
+              editDetailName({
+                detailId: item.id,
+                name: category
+              })
+            );
+          } else {
+            dispatchCategories(
+              addDetailName({
+                activityId,
+                name: category
+              })
+            );
+          }
+
           dispatchSnackbar(
             openSnackbar({ msg: "Detail name edited.", variant: "success" })
           );

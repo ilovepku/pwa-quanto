@@ -19,7 +19,7 @@ describe("settingsReducer", () => {
       settingsReducer(prevState, {
         type: SettingsActionTypes.TOGGLE_CHARTS_DATE_FILTER
       }).chartsDateFilter
-    ).toEqual(true);
+    ).toBe(true);
   });
 
   it("should toggle chartsKeyFilter with toggleChartsKeyFilter action", () => {
@@ -27,7 +27,7 @@ describe("settingsReducer", () => {
       settingsReducer(prevState, {
         type: SettingsActionTypes.TOGGLE_CHARTS_KEY_FILTER
       }).chartsKeyFilter
-    ).toEqual(true);
+    ).toBe(true);
   });
 
   it("should set chartsFilterDateStart with setChartsFilterDateStart action", () => {
@@ -85,7 +85,7 @@ describe("settingsReducer", () => {
       type: SettingsActionTypes.ADD_CHARTS_FILTER_KEY,
       payload: "Sleep"
     }).chartsFilterKeyList;
-    expect(newValue.length).toEqual(2);
+    expect(newValue.length).toBe(2);
     expect(newValue).toEqual(["Unsorted", "Sleep"]);
   });
 
@@ -94,11 +94,11 @@ describe("settingsReducer", () => {
       type: SettingsActionTypes.DEL_CHARTS_FILTER_KEY,
       payload: 0
     }).chartsFilterKeyList;
-    expect(newValue.length).toEqual(0);
+    expect(newValue.length).toBe(0);
     expect(newValue).toEqual([]);
   });
 
-  it("should return payload as newState with restoreSettings", () => {
+  it("should return payload as newState with restoreSettings action", () => {
     expect(
       settingsReducer(null, {
         type: SettingsActionTypes.RESTORE_SETTINGS,

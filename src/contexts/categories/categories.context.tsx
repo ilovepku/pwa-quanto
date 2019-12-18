@@ -5,7 +5,7 @@ import React, {
   useReducer,
   useEffect
 } from "react";
-import { categoriesReducer } from "./categories.reducer";
+import categoriesReducer from "./categories.reducer";
 import initialCategories from "../../data/initialCategories";
 
 interface ContextProps {

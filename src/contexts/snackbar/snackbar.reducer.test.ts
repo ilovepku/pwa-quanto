@@ -23,7 +23,7 @@ describe("snackbarReducer", () => {
       snackbarReducer(prevStateOpen, {
         type: SnackbarActionTypes.CLOSE_SNACKBAR
       }).open
-    ).toEqual(false);
+    ).toBe(false);
   });
 
   it("should toggle open value to 'true' and set msg and variant values with openSnackbar action", () => {
