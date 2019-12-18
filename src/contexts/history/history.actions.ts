@@ -8,12 +8,21 @@ export const pauseActivity = () => ({
   type: HistoryActionTypes.PAUSE_ACTIVITY
 });
 
-export const saveActivity = payload => ({
+export const saveActivity = (payload: {
+  index: number;
+  datetime: Date;
+  activity: string;
+  detail: string;
+  nextItemDatetime: Date;
+}) => ({
   type: HistoryActionTypes.SAVE_ACTIVITY,
   payload
 });
 
-export const splitActivity = payload => ({
+export const splitActivity = (payload: {
+  index: number;
+  splitDatetime: Date;
+}) => ({
   type: HistoryActionTypes.SPLIT_ACTIVITY,
   payload
 });
@@ -23,12 +32,12 @@ export const deleteActivity = payload => ({
   payload
 });
 
-export const displayNotification = payload => ({
+export const displayNotification = (payload: string) => ({
   type: HistoryActionTypes.DISPLAY_NOTIFICATION,
   payload
 });
 
-export const purgeHistory = payload => ({
+export const purgeHistory = (payload: Date) => ({
   type: HistoryActionTypes.PURGE_HISTORY,
   payload
 });
