@@ -100,10 +100,10 @@ describe("settingsReducer", () => {
 
   it("should return payload as newState with restoreSettings action", () => {
     expect(
-      settingsReducer(null, {
+      settingsReducer(prevState, {
         type: SettingsActionTypes.RESTORE_SETTINGS,
         payload: {}
       })
-    ).toStrictEqual({});
+    ).toEqual({});
   });
 });

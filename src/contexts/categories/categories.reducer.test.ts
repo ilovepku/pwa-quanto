@@ -173,18 +173,18 @@ describe("categoriesReducer", () => {
 
   it("should reset state to initState with defaultCategories action", () => {
     expect(
-      categoriesReducer(null, {
+      categoriesReducer(initState, {
         type: CategoriesActionTypes.DEFAULT_CATEGORIES
       })
-    ).toStrictEqual(initState);
+    ).toEqual(initState);
   });
 
   it("should return payload as newState with restoreCategories action", () => {
     expect(
-      categoriesReducer(null, {
+      categoriesReducer(initState, {
         type: CategoriesActionTypes.RESTORE_CATEGORIES,
         payload: {}
       })
-    ).toStrictEqual({});
+    ).toEqual({});
   });
 });
