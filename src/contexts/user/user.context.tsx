@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   currentUser: null
 };
 
-const UserContextProvider = props => {
+export const UserContextProvider = props => {
   const [user, dispatchUser] = useReducer(userReducer, INITIAL_STATE);
   return (
     <UserContext.Provider value={{ user, dispatchUser }}>
@@ -20,5 +20,3 @@ const UserContextProvider = props => {
     </UserContext.Provider>
   );
 };
-
-export default UserContextProvider;

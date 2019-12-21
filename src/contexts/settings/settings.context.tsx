@@ -22,7 +22,7 @@ interface ContextProps {
   dispatchSettings: Dispatch<{ type: string; payload?: string | object }>;
 }
 
-const SettingsContextProvider = ({ children }) => {
+export const SettingsContextProvider = ({ children }) => {
   const [settings, dispatchSettings] = useReducer(settingsReducer, [], () => {
     const localData = localStorage.getItem("settings");
     return localData ? JSON.parse(localData) : initialSettings;
@@ -36,5 +36,3 @@ const SettingsContextProvider = ({ children }) => {
     </SettingsContext.Provider>
   );
 };
-
-export default SettingsContextProvider;

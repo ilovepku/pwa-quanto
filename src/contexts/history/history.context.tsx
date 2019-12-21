@@ -18,7 +18,7 @@ const initialHistory = [
   }
 ];
 
-const HistoryContextProvider = ({ children }) => {
+export const HistoryContextProvider = ({ children }) => {
   const [history, dispatchHistory] = useReducer(historyReducer, [], () => {
     const localData = localStorage.getItem("history");
     return localData ? JSON.parse(localData) : initialHistory;
@@ -45,5 +45,3 @@ const HistoryContextProvider = ({ children }) => {
     </HistoryContext.Provider>
   );
 };
-
-export default HistoryContextProvider;

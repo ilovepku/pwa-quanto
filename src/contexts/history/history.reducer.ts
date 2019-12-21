@@ -82,10 +82,10 @@ const historyReducer = (state, action) => {
       return action.payload;
 
     case HistoryActionTypes.DISPLAY_NOTIFICATION:
-      if (Notification.permission === "granted") {
+      if (Notification && Notification.permission === "granted") {
         const lastHistoryItem = state[0];
 
-        if ("serviceWorker" in navigator) {
+        if (navigator && "serviceWorker" in navigator) {
           var options = {
             body: "Elasped: " + action.payload,
             timestamp: new Date(lastHistoryItem.datetime).getTime(),

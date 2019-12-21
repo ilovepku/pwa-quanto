@@ -31,7 +31,6 @@ describe("snackbarReducer", () => {
       snackbarReducer(prevStateClosed, {
         type: SnackbarActionTypes.OPEN_SNACKBAR,
         payload: {
-          open: true,
           msg: "Sample warning text.",
           variant: "warning"
         }

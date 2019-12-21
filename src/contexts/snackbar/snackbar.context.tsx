@@ -15,7 +15,7 @@ const initialSnackbar = {
   variant: "warning"
 };
 
-const SnackbarContextProvider = ({ children }) => {
+export const SnackbarContextProvider = ({ children }) => {
   const [snackbar, dispatchSnackbar] = useReducer(
     snackbarReducer,
     initialSnackbar
@@ -27,5 +27,3 @@ const SnackbarContextProvider = ({ children }) => {
     </SnackbarContext.Provider>
   );
 };
-
-export default SnackbarContextProvider;

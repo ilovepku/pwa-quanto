@@ -23,7 +23,7 @@ interface ContextProps {
 
 export const CategoriesContext = createContext<Partial<ContextProps>>({});
 
-const CategoriesContextProvider: FunctionComponent = ({ children }) => {
+export const CategoriesContextProvider: FunctionComponent = ({ children }) => {
   const [categories, dispatchCategories] = useReducer(
     categoriesReducer,
     [],
@@ -41,5 +41,3 @@ const CategoriesContextProvider: FunctionComponent = ({ children }) => {
     </CategoriesContext.Provider>
   );
 };
-
-export default CategoriesContextProvider;
