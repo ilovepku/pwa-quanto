@@ -35,6 +35,7 @@ const ConfirmDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
+        <Button onClick={() => handleCloseDialog()}>Cancel</Button>
         <Button
           onClick={() => {
             handleConfirmAction();
@@ -45,7 +46,6 @@ const ConfirmDialog = ({
         >
           CONFIRM
         </Button>
-        <Button onClick={() => handleCloseDialog()}>Cancel</Button>
       </DialogActions>
     </Dialog>
   );

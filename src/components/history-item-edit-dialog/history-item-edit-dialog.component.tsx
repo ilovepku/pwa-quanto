@@ -312,8 +312,8 @@ const HistoryItemEditDialog = ({
 
       <DialogActions>
         <Button onClick={handleActivityDel}>DELETE</Button>
-        <Button onClick={handleActivitySave}>Save</Button>
         <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button onClick={handleActivitySave}>Save</Button>
       </DialogActions>
     </Box>
   );
