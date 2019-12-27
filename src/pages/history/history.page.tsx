@@ -27,10 +27,10 @@ const useStyles = makeStyles(theme => ({
     height: "calc(100vh - 125px)"
   },
   splitIcon: {
-    //fill: "#857541"
+    fill: "#857541"
   },
   editIcon: {
-    //fill: "#557F2F"
+    fill: "#557F2F"
   },
   listItemIcon: {
     minWidth: theme.spacing(3),
@@ -46,32 +46,16 @@ const HistoryPage = () => {
   const { history } = useContext(HistoryContext);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [splitDialogOpen, setSplitDialogOpen] = useState(false);
-  const [item, setItem] = useState(null);
   const [index, setIndex] = useState(null);
-  const [lastItemDatetime, setLastItemDatetime] = useState(null);
-  const [nextItemDatetime, setNextItemDatetime] = useState(null);
-  const [nextNextItemDatetime, setNextNextItemDatetime] = useState(null);
 
-  const handleOpenEditDialog = (
-    item,
-    index,
-    lastItemDatetime,
-    nextItemDatetime,
-    nextNextItemDatetime
-  ) => {
+  const handleOpenEditDialog = index => {
     setEditDialogOpen(true);
-    setItem(item);
     setIndex(index);
-    setLastItemDatetime(lastItemDatetime);
-    setNextItemDatetime(nextItemDatetime);
-    setNextNextItemDatetime(nextNextItemDatetime);
   };
 
-  const handleOpenSplitDialog = (item, index, nextItemDatetime) => {
+  const handleOpenSplitDialog = index => {
     setSplitDialogOpen(true);
-    setItem(item);
     setIndex(index);
-    setNextItemDatetime(nextItemDatetime);
   };
 
   const handleCloseDialog = () => {
@@ -82,13 +66,7 @@ const HistoryPage = () => {
   const Row = ({ index, style }) => (
     <ListItem style={style} dense divider key={history[index].datetime}>
       <ListItemIcon
-        onClick={() =>
-          handleOpenSplitDialog(
-            history[index],
-            index,
-            history[index - 1] ? new Date(history[index - 1].datetime) : null
-          )
-        }
+        onClick={() => handleOpenSplitDialog(index)}
         className={classes.listItemIcon}
       >
         <CallSplitIcon className={classes.splitIcon} />
@@ -108,15 +86,7 @@ const HistoryPage = () => {
       />
 
       <ListItemIcon
-        onClick={() =>
-          handleOpenEditDialog(
-            history[index],
-            index,
-            history[index + 1] ? new Date(history[index + 1].datetime) : null,
-            history[index - 1] ? new Date(history[index - 1].datetime) : null,
-            history[index - 2] ? new Date(history[index - 2].datetime) : null
-          )
-        }
+        onClick={() => handleOpenEditDialog(index)}
         className={classes.listItemIcon}
       >
         <CreateIcon className={classes.editIcon} />
@@ -142,19 +112,13 @@ const HistoryPage = () => {
 
       <Dialog open={editDialogOpen} onClose={handleCloseDialog}>
         <HistoryItemEditDialog
-          item={item}
           index={index}
-          lastItemDatetime={lastItemDatetime}
-          nextItemDatetimeProp={nextItemDatetime}
-          nextNextItemDatetime={nextNextItemDatetime}
           handleCloseDialog={handleCloseDialog}
         />
       </Dialog>
       <Dialog open={splitDialogOpen} onClose={handleCloseDialog}>
         <HistoryItemSplitDialog
           index={index}
-          datetime={item && new Date(item.datetime)}
-          nextItemDatetime={nextItemDatetime}
           handleCloseDialog={handleCloseDialog}
         />
       </Dialog>

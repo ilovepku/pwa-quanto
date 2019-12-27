@@ -49,24 +49,27 @@ interface Item {
 interface HistoryItemEditDialog {
   handleCloseDialog: () => void;
   index: number;
-  item: Item;
-  lastItemDatetime: Date;
-  nextItemDatetimeProp: Date;
-  nextNextItemDatetime: Date;
 }
 
 const HistoryItemEditDialog = ({
   handleCloseDialog,
-  index,
-  item,
-  lastItemDatetime,
-  nextItemDatetimeProp,
-  nextNextItemDatetime
+  index
 }: HistoryItemEditDialog) => {
   const classes = useStyles({});
   const { categories } = useContext(CategoriesContext);
-  const { dispatchHistory } = useContext(HistoryContext);
+  const { history, dispatchHistory } = useContext(HistoryContext);
   const { dispatchSnackbar } = useContext(SnackbarContext);
+
+  const item = history[index];
+  const lastItemDatetime = history[index + 1]
+    ? new Date(history[index + 1].datetime)
+    : null;
+  const nextItemDatetimeProp = history[index - 1]
+    ? new Date(history[index - 1].datetime)
+    : null;
+  const nextNextItemDatetime = history[index - 2]
+    ? new Date(history[index - 2].datetime)
+    : null;
 
   const [datetime, setDatetime] = useState(new Date(item.datetime));
   const [nextItemDatetime, setNextItemDatetime] = useState(
@@ -76,9 +79,7 @@ const HistoryItemEditDialog = ({
   const [detail, setDetail] = useState(item.detail);
 
   // on activity change, load its details and select the first detail
-  const handleActivityChange = (
-    event: ChangeEvent<{ value: unknown }>
-  ) => {
+  const handleActivityChange = (event: ChangeEvent<{ value: unknown }>) => {
     const selectedActivity = (Object.keys(categories.activities) as string[])
       .map((key: string) => categories.activities[key])
       .filter(
