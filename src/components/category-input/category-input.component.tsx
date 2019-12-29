@@ -31,10 +31,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/* const getEditIconColor = (value: string, name: string) =>
-  value !== name ? "primary" : "default"; */
+const getEditIconColor = (value: string, name: string) =>
+  value !== name ? "primary" : "default";
 const getEditIconStyle = (value: string, name: string) => ({
-  color: value !== name ? "primary" : "default",
+  // color: value !== name ? "primary" : "default",
   transition: "transform 0.5s",
   transform: value !== name ? "rotate(180deg)" : "rotate(0deg)"
 });
@@ -148,7 +148,7 @@ const CategoryInput = ({ item, activityId }: CategoryInputProps) => {
       <IconButton
         type="submit"
         // temp workaround to animate this IconButton
-        // color={getEditIconColor(category, item.name)}
+        color={getEditIconColor(category, item.name)}
         style={getEditIconStyle(category, item.name)}
         className={classes.editIcon}
       >

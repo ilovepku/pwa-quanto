@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1)
   },
   dragIcon: {
-    /* fill: "#857541" */
+    fill: "#857541"
   }
 }));
 
